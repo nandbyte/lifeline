@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "965383391285",
+    "project_id": "lifeline-99959",
+    "storage_bucket": "lifeline-99959.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965383391285:android:0e417514da8f00a08f497c",
+        "android_client_info": {
+          "package_name": "com.nandbyte.lifeline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965383391285-lgr32i59gojik6j4km6ur65ru5651gf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_2Mdv1fXl8cxtdd-m6ZuenlqNc36qJmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965383391285-lgr32i59gojik6j4km6ur65ru5651gf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
