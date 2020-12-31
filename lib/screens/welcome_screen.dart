@@ -30,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Image.asset(
                       'assets/images/lifeline_logo.png',
                     ),
-                    height: 130,
+                    height: 50,
                   ),
                 ),
                 Column(
