@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
         color: Colors.white,
         opacity: 0.9,
         progressIndicator: kWaveLoadingIndicator,
-        inAsyncCall: loadingIndicator,
+        inAsyncCall: loadingIndicator,  
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
