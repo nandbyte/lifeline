@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:lifeline/services/authenticate.dart';
+
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login';
@@ -72,7 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                   try {
                     // TODO: Implement login functionalities
-
+                    Auth().signIn(this.email, this.password);
+                    print(Auth().getUID());
                     setState(() {
                       loadingIndicator = false;
                     });
