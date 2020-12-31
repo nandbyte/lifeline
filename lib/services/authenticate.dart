@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lifeline/models/authUser.dart';
+import 'package:lifeline/models/auth_user.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,7 +10,7 @@ class Auth {
     return user != null ? AppUser(uid: user.uid) : null;
   }
 
-  String getUID(){
+  String getUID() {
     return _auth.currentUser.uid;
   }
 

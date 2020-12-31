@@ -17,7 +17,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
+        padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Image.asset(
                       'assets/images/lifeline_logo.png',
                     ),
-                    height: 100,
+                    height: 130,
                   ),
                 ),
                 Column(
