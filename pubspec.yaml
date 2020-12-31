@@ -43,6 +43,8 @@ flutter:
     - family: Nexa
       fonts:
         - asset: assets/fonts/nexa_light.otf
-        - asset: assets/fonts/nexa_bold.otf
-          weight: 900
+      
+    - family: Nexa Bold
+      fonts:
+         - asset: assets/fonts/nexa_bold.otf
 
