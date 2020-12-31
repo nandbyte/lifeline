@@ -74,7 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                     try {
                       // TODO: Implement registration functionality here
-                      Auth().regestration(this.email, this.password);
+                      Auth().register(this.email, this.password);
                       print(Auth().getUID());
                       setState(() {
                         loadingIndicator = false;

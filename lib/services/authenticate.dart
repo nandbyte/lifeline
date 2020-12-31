@@ -1,38 +1,63 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lifeline/models/authUser.dart';
 
 class Auth {
-  String uid;
-  
-  Future<void> regestration(String email, String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      //signIn(email,password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'Weak-password')
-        print('Password is weak');
-      else if (e.code == 'email-already-in-use')
-        print('The account already exists');
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> signIn(String email, String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found')
-        print("NO user found for that email");
-      else if (e.code == 'wrong-password') print('Wrong password!!');
-    }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String str = '';
+  //create user object
+  AppUser _userFromFirebaseUSer(User user) {
+    // str = user.uid;
+    return user != null ? AppUser(uid: user.uid) : null;
   }
 
   String getUID(){
-    User user = FirebaseAuth.instance.currentUser;
-    final _uid = user.uid;
-    this.uid = _uid;
-    return uid;
+    return _auth.currentUser.uid;
+  }
+
+  //auth change user stream
+  // String getUid(){
+  //   return str;
+  // }
+  Stream<AppUser> get user {
+    return _auth
+        .authStateChanges()
+        .map((User user) => _userFromFirebaseUSer(user));
+  }
+
+  //sign in with Email and Pss
+
+  //register with email and pass
+  Future register(String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+      return _userFromFirebaseUSer(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future signIn(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+      return _userFromFirebaseUSer(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //sign out
+  Future signout() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }
