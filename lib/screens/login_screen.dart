@@ -73,9 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     loadingIndicator = true;
                   });
                   try {
-                    await Auth().signIn(this.email, this.password);
-                    print(Auth().getUID());
-                    Navigator.pushNamed(context, UserDashboardScreen.id);
+                    final user = await Auth().signIn(this.email, this.password);
+                    if(user!=null)
+                      Navigator.pushNamed(context, UserDashboardScreen.id);
                     setState(() {
                       loadingIndicator = false;
                     });

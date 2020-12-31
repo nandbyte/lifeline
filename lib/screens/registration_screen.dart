@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
+import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -71,8 +72,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   });
 
                   try {
-                    await Auth().register(this.email, this.password);
-                    print(Auth().getUID());
+                    final user =
+                        await Auth().register(this.email, this.password);
+                    if (user != null)
+                      Navigator.pushNamed(context, UserDashboardScreen.id);
                     setState(() {
                       loadingIndicator = false;
                     });

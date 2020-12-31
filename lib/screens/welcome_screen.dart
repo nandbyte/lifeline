@@ -13,10 +13,11 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
+        
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Image.asset(
                       'assets/images/lifeline_logo.png',
                     ),
-                    height: 130,
+                    height: 60,
                   ),
                 ),
                 Column(
