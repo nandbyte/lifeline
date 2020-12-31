@@ -4,6 +4,7 @@ import 'package:lifeline/constants.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:lifeline/services/authenticate.dart';
+import 'package:toast/toast.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login';
@@ -74,13 +75,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                   try {
                     final user = await Auth().signIn(this.email, this.password);
-                    if(user!=null)
+                    if (user != null)
                       Navigator.pushNamed(context, UserDashboardScreen.id);
                     setState(() {
                       loadingIndicator = false;
                     });
                   } catch (e) {
                     print(e);
+                    Toast.show(
+                      e.message,
+                      context,
+                      duration: Toast.LENGTH_LONG,
+                      gravity: Toast.TOP,
+                    );
                   }
                 },
               ),

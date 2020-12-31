@@ -4,6 +4,7 @@ import 'package:lifeline/constants.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:toast/toast.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'register';
@@ -81,6 +82,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     });
                   } catch (e) {
                     print(e);
+                    Toast.show(
+                      e.message,
+                      context,
+                      duration: Toast.LENGTH_LONG,
+                      gravity: Toast.TOP,
+                    );
                   }
                 },
               ),
