@@ -33,8 +33,7 @@ class GridCard extends StatelessWidget {
               this.label,
               style: TextStyle(
                 fontSize: 20,
-                fontFamily: 'Nexa',
-                fontWeight: FontWeight.w600,
+                fontFamily: 'Nexa Bold',
               ),
             ),
           ],

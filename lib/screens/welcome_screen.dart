@@ -30,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Image.asset(
                       'assets/images/lifeline_logo.png',
                     ),
-                    height: 50,
+                    height: 130,
                   ),
                 ),
                 Column(
@@ -43,7 +43,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ],
                       textStyle: TextStyle(
                         fontSize: 50.0,
-                        fontFamily: 'Nexa',
+                        fontFamily: 'Nexa Bold',
                         fontWeight: FontWeight.w900,
                         color: Colors.black,
                       ),

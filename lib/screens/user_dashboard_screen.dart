@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/grid_card.dart';
-import 'package:lifeline/screens/login_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 
 class UserDashboardScreen extends StatefulWidget {
@@ -18,26 +17,29 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Row(
-          children: [
-            Hero(
-              tag: 'logo',
-              child: Container(
-                height: 50.0,
-                child: Image.asset(
-                  'assets/images/lifeline_logo.png',
+        leadingWidth: 0,
+        title: Expanded(
+          child: Row(
+            children: [
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 40.0,
+                  child: Image.asset(
+                    'assets/images/lifeline_logo.png',
+                  ),
                 ),
               ),
-            ),
-            Text(
-              'Dashboard',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Nexa',
-                fontSize: 30,
+              Text(
+                'Dashboard',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Nexa Bold',
+                  fontSize: 30,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
@@ -51,7 +53,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
             Column(
               children: [
                 SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
                 Text(
                   'Welcome,',
@@ -68,13 +70,13 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   'Shihab Sikder',
                   style: TextStyle(
                     fontSize: 50,
-                    fontFamily: 'Nexa',
+                    fontFamily: 'Nexa Bold',
                   ),
                 ),
               ],
             ),
             SizedBox(
-              height: 48.0,
+              height: 40.0,
             ),
             GridView.count(
               shrinkWrap: true,
