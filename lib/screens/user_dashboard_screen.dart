@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/grid_card.dart';
+import 'package:lifeline/screens/welcome_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 
 class UserDashboardScreen extends StatefulWidget {
@@ -12,12 +13,40 @@ class UserDashboardScreen extends StatefulWidget {
 class _UserDashboardScreenState extends State<UserDashboardScreen> {
   bool loadingIndicator = false;
 
+  AlertDialog getAlert(String title, String msg) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(msg),
+      actions: [
+        FlatButton(
+            onPressed: () {
+              Auth().signout();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
+            },
+            child: Text("Yes")),
+        FlatButton(onPressed: () => Navigator.pop(context), child: Text("No"))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         leadingWidth: 0,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              color: Colors.green[800],
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => getAlert(
+                        "LogOut?", "Are you sure, you want to log out?"));
+              })
+        ],
         title: Expanded(
           child: Row(
             children: [
