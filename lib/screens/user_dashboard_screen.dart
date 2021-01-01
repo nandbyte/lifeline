@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/grid_card.dart';
+import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/screens/welcome_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 
@@ -138,7 +139,12 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     height: 60,
                   ),
                   label: 'Profile',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => userProfile()),
+                    );
+                  },
                 ),
                 GridCard(
                   image: Image.asset(

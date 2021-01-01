@@ -24,6 +24,13 @@ class LifeLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.green[900],
+        appBarTheme: AppBarTheme(
+          elevation: 5.0,
+          color: Colors.green[500],
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: WelcomeScreen.id,
       routes: {
