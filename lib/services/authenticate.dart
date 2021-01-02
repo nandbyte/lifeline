@@ -16,6 +16,10 @@ class Auth {
     return _auth.currentUser.uid;
   }
 
+  User getUser() {
+    return _auth.currentUser;
+  }
+
   //auth change user stream
   // String getUid(){
   //   return str;
@@ -38,7 +42,6 @@ class Auth {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
-        
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }

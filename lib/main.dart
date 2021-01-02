@@ -5,6 +5,7 @@ import 'package:lifeline/screens/login_screen.dart';
 import 'package:lifeline/screens/registration_screen.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/screens/welcome_screen.dart';
+import 'package:lifeline/services/authenticate.dart';
 
 Future<void> main() async {
   // Initalize widgets and firebase
@@ -32,7 +33,9 @@ class LifeLine extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: WelcomeScreen.id,
+      initialRoute: (Auth().getUser() == null)
+          ? WelcomeScreen.id
+          : UserDashboardScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
