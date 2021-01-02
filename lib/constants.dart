@@ -7,6 +7,12 @@ const kSendButtonTextStyle = TextStyle(
   fontSize: 18.0,
 );
 
+const kSTextStyle = TextStyle(
+  color: Colors.black,
+  fontFamily: 'Nexa Bold',
+  fontSize: 30,
+);
+
 const kMessageTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   hintText: 'Type your message here...',
@@ -41,7 +47,10 @@ var kWaveLoadingIndicator = SpinKitWave(
   color: Colors.green,
 );
 
-Container createTextField({BuildContext context, String label, String hint,
+Container createTextField(
+    {BuildContext context,
+    String label,
+    String hint,
     TextEditingController controller}) {
   return Container(
     margin: EdgeInsets.all(5),
