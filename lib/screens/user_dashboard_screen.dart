@@ -3,6 +3,7 @@ import 'package:lifeline/components/grid_card.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/screens/welcome_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 
 class UserDashboardScreen extends StatefulWidget {
   static String id = 'user_dashboard';
@@ -30,9 +31,24 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       ],
     );
   }
+  String name = "";
+  int fetch = 0;
+  Future<void>userName() async {
+    String uid = Auth().getUID();
+    final _name = await Database(uid: uid).getName();
+    setState(() {
+        name = _name;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if(name == "" && fetch <2){
+      userName();
+      setState(() {
+        fetch++;
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -96,8 +112,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   height: 10,
                 ),
                 Text(
-                  // TODO: Replace with actual name
-                  'Shihab Sikder',
+                  name,
                   style: TextStyle(
                     fontSize: 50,
                     fontFamily: 'Nexa Bold',
