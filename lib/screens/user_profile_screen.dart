@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/profile_data.dart';
+import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 
@@ -68,46 +69,119 @@ class _userProfileState extends State<userProfile> {
     );
     print(person.toMap());
     database.createProfile(person);
-    Navigator.of(context).pop();
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => UserDashboardScreen()));
+  }
+
+  int count = 0;
+  ProfileData person;
+  Future<void> loadCurrentData() async {
+    String uid = Auth().getUID();
+    final data = await Database(uid: uid).getData(uid);
+    setState(() {
+      person = data;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (person == null) loadCurrentData();
+    if (person != null && count < 2) {
+      name.text = person.name;
+      age.text = person.age;
+      contact.text = person.contact;
+      emergency.text = person.emergency;
+      gender.text = person.gender;
+      blood.text = person.blood;
+      govtID.text = person.govtID;
+      otherID.text = person.otherID;
+      location.text = person.location;
+      selectedDate = person.dob;
+      _date.text = DateFormat.yMd().format(selectedDate.toDate());
+      setState(() {
+        count++;
+        //it's used otherwise you will not be able to input
+        //because each frame it will fetch
+        //now for every user it's fetching 2 times
+      });
+    } else {}
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile Data"),
         backgroundColor: Theme.of(context).appBarTheme.color,
       ),
-      body: Container(
-        margin: EdgeInsets.all(5),
-        child: Column(
-          children: <Widget>[
-            createTextField(
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(5),
+          child: Column(
+            children: <Widget>[
+              createTextFieldText(
+                  context: context,
+                  label: "Name",
+                  hint: "Enter your name",
+                  controller: name),
+              createTextFieldNumber(
+                  context: context,
+                  label: "Age",
+                  hint: "Enter your Age",
+                  controller: age),
+              createTextFieldPhone(
+                  context: context,
+                  label: "Phone No",
+                  hint: "Enter your phone number",
+                  controller: contact),
+              createTextFieldPhone(
+                  context: context,
+                  label: "Emergency Contact",
+                  hint: "Emergency contact number",
+                  controller: emergency),
+              createTextFieldText(
+                  context: context,
+                  label: "Gender",
+                  hint: "Male/Female/Other",
+                  controller: gender),
+              createTextFieldText(
+                  context: context,
+                  label: "Blood Group",
+                  hint: "A+/A-/AB+/AB-/B+/B-/O+/O-",
+                  controller: blood),
+              createTextFieldLocation(
                 context: context,
-                label: 'Name',
-                hint: 'Enter your name',
-                controller: name),
-            createTextField(
-                context: context,
-                label: 'Name',
-                hint: 'Enter your name',
-                controller: name),
-            createTextField(
-                context: context,
-                label: 'Name',
-                hint: 'Enter your name',
-                controller: name),
-            createTextField(
-                context: context,
-                label: 'Name',
-                hint: 'Enter your name',
-                controller: name),
-            createTextField(
-                context: context,
-                label: 'Name',
-                hint: 'Enter your name',
-                controller: name),
-          ],
+                label: "Address",
+                hint: "Area/Village,District,Division",
+                controller: location,
+              ),
+              createTextFieldText(
+                  context: context,
+                  label: 'Govt Issued ID',
+                  hint: 'NID/Passport/Birth ID',
+                  controller: govtID),
+              createTextFieldText(
+                  context: context,
+                  label: 'Other ID',
+                  hint: 'Office/Student ID',
+                  controller: otherID),
+              GestureDetector(
+                onTap: () => _selectDate(context),
+                child: AbsorbPointer(
+                  child: createTextFieldDate(
+                    context: context,
+                    label: "Birth Date",
+                    hint: "Select your date of birth",
+                    controller: _date,
+                  ),
+                ),
+              ),
+              FlatButton(
+                onPressed: _submit,
+                child: Text(
+                  "Update",
+                  style: kSendButtonTextStyle,
+                ),
+                color: Colors.lightGreen[900],
+              ),
+            ],
+          ),
         ),
       ),
     );
