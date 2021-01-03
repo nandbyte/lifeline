@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 
-class userProfile extends StatefulWidget {
+class UserProfileScreen extends StatefulWidget {
   @override
-  _userProfileState createState() => _userProfileState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _userProfileState extends State<userProfile> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   final database = new Database(uid: Auth().getUID());
 
   final name = new TextEditingController();
@@ -107,8 +108,32 @@ class _userProfileState extends State<userProfile> {
     } else {}
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile Data"),
-        backgroundColor: Theme.of(context).appBarTheme.color,
+        leadingWidth: 0,
+        title: Expanded(
+          child: Row(
+            children: [
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 40.0,
+                  child: Image.asset(
+                    'assets/images/lifeline_logo.png',
+                  ),
+                ),
+              ),
+              Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Nexa Bold',
+                  fontSize: 30,
+                ),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black54,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -172,13 +197,10 @@ class _userProfileState extends State<userProfile> {
                   ),
                 ),
               ),
-              FlatButton(
+              RoundedButton(
                 onPressed: _submit,
-                child: Text(
-                  "Update",
-                  style: kSendButtonTextStyle,
-                ),
-                color: Colors.lightGreen[900],
+                text: 'Update',
+                color: Colors.green,
               ),
             ],
           ),

@@ -58,7 +58,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
-              color: Colors.green[800],
+              color: Colors.green[900],
               onPressed: () {
                 showDialog(
                     context: context,
@@ -159,7 +159,8 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => userProfile()),
+                      MaterialPageRoute(
+                          builder: (context) => UserProfileScreen()),
                     );
                   },
                 ),
