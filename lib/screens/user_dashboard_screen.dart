@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/grid_card.dart';
+import 'package:lifeline/screens/blood_donation_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/screens/welcome_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
@@ -31,19 +32,20 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       ],
     );
   }
+
   String name = "";
   int fetch = 0;
-  Future<void>userName() async {
+  Future<void> userName() async {
     String uid = Auth().getUID();
     final _name = await Database(uid: uid).getName();
     setState(() {
-        name = _name;
+      name = _name;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(name == "" && fetch <2){
+    if (name == "" && fetch < 2) {
       userName();
       setState(() {
         fetch++;
@@ -61,7 +63,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 showDialog(
                     context: context,
                     builder: (context) => getAlert(
-                        "LogOut?", "Are you sure, you want to log out?"));
+                        "Logout", "Are you sure you want to log out?"));
               })
         ],
         title: Expanded(
@@ -167,8 +169,10 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     'assets/images/lifeline_logo.png',
                     height: 60,
                   ),
-                  label: 'Blood Donor Map',
-                  onTap: () {},
+                  label: 'Blood Donation',
+                  onTap: () {
+                    Navigator.pushNamed(context, BloodDonationScreen.id);
+                  },
                 ),
               ],
             )
