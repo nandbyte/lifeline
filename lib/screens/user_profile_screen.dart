@@ -68,6 +68,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       govtID: _govtID,
       otherID: _otherID,
       location: _location,
+      donorStatus: await database.getStatus(),
     );
     print(person.toMap());
     database.createProfile(person);
