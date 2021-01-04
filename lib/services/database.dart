@@ -34,6 +34,8 @@ class Database {
       govtID: snapshot.data()['Govt ID'] ?? '',
       location: snapshot.data()['Location'] ?? '',
       otherID: snapshot.data()['Other ID'] ?? '',
+      donorStatus: snapshot.data()['Donor Status'],
+      lastDonation: snapshot.data()['Last Donation'],
     );
   }
 

@@ -12,6 +12,8 @@ class ProfileData {
   String govtID;
   String otherID;
   String location;
+  Timestamp lastDonation;
+  bool donorStatus;
 
   ProfileData({
     @required this.contact,
@@ -24,6 +26,8 @@ class ProfileData {
     this.otherID,
     this.emergency,
     this.location,
+    this.lastDonation,
+    this.donorStatus,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,6 +42,8 @@ class ProfileData {
       'Govt ID': govtID,
       'Other ID': otherID,
       'Location': location,
+      'Last Donation': lastDonation,
+      'Donor Status': donorStatus,
     };
   }
 }

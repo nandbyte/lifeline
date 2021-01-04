@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
@@ -105,7 +106,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         //because each frame it will fetch
         //now for every user it's fetching 2 times
       });
-    } else {}
+    }
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
