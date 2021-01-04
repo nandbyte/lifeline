@@ -32,6 +32,9 @@ class LifeLine extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.green[900],
         accentColor: Colors.green,
+        colorScheme: ColorScheme.light(
+          primary: Colors.green,
+        ),
         appBarTheme: AppBarTheme(
           elevation: 5.0,
           color: Colors.green[500],
