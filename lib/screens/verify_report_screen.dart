@@ -49,12 +49,12 @@ class _VerifyReportScreenState extends State<VerifyReportScreen> {
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
       ),
-      body: SingleChildScrollView(
-        child: ModalProgressHUD(
-          color: Colors.white,
-          opacity: 0.9,
-          progressIndicator: kWaveLoadingIndicator,
-          inAsyncCall: loadingIndicator,
+      body: ModalProgressHUD(
+        color: Colors.white,
+        opacity: 0.9,
+        progressIndicator: kWaveLoadingIndicator,
+        inAsyncCall: loadingIndicator,
+        child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(12.0),
             child: Column(
