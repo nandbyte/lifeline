@@ -24,20 +24,23 @@ class Database {
   Future<ProfileData> getData(String uid) async {
     var snapshot =
         await FirebaseFirestore.instance.collection('profile').doc(uid).get();
-    return ProfileData(
-      name: snapshot.data()['Name'] ?? '',
-      age: snapshot.data()['Age'] ?? '',
-      dob: snapshot.data()['Birth Date'] ?? '',
-      blood: snapshot.data()['Blood Group'] ?? '',
-      contact: snapshot.data()['Contact No'] ?? '',
-      emergency: snapshot.data()['Emergency No'] ?? '',
-      gender: snapshot.data()['Gender'] ?? '',
-      govtID: snapshot.data()['Govt ID'] ?? '',
-      location: snapshot.data()['Location'] ?? '',
-      otherID: snapshot.data()['Other ID'] ?? '',
-      donorStatus: snapshot.data()['Donor Status'],
-      lastDonation: snapshot.data()['Last Donation'],
-    );
+    if (snapshot.exists)
+      return ProfileData(
+        name: snapshot.data()['Name'] ?? '',
+        age: snapshot.data()['Age'] ?? '',
+        dob: snapshot.data()['Birth Date'] ?? '',
+        blood: snapshot.data()['Blood Group'] ?? '',
+        contact: snapshot.data()['Contact No'] ?? '',
+        emergency: snapshot.data()['Emergency No'] ?? '',
+        gender: snapshot.data()['Gender'] ?? '',
+        govtID: snapshot.data()['Govt ID'] ?? '',
+        location: snapshot.data()['Location'] ?? '',
+        otherID: snapshot.data()['Other ID'] ?? '',
+        donorStatus: snapshot.data()['Donor Status'],
+        lastDonation: snapshot.data()['Last Donation'],
+      );
+      else
+        return ProfileData(contact: '', blood: '', name: '', age: '', dob: Timestamp.now(), gender: '', govtID: '');
   }
 
   Future<String> getName() async {
@@ -69,12 +72,9 @@ class Database {
   }
 
   Future<void> updateLocation(String latitute, String longitude) {
-    FirebaseFirestore.instance
-      .collection('profile')
-      .doc(uid)
-      .update({
-        "Latitute":latitute,
-        "Longitude":longitude,
-      });
+    FirebaseFirestore.instance.collection('profile').doc(uid).update({
+      "Latitute": latitute,
+      "Longitude": longitude,
+    });
   }
 }
