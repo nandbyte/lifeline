@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
@@ -10,6 +9,8 @@ import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 
 class UserProfileScreen extends StatefulWidget {
+  static String id = 'user_profile';
+
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
