@@ -41,6 +41,9 @@ var kTextFieldDecoration = InputDecoration(
   hintStyle: TextStyle(
     fontFamily: 'Nexa',
   ),
+  labelStyle: TextStyle(
+    fontFamily: 'Nexa',
+  ),
 );
 
 var kWaveLoadingIndicator = SpinKitWave(
@@ -56,31 +59,10 @@ Container createTextFieldText(
     margin: EdgeInsets.all(5),
     padding: EdgeInsets.all(5),
     child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
+      controller: controller,
+      keyboardType: TextInputType.text,
+      decoration: kTextFieldDecoration,
+    ),
   );
 }
 
@@ -93,31 +75,10 @@ Container createTextFieldNumber(
     margin: EdgeInsets.all(5),
     padding: EdgeInsets.all(5),
     child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: kTextFieldDecoration,
+    ),
   );
 }
 
@@ -130,31 +91,10 @@ Container createTextFieldPhone(
     margin: EdgeInsets.all(5),
     padding: EdgeInsets.all(5),
     child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
+      controller: controller,
+      keyboardType: TextInputType.phone,
+      decoration: kTextFieldDecoration,
+    ),
   );
 }
 
@@ -167,31 +107,10 @@ Container createTextFieldDate(
     margin: EdgeInsets.all(5),
     padding: EdgeInsets.all(5),
     child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.datetime,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
+      controller: controller,
+      keyboardType: TextInputType.datetime,
+      decoration: kTextFieldDecoration,
+    ),
   );
 }
 
@@ -204,30 +123,9 @@ Container createTextFieldLocation(
     margin: EdgeInsets.all(5),
     padding: EdgeInsets.all(5),
     child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.streetAddress,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
+      controller: controller,
+      keyboardType: TextInputType.streetAddress,
+      decoration: kTextFieldDecoration,
+    ),
   );
 }
