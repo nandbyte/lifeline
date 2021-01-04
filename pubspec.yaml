@@ -28,6 +28,9 @@ dependencies:
   firebase_auth: ^0.18.4+1
   cloud_firestore: ^0.14.4
 
+  #datetime formatter
+  intl: ^0.16.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -43,6 +46,8 @@ flutter:
     - family: Nexa
       fonts:
         - asset: assets/fonts/nexa_light.otf
-        - asset: assets/fonts/nexa_bold.otf
-          weight: 900
+      
+    - family: Nexa Bold
+      fonts:
+         - asset: assets/fonts/nexa_bold.otf
 

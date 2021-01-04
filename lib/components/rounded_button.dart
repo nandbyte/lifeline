@@ -23,6 +23,7 @@ class RoundedButton extends StatelessWidget {
             this.text,
             style: TextStyle(
               color: Colors.white,
+              fontFamily: 'Nexa Bold',
             ),
           ),
         ),
