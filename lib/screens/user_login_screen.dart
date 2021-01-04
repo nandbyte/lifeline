@@ -23,13 +23,13 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ModalProgressHUD(
-            color: Colors.white,
-            opacity: 0.9,
-            progressIndicator: kWaveLoadingIndicator,
-            inAsyncCall: loadingIndicator,
+      body: ModalProgressHUD(
+        color: Colors.white,
+        opacity: 0.9,
+        progressIndicator: kWaveLoadingIndicator,
+        inAsyncCall: loadingIndicator,
+        child: Center(
+          child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
