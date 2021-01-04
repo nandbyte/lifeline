@@ -85,7 +85,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         shadowColor: Colors.black54,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: EdgeInsets.all(12.0),
         child: ListView(
           children: [
             Column(
