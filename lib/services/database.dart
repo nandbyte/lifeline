@@ -5,6 +5,7 @@ import 'package:lifeline/services/api_path.dart';
 
 class Database {
   final String uid;
+  CollectionReference users = FirebaseFirestore.instance.collection('profile');
   Database({@required this.uid}) : assert(uid != null);
 
   Future<void> _setData({String path, Map<String, dynamic> data}) async {
@@ -43,9 +44,27 @@ class Database {
     var snapshot =
         await FirebaseFirestore.instance.collection('profile').doc(uid).get();
     if (snapshot.exists)
-       return snapshot.data()['Name'];
+      return snapshot.data()['Name'];
     else {
       return "Complete your profile";
+    }
+  }
+
+  Future<void> updateDonorStatus(bool donorStatus) async {
+    return users
+        .doc(uid)
+        .update({'Donor Status': donorStatus})
+        .then((value) => print("Status updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  Future<bool> getStatus() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    if (snapshot.exists)
+      return snapshot.data()['Donor Status'];
+    else {
+      return false;
     }
   }
 }

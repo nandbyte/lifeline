@@ -21,7 +21,13 @@ class _State extends State<DonorProfileTab> {
     final _profile = await Database(uid: uid).getData(uid);
     setState(() {
       profile = _profile;
+      donorStatus = profile.donorStatus;
     });
+  }
+
+  Future<void> updateStatus() async {
+    String uid = Auth().getUID();
+    await Database(uid: uid).updateDonorStatus(donorStatus);
   }
 
   @override
@@ -32,7 +38,7 @@ class _State extends State<DonorProfileTab> {
         fetch++;
       });
     }
-    if(profile==null && fetch<2)
+    if (profile == null && fetch < 2)
       return Scaffold(
         body: SpinKitWave(
           color: Colors.green[700],
@@ -83,6 +89,7 @@ class _State extends State<DonorProfileTab> {
               onChanged: (bool value) {
                 setState(() {
                   donorStatus = value;
+                  updateStatus();
                 });
               },
             ),
