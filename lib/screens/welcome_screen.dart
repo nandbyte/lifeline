@@ -17,81 +17,85 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Hero(
-                    tag: 'logo',
-                    child: Container(
-                      child: Image.asset(
-                        'assets/images/lifeline_logo.png',
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Hero(
+                        tag: 'logo',
+                        child: Container(
+                          child: Image.asset(
+                            'assets/images/lifeline_logo.png',
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TypewriterAnimatedTextKit(
-                        text: [
-                          'LifeLine',
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TypewriterAnimatedTextKit(
+                            text: [
+                              'LifeLine',
+                            ],
+                            textStyle: TextStyle(
+                              fontSize: 50.0,
+                              fontFamily: 'Nexa Bold',
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black,
+                            ),
+                            speed: Duration(
+                              milliseconds: 200,
+                            ),
+                          ),
+                          Text(
+                            'Electronic Health Record',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'Nexa',
+                              color: Colors.black,
+                            ),
+                          )
                         ],
-                        textStyle: TextStyle(
-                          fontSize: 50.0,
-                          fontFamily: 'Nexa Bold',
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black,
-                        ),
-                        speed: Duration(
-                          milliseconds: 200,
-                        ),
                       ),
-                      Text(
-                        'Electronic Health Record',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'Nexa',
-                          color: Colors.black,
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 48.0,
+                ),
+                RoundedButton(
+                  text: 'Log In',
+                  color: Colors.green[900],
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      UserLoginScreen.id,
+                    );
+                  },
+                ),
+                RoundedButton(
+                  text: 'Register',
+                  color: Colors.green,
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      UserRegistrationScreen.id,
+                    );
+                  },
                 ),
               ],
             ),
-            SizedBox(
-              height: 48.0,
-            ),
-            RoundedButton(
-              text: 'Log In',
-              color: Colors.green[900],
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  UserLoginScreen.id,
-                );
-              },
-            ),
-            RoundedButton(
-              text: 'Register',
-              color: Colors.green,
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  UserRegistrationScreen.id,
-                );
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

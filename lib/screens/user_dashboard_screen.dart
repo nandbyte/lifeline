@@ -42,7 +42,10 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         leadingWidth: 0,
         actions: [
           IconButton(
-              icon: Icon(Icons.logout),
+              icon: Icon(
+                Icons.logout,
+                size: 30,
+              ),
               color: Colors.green[900],
               onPressed: () {
                 showDialog(
@@ -80,7 +83,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         shadowColor: Colors.black54,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
         child: ListView(
           children: [
             Column(

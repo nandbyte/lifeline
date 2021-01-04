@@ -23,87 +23,81 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ModalProgressHUD(
-        color: Colors.white,
-        opacity: 0.9,
-        progressIndicator: kWaveLoadingIndicator,
-        inAsyncCall: loadingIndicator,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                flex: 5,
-                child: Hero(
-                  tag: 'logo',
-                  child: Container(
-                    height: 200.0,
-                    child: Image.asset('assets/images/lifeline_logo.png'),
+      body: Center(
+        child: SingleChildScrollView(
+          child: ModalProgressHUD(
+            color: Colors.white,
+            opacity: 0.9,
+            progressIndicator: kWaveLoadingIndicator,
+            inAsyncCall: loadingIndicator,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Hero(
+                    tag: 'logo',
+                    child: Container(
+                      height: 200.0,
+                      child: Image.asset('assets/images/lifeline_logo.png'),
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  'User Registration',
-                  style: kTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (value) {
-                    this.email = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(hintText: "Email"),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: TextField(
-                  obscureText: true,
-                  onChanged: (value) {
-                    this.password = value;
-                  },
-                  decoration:
-                      kTextFieldDecoration.copyWith(hintText: "Password"),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: RoundedButton(
-                  text: 'Register',
-                  color: Colors.green[900],
-                  onPressed: () async {
-                    setState(() {
-                      loadingIndicator = true;
-                    });
-
-                    try {
-                      final user =
-                          await Auth().register(this.email, this.password);
-                      if (user != null)
-                        Navigator.pushNamed(context, UserDashboardScreen.id);
+                  SizedBox(
+                    height: 48.0,
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      this.email = value;
+                    },
+                    decoration:
+                        kTextFieldDecoration.copyWith(hintText: "Email"),
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  TextField(
+                    obscureText: true,
+                    onChanged: (value) {
+                      this.password = value;
+                    },
+                    decoration:
+                        kTextFieldDecoration.copyWith(hintText: "Password"),
+                  ),
+                  SizedBox(
+                    height: 24.0,
+                  ),
+                  RoundedButton(
+                    text: 'Register',
+                    color: Colors.green[900],
+                    onPressed: () async {
                       setState(() {
-                        loadingIndicator = false;
+                        loadingIndicator = true;
                       });
-                    } catch (e) {
-                      print(e);
-                      Toast.show(
-                        e.message,
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
-                      );
-                    }
-                  },
-                ),
+
+                      try {
+                        final user =
+                            await Auth().register(this.email, this.password);
+                        if (user != null)
+                          Navigator.pushNamed(context, UserDashboardScreen.id);
+                        setState(() {
+                          loadingIndicator = false;
+                        });
+                      } catch (e) {
+                        print(e);
+                        Toast.show(
+                          e.message,
+                          context,
+                          duration: Toast.LENGTH_LONG,
+                          gravity: Toast.TOP,
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
