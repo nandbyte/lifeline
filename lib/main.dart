@@ -6,6 +6,7 @@ import 'package:lifeline/screens/user_login_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/screens/user_registration_screen.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
+import 'package:lifeline/screens/user_search_screen.dart';
 import 'package:lifeline/screens/verify_report_screen.dart';
 import 'package:lifeline/screens/welcome_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
@@ -48,6 +49,7 @@ class LifeLine extends StatelessWidget {
         UserProfileScreen.id: (context) => UserProfileScreen(),
         BloodDonationScreen.id: (context) => BloodDonationScreen(),
         VerifyReportScreen.id: (context) => VerifyReportScreen(),
+        UserSearchScreen.id: (context) => UserSearchScreen(),
       },
     );
   }

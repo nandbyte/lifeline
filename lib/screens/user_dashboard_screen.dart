@@ -4,6 +4,7 @@ import 'package:lifeline/components/grid_card.dart';
 import 'package:lifeline/components/log_out_alert_dialog.dart';
 import 'package:lifeline/screens/blood_donation_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
+import 'package:lifeline/screens/user_search_screen.dart';
 import 'package:lifeline/screens/verify_report_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
@@ -129,7 +130,9 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     height: 60,
                   ),
                   label: 'Health Record',
-                  onTap: () {},
+                  onTap: () {
+                    // TODO: Change screens
+                  },
                 ),
                 GridCard(
                   image: Image.asset(
@@ -138,7 +141,9 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     height: 60,
                   ),
                   label: 'Medical History',
-                  onTap: () {},
+                  onTap: () {
+                    // TODO: Change screens
+                  },
                 ),
                 GridCard(
                   image: Image.asset(
@@ -170,7 +175,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   ),
                   label: 'Search User',
                   onTap: () {
-                    Navigator.pushNamed(context, BloodDonationScreen.id);
+                    Navigator.pushNamed(context, UserSearchScreen.id);
                   },
                 ),
                 GridCard(
