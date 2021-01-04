@@ -27,7 +27,7 @@ class _VerifyReportScreenState extends State<VerifyReportScreen> {
           child: Row(
             children: [
               Hero(
-                tag: 'dashboard',
+                tag: 'logo',
                 child: Container(
                   height: 40.0,
                   child: Image.asset(
@@ -54,61 +54,46 @@ class _VerifyReportScreenState extends State<VerifyReportScreen> {
         opacity: 0.9,
         progressIndicator: kWaveLoadingIndicator,
         inAsyncCall: loadingIndicator,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Hero(
-                    tag: 'logo',
-                    child: Container(
-                      height: 200.0,
-                      child: Image.asset('assets/images/lifeline_logo.png'),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 48.0,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      this.doctorID = value;
-                    },
-                    decoration:
-                        kTextFieldDecoration.copyWith(hintText: "Doctor ID"),
-                  ),
-                  SizedBox(
-                    height: 24.0,
-                  ),
-                  RoundedButton(
-                    text: 'Verify',
-                    color: Colors.green[900],
-                    onPressed: () async {
-                      setState(() {
-                        loadingIndicator = true;
-                      });
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    this.doctorID = value;
+                  },
+                  decoration:
+                      kTextFieldDecoration.copyWith(hintText: "Doctor ID"),
+                ),
+                RoundedButton(
+                  text: 'Verify',
+                  color: Colors.green[900],
+                  onPressed: () async {
+                    setState(() {
+                      loadingIndicator = true;
+                    });
 
-                      try {
-                        // TODO: Verify Doctor ID here
-                        setState(() {
-                          loadingIndicator = false;
-                        });
-                      } catch (e) {
-                        print(e);
-                        Toast.show(
-                          e.message,
-                          context,
-                          duration: Toast.LENGTH_LONG,
-                          gravity: Toast.TOP,
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
+                    try {
+                      // TODO: Verify Doctor ID here
+                      setState(() {
+                        loadingIndicator = false;
+                      });
+                    } catch (e) {
+                      print(e);
+                      Toast.show(
+                        e.message,
+                        context,
+                        duration: Toast.LENGTH_LONG,
+                        gravity: Toast.TOP,
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),
