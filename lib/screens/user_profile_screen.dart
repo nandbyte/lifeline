@@ -142,10 +142,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(5),
+      body: Padding(
+        padding: EdgeInsets.all(12),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               createTextFieldText(
                   context: context,
@@ -204,10 +206,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ),
-              RoundedButton(
-                onPressed: _submit,
-                text: 'Update',
-                color: Colors.green,
+              Container(
+                padding: EdgeInsets.all(10),
+                child: RoundedButton(
+                  onPressed: _submit,
+                  text: 'Update',
+                  color: Colors.green,
+                ),
               ),
             ],
           ),
