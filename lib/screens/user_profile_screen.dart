@@ -46,8 +46,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     }
   }
 
-
-
   Future<void> _submit() async {
     final _name = name.text;
     final _age = age.text;
