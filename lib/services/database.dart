@@ -67,4 +67,14 @@ class Database {
       return false;
     }
   }
+
+  Future<void> updateLocation(String latitute, String longitude) {
+    FirebaseFirestore.instance
+      .collection('profile')
+      .doc(uid)
+      .update({
+        "Latitute":latitute,
+        "Longitude":longitude,
+      });
+  }
 }

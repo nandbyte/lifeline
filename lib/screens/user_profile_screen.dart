@@ -7,6 +7,7 @@ import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
+// import 'package:flutter/services.dart';
 
 class UserProfileScreen extends StatefulWidget {
   static String id = 'user_profile';
@@ -28,7 +29,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final otherID = new TextEditingController();
   final location = new TextEditingController();
   //final name = new TextEditingController();
-
   Timestamp selectedDate = Timestamp.now();
   TextEditingController _date = new TextEditingController();
 
@@ -46,6 +46,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     }
   }
 
+
+
   Future<void> _submit() async {
     final _name = name.text;
     final _age = age.text;
@@ -57,7 +59,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final _otherID = otherID.text;
     final _location = location.text;
     final _dob = selectedDate;
-
     ProfileData person = new ProfileData(
       name: _name,
       age: _age,
@@ -212,4 +213,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
+
+  Geolocator() {}
 }

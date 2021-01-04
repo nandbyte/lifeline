@@ -31,6 +31,9 @@ dependencies:
   #datetime formatter
   intl: ^0.16.1
 
+  #geo-locator
+  geolocator: ^6.1.13
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
