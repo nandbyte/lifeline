@@ -83,13 +83,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final data = await Database(uid: uid).getData(uid);
     setState(() {
       person = data;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (person == null) loadCurrentData();
-    if (person != null && count < 2) {
       name.text = person.name;
       age.text = person.age;
       contact.text = person.contact;
@@ -101,14 +94,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       location.text = person.location;
       selectedDate = person.dob;
       _date.text = DateFormat.yMd().format(selectedDate.toDate());
-      setState(() {
-        count++;
-        //it's used otherwise you will not be able to input
-        //because each frame it will fetch
-        //now for every user it's fetching 2 times
-      });
-    }
+    });
+  }
 
+  @override
+  void initState() {
+    loadCurrentData();
+    // if (person != null) {
+    //   setState(() {
+    //     //count++;
+    //     //it's used otherwise you will not be able to input
+    //     //because each frame it will fetch
+    //     //now for every user it's fetching 2 times
+    //   });
+    // }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
