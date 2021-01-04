@@ -12,7 +12,7 @@ class DonorMapTab extends StatelessWidget {
       // TODO: Implement map functionalities
       child: Text(
         'Donor Map',
-        style: kSTextStyle.copyWith(fontSize: 20),
+        style: kTextStyle.copyWith(fontSize: 20),
       ),
     );
   }

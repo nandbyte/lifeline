@@ -81,7 +81,7 @@ class _State extends State<DonorProfileTab> {
               activeColor: Colors.green,
               title: Text(
                 'Donor Status',
-                style: kSTextStyle.copyWith(
+                style: kTextStyle.copyWith(
                   fontSize: 18,
                 ),
               ),

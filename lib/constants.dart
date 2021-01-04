@@ -7,12 +7,11 @@ const kSendButtonTextStyle = TextStyle(
   fontSize: 18.0,
 );
 
-const kSTextStyle = TextStyle(
+const kTextStyle = TextStyle(
   color: Colors.black,
   fontFamily: 'Nexa Bold',
   fontSize: 30,
 );
-
 
 const kMessageTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -48,7 +47,10 @@ var kWaveLoadingIndicator = SpinKitWave(
   color: Colors.green,
 );
 
-Container createTextFieldText({BuildContext context, String label, String hint,
+Container createTextFieldText(
+    {BuildContext context,
+    String label,
+    String hint,
     TextEditingController controller}) {
   return Container(
     margin: EdgeInsets.all(5),
@@ -82,7 +84,10 @@ Container createTextFieldText({BuildContext context, String label, String hint,
   );
 }
 
-Container createTextFieldNumber({BuildContext context, String label, String hint,
+Container createTextFieldNumber(
+    {BuildContext context,
+    String label,
+    String hint,
     TextEditingController controller}) {
   return Container(
     margin: EdgeInsets.all(5),
@@ -116,7 +121,10 @@ Container createTextFieldNumber({BuildContext context, String label, String hint
   );
 }
 
-Container createTextFieldPhone({BuildContext context, String label, String hint,
+Container createTextFieldPhone(
+    {BuildContext context,
+    String label,
+    String hint,
     TextEditingController controller}) {
   return Container(
     margin: EdgeInsets.all(5),
@@ -150,7 +158,10 @@ Container createTextFieldPhone({BuildContext context, String label, String hint,
   );
 }
 
-Container createTextFieldDate({BuildContext context, String label, String hint,
+Container createTextFieldDate(
+    {BuildContext context,
+    String label,
+    String hint,
     TextEditingController controller}) {
   return Container(
     margin: EdgeInsets.all(5),
@@ -184,7 +195,10 @@ Container createTextFieldDate({BuildContext context, String label, String hint,
   );
 }
 
-Container createTextFieldLocation({BuildContext context, String label, String hint,
+Container createTextFieldLocation(
+    {BuildContext context,
+    String label,
+    String hint,
     TextEditingController controller}) {
   return Container(
     margin: EdgeInsets.all(5),
