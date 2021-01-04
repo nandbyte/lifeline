@@ -43,7 +43,7 @@ class ProfileData {
       'Other ID': otherID,
       'Location': location,
       'Last Donation': lastDonation,
-      'Donor Status': donorStatus,
+      'Donor Status': donorStatus == null ? false : donorStatus,
     };
   }
 }
