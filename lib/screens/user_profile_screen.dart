@@ -7,7 +7,6 @@ import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 // import 'package:flutter/services.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -18,19 +17,17 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  bool loadingIndicator = true;
-
   final database = new Database(uid: Auth().getUID());
 
-  var name = new TextEditingController();
-  var gender = new TextEditingController();
-  var age = new TextEditingController();
-  var blood = new TextEditingController();
-  var contact = new TextEditingController();
-  var emergency = new TextEditingController();
-  var govtID = new TextEditingController();
-  var otherID = new TextEditingController();
-  var location = new TextEditingController();
+  final name = new TextEditingController();
+  final gender = new TextEditingController();
+  final age = new TextEditingController();
+  final blood = new TextEditingController();
+  final contact = new TextEditingController();
+  final emergency = new TextEditingController();
+  final govtID = new TextEditingController();
+  final otherID = new TextEditingController();
+  final location = new TextEditingController();
   //final name = new TextEditingController();
   Timestamp selectedDate = Timestamp.now();
   TextEditingController _date = new TextEditingController();
@@ -86,12 +83,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final data = await Database(uid: uid).getData(uid);
     setState(() {
       person = data;
-      loadingIndicator = false;
     });
   }
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     if (person == null) loadCurrentData();
     if (person != null && count < 2) {
       name.text = person.name;
@@ -112,102 +108,87 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         //now for every user it's fetching 2 times
       });
     }
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      color: Colors.white,
-      opacity: 0.9,
-      progressIndicator: kWaveLoadingIndicator,
-      inAsyncCall: loadingIndicator,
-      child: Scaffold(
-        appBar: AppBar(
-          leadingWidth: 0,
-          title: Expanded(
-            child: Row(
-              children: [
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                    height: 40.0,
-                    child: Image.asset(
-                      'assets/images/lifeline_logo.png',
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 0,
+        title: Expanded(
+          child: Row(
+            children: [
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 40.0,
+                  child: Image.asset(
+                    'assets/images/lifeline_logo.png',
                   ),
                 ),
-                Text(
-                  'Profile',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Nexa Bold',
-                    fontSize: 30,
-                  ),
+              ),
+              Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Nexa Bold',
+                  fontSize: 30,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          backgroundColor: Colors.white,
-          shadowColor: Colors.black54,
         ),
-        body: Center(
-          child: ListView(
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black54,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(5),
+          child: Column(
             children: <Widget>[
               createTextFieldText(
-                context: context,
-                label: "Name",
-                hint: "Enter your name",
-                controller: name ?? '',
-              ),
+                  context: context,
+                  label: "Name",
+                  hint: "Enter your name",
+                  controller: name),
               createTextFieldNumber(
-                context: context,
-                label: "Age",
-                hint: "Enter your Age",
-                controller: age ?? '',
-              ),
+                  context: context,
+                  label: "Age",
+                  hint: "Enter your Age",
+                  controller: age),
               createTextFieldPhone(
-                context: context,
-                label: "Phone No",
-                hint: "Enter your phone number",
-                controller: contact ?? '',
-              ),
+                  context: context,
+                  label: "Phone No",
+                  hint: "Enter your phone number",
+                  controller: contact),
               createTextFieldPhone(
-                context: context,
-                label: "Emergency Contact",
-                hint: "Emergency contact number",
-                controller: emergency ?? '',
-              ),
+                  context: context,
+                  label: "Emergency Contact",
+                  hint: "Emergency contact number",
+                  controller: emergency),
               createTextFieldText(
-                context: context,
-                label: "Gender",
-                hint: "Male/Female/Other",
-                controller: gender ?? '',
-              ),
+                  context: context,
+                  label: "Gender",
+                  hint: "Male/Female/Other",
+                  controller: gender),
               createTextFieldText(
-                context: context,
-                label: "Blood Group",
-                hint: "A+/A-/AB+/AB-/B+/B-/O+/O-",
-                controller: blood ?? '',
-              ),
+                  context: context,
+                  label: "Blood Group",
+                  hint: "A+/A-/AB+/AB-/B+/B-/O+/O-",
+                  controller: blood),
               createTextFieldLocation(
                 context: context,
                 label: "Address",
                 hint: "Area/Village,District,Division",
-                controller: location ?? '',
+                controller: location,
               ),
               createTextFieldText(
-                context: context,
-                label: 'Govt Issued ID',
-                hint: 'NID/Passport/Birth ID',
-                controller: govtID ?? '',
-              ),
+                  context: context,
+                  label: 'Govt Issued ID',
+                  hint: 'NID/Passport/Birth ID',
+                  controller: govtID),
               createTextFieldText(
-                context: context,
-                label: 'Other ID',
-                hint: 'Office/Student ID',
-                controller: otherID ?? '',
-              ),
+                  context: context,
+                  label: 'Other ID',
+                  hint: 'Office/Student ID',
+                  controller: otherID),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
@@ -215,7 +196,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     context: context,
                     label: "Birth Date",
                     hint: "Select your date of birth",
-                    controller: _date ?? '',
+                    controller: _date,
                   ),
                 ),
               ),
@@ -230,4 +211,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
+
+  Geolocator() {}
 }
