@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
+import 'package:lifeline/components/log_out_alert_dialog.dart';
 import 'package:lifeline/screens/blood_donation_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
-import 'package:lifeline/screens/welcome_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 
@@ -16,25 +17,9 @@ class UserDashboardScreen extends StatefulWidget {
 class _UserDashboardScreenState extends State<UserDashboardScreen> {
   bool loadingIndicator = false;
 
-  AlertDialog getAlert(String title, String msg) {
-    return AlertDialog(
-      title: Text(title),
-      content: Text(msg),
-      actions: [
-        FlatButton(
-            onPressed: () {
-              Auth().signout();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
-            },
-            child: Text("Yes")),
-        FlatButton(onPressed: () => Navigator.pop(context), child: Text("No"))
-      ],
-    );
-  }
-
   String name = "";
   int fetch = 0;
+
   Future<void> userName() async {
     String uid = Auth().getUID();
     final _name = await Database(uid: uid).getName();
@@ -61,9 +46,11 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
               color: Colors.green[900],
               onPressed: () {
                 showDialog(
+                  context: context,
+                  builder: (context) => LogOutAlertDialog(
                     context: context,
-                    builder: (context) => getAlert(
-                        "Logout", "Are you sure you want to log out?"));
+                  ),
+                );
               })
         ],
         title: Expanded(
@@ -94,9 +81,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ListView(
           children: [
             Column(
               children: [
@@ -115,8 +100,9 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 ),
                 Text(
                   name,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 50,
+                    fontSize: 40,
                     fontFamily: 'Nexa Bold',
                   ),
                 ),
@@ -126,6 +112,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
               height: 40.0,
             ),
             GridView.count(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 10,
@@ -157,11 +144,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   ),
                   label: 'Profile',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UserProfileScreen()),
-                    );
+                    Navigator.pushNamed(context, UserProfileScreen.id);
                   },
                 ),
                 GridCard(
@@ -171,6 +154,28 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     height: 60,
                   ),
                   label: 'Blood Donation',
+                  onTap: () {
+                    Navigator.pushNamed(context, BloodDonationScreen.id);
+                  },
+                ),
+                GridCard(
+                  image: Image.asset(
+                    // TODO: Update Icon
+                    'assets/images/lifeline_logo.png',
+                    height: 60,
+                  ),
+                  label: 'Search User',
+                  onTap: () {
+                    Navigator.pushNamed(context, BloodDonationScreen.id);
+                  },
+                ),
+                GridCard(
+                  image: Image.asset(
+                    // TODO: Update Icon
+                    'assets/images/lifeline_logo.png',
+                    height: 60,
+                  ),
+                  label: 'Verify Records',
                   onTap: () {
                     Navigator.pushNamed(context, BloodDonationScreen.id);
                   },
