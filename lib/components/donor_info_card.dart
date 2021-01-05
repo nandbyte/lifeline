@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lifeline/constants.dart';
+import 'package:lifeline/models/blood_donor.dart';
 import 'package:toast/toast.dart';
 
 class DonorInfoCard extends StatelessWidget {
-  final String name;
-  final String bloodGroup;
-  final String contact;
-  final String location;
+  final Donor donor;
 
-  DonorInfoCard({this.name, this.bloodGroup, this.contact, this.location});
+  DonorInfoCard({this.donor});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Clipboard.setData(ClipboardData(text: contact));
+        Clipboard.setData(ClipboardData(text: this.donor.contact));
         Toast.show(
           'Contact number copied.',
           context,
@@ -47,7 +45,7 @@ class DonorInfoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(
-              this.bloodGroup,
+              this.donor.blood,
               style: kTextStyle.copyWith(
                 fontSize: 56,
                 color: Colors.green[900],
@@ -55,19 +53,19 @@ class DonorInfoCard extends StatelessWidget {
               ),
             ),
             Text(
-              this.name,
+              this.donor.name,
               style: kTextStyle.copyWith(
                 fontSize: 18,
               ),
             ),
             Text(
-              this.contact,
+              this.donor.contact,
               style: kTextStyle.copyWith(
                 fontSize: 18,
               ),
             ),
             Text(
-              this.location,
+              this.donor.location,
               style: kTextStyle.copyWith(
                 fontSize: 18,
               ),

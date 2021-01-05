@@ -16,26 +16,39 @@ class DonorListTab extends StatefulWidget {
 
 class _DonorListTabState extends State<DonorListTab> {
   bool loadingIndicator = false;
-
+  bool ready = false;
   final database = Database(uid: Auth().getUID());
-
+  CollectionReference databaseReference;
+  QuerySnapshot snapshot;
   final blood = new TextEditingController();
 
-  List<Donor> donors = [];
+  List<Donor> donors;
 
-  Future<void> makeDonorList(String str) async {
-    final snapshot = await database.donorList(str);
-    Donor dummy = new Donor();
+  Future<void> fetchDonorList(String str) async {
+    snapshot = await database.donorList(str);
+  }
+
+  void createList() {
+    donors = [];
+    Donor snapshotDonor = new Donor();
     for (int i = 0; i < snapshot.docs.length; i++) {
-      dummy = Donor(
-          blood: snapshot.docs[i].data()['Name'],
+      snapshotDonor = Donor(
+          blood: snapshot.docs[i].data()['Blood Group'],
           contact: snapshot.docs[i].data()['Contact No'],
           latitute: snapshot.docs[i].data()['Latitute'] ?? '',
           longitude: snapshot.docs[i].data()['Longitude'] ?? '',
           location: snapshot.docs[i].data()['Location'],
           name: snapshot.docs[i].data()['Name']);
-      print(dummy.toMap());
+
+      donors.insert(i, snapshotDonor);
     }
+  }
+
+  @override
+  void initState() {
+    donors = [];
+    databaseReference = database.users;
+    super.initState();
   }
 
   @override
@@ -45,66 +58,58 @@ class _DonorListTabState extends State<DonorListTab> {
       opacity: 0.9,
       progressIndicator: kWaveLoadingIndicator,
       inAsyncCall: loadingIndicator,
-      child: ListView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Container(
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(5),
             child: TextFormField(
-                controller: blood,
-                keyboardType: TextInputType.text,
-                onEditingComplete: () {
-                  print(blood.text);
-                  makeDonorList(blood.text);
-                },
-                decoration: InputDecoration(
-                  hintText: "A+/A-/B+/B-/AB+/AB-/O+/O-",
-                  labelText: "Search Blood Donor",
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  ),
-                  hintStyle: TextStyle(
-                    fontFamily: 'Nexa',
-                  ),
-                  labelStyle: TextStyle(
-                    fontFamily: 'Nexa',
-                  ),
-                )),
+              controller: blood,
+              keyboardType: TextInputType.text,
+              onEditingComplete: () {
+                print(blood.text);
+                setState(() async {
+                  loadingIndicator = true;
+                  await fetchDonorList(blood.text);
+                  createList();
+                  print(donors.length);
+                  loadingIndicator = false;
+                });
+                print(donors.length);
+              },
+              decoration: InputDecoration(
+                hintText: "A+/A-/B+/B-/AB+/AB-/O+/O-",
+                labelText: "Search Blood Donor",
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green, width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                ),
+                hintStyle: TextStyle(
+                  fontFamily: 'Nexa',
+                ),
+                labelStyle: TextStyle(
+                  fontFamily: 'Nexa',
+                ),
+              ),
+            ),
           ),
-          DonorInfoCard(
-            name: 'Shihab Sikder',
-            bloodGroup: 'B+ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-          DonorInfoCard(
-            name: 'Adib Abrar',
-            bloodGroup: 'B+ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-          DonorInfoCard(
-            name: 'Fahim Faisal',
-            bloodGroup: 'O-ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-          DonorInfoCard(
-            name: 'Farhan Saif',
-            bloodGroup: 'A+ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
+          ListView.builder(
+              itemCount: donors.length,
+              itemBuilder: (context, index) {
+                return DonorInfoCard(donor: donors[index]);
+              }),
         ],
       ),
     );
