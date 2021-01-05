@@ -3,6 +3,9 @@
    <application
         android:label="LifeLine"
         android:icon="@mipmap/ic_launcher">
+        
+       <meta-data android:name="com.google.android.geo.API_KEY"
+              android:value="AIzaSyDAGMELHClTd45KF0Uam9Sqb2ncUbKW1ZM"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -27,6 +30,7 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+             
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
