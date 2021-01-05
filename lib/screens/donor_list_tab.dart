@@ -1,12 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/components/donor_info_card.dart';
+import 'package:lifeline/models/blood_donor.dart';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class DonorListTab extends StatelessWidget {
-  // TODO: Import donor list from firebase and turn it into a list. Use Listbuilder method to create DonorInfoCard List from the donor list and show in the screen.
+class DonorListTab extends StatefulWidget {
+  @override
+  _DonorListTabState createState() => _DonorListTabState();
+}
 
+class _DonorListTabState extends State<DonorListTab> {
   bool loadingIndicator = false;
+
+  final database = Database(uid: Auth().getUID());
+  CollectionReference databaseReference;
+  QuerySnapshot snapshot;
+  final blood = new TextEditingController();
+
+  List<Donor> donors;
+
+  Future<void> fetchDonorList(String str) async {
+    snapshot = await database.donorList(str);
+  }
+
+  @override
+  void initState() {
+    donors = [];
+
+    databaseReference = database.users;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,34 +47,88 @@ class DonorListTab extends StatelessWidget {
       opacity: 0.9,
       progressIndicator: kWaveLoadingIndicator,
       inAsyncCall: loadingIndicator,
-      child: ListView(
-        children: [
-          DonorInfoCard(
-            name: 'Shihab Sikder',
-            bloodGroup: 'B+ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-          DonorInfoCard(
-            name: 'Adib Abrar',
-            bloodGroup: 'B+ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-          DonorInfoCard(
-            name: 'Fahim Faisal',
-            bloodGroup: 'O-ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-          DonorInfoCard(
-            name: 'Farhan Saif',
-            bloodGroup: 'Saif+ve',
-            contact: '01793450904',
-            location: 'Dhaka',
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            TextFormField(
+              controller: blood,
+              keyboardType: TextInputType.text,
+              onEditingComplete: () async {
+                FocusScope.of(context).unfocus();
+                setState(() {
+                  loadingIndicator = true;
+                });
+
+                await fetchDonorList(blood.text);
+                donors = [];
+                for (int i = 0; i < snapshot.docs.length; i++) {
+                  donors.add(Donor(
+                      blood: snapshot.docs[i].data()['Blood Group'],
+                      contact: snapshot.docs[i].data()['Contact No'],
+                      latitute: snapshot.docs[i].data()['Latitute'] ?? '',
+                      longitude: snapshot.docs[i].data()['Longitude'] ?? '',
+                      location: snapshot.docs[i].data()['Location'],
+                      name: snapshot.docs[i].data()['Name']));
+                }
+
+                setState(() {
+                  loadingIndicator = false;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: "A+/A-/B+/B-/AB+/AB-/O+/O-",
+                labelText: "Search Blood Donor",
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green, width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                ),
+                hintStyle: TextStyle(
+                  fontFamily: 'Nexa',
+                ),
+                labelStyle: TextStyle(
+                  fontFamily: 'Nexa',
+                ),
+              ),
+            ),
+            Expanded(
+              child: DynamicList(
+                donorList: donors,
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class DynamicList extends StatefulWidget {
+  final List<Donor> donorList;
+  DynamicList({this.donorList});
+  @override
+  _DynamicListState createState() => _DynamicListState();
+}
+
+class _DynamicListState extends State<DynamicList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: this.widget.donorList.length,
+        itemBuilder: (context, index) {
+          return DonorInfoCard(donor: this.widget.donorList[index]);
+        });
   }
 }
