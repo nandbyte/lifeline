@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lifeline/components/donor_info_card.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/screens/donor_list_tab.dart';
 import 'package:lifeline/screens/donor_map_tab.dart';
