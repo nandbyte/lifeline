@@ -8,15 +8,13 @@ import 'package:lifeline/services/database.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class DonorListTab extends StatefulWidget {
-  // TODO: Import donor list from firebase and turn it into a list. Use Listbuilder method to create DonorInfoCard List from the donor list and show in the screen.
-
   @override
   _DonorListTabState createState() => _DonorListTabState();
 }
 
 class _DonorListTabState extends State<DonorListTab> {
   bool loadingIndicator = false;
-  bool ready = false;
+
   final database = Database(uid: Auth().getUID());
   CollectionReference databaseReference;
   QuerySnapshot snapshot;
@@ -28,49 +26,9 @@ class _DonorListTabState extends State<DonorListTab> {
     snapshot = await database.donorList(str);
   }
 
-  void createList() {
-    donors = [];
-    Donor snapshotDonor = new Donor();
-    for (int i = 0; i < snapshot.docs.length; i++) {
-      snapshotDonor = Donor(
-          blood: snapshot.docs[i].data()['Blood Group'],
-          contact: snapshot.docs[i].data()['Contact No'],
-          latitute: snapshot.docs[i].data()['Latitute'] ?? '',
-          longitude: snapshot.docs[i].data()['Longitude'] ?? '',
-          location: snapshot.docs[i].data()['Location'],
-          name: snapshot.docs[i].data()['Name']);
-
-      donors.add(snapshotDonor);
-    }
-  }
-
   @override
   void initState() {
     donors = [];
-    donors.add(
-      Donor(
-        blood: 'B+',
-        name: 'Adib',
-        contact: '01797130904',
-        location: 'Dhaka',
-      ),
-    );
-    donors.add(
-      Donor(
-        blood: 'B+',
-        name: 'Saif',
-        contact: '01797136704',
-        location: 'Dhaka',
-      ),
-    );
-    donors.add(
-      Donor(
-        blood: 'O+',
-        name: 'Shihab',
-        contact: '01797136344',
-        location: 'Gazipur',
-      ),
-    );
 
     databaseReference = database.users;
     super.initState();
@@ -99,17 +57,27 @@ class _DonorListTabState extends State<DonorListTab> {
             TextFormField(
               controller: blood,
               keyboardType: TextInputType.text,
-              onEditingComplete: () {
-                print(blood.text);
-                setState(() async {
+              onEditingComplete: () async {
+                FocusScope.of(context).unfocus();
+                setState(() {
                   loadingIndicator = true;
-                  await fetchDonorList(blood.text);
-                  createList();
-                  print(donors.length);
-                  loadingIndicator = false;
-                  this.build(context);
                 });
-                print(donors.length);
+
+                await fetchDonorList(blood.text);
+                donors = [];
+                for (int i = 0; i < snapshot.docs.length; i++) {
+                  donors.add(Donor(
+                      blood: snapshot.docs[i].data()['Blood Group'],
+                      contact: snapshot.docs[i].data()['Contact No'],
+                      latitute: snapshot.docs[i].data()['Latitute'] ?? '',
+                      longitude: snapshot.docs[i].data()['Longitude'] ?? '',
+                      location: snapshot.docs[i].data()['Location'],
+                      name: snapshot.docs[i].data()['Name']));
+                }
+
+                setState(() {
+                  loadingIndicator = false;
+                });
               },
               decoration: InputDecoration(
                 hintText: "A+/A-/B+/B-/AB+/AB-/O+/O-",
@@ -136,15 +104,31 @@ class _DonorListTabState extends State<DonorListTab> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                  itemCount: donors.length,
-                  itemBuilder: (context, index) {
-                    return DonorInfoCard(donor: donors[index]);
-                  }),
+              child: DynamicList(
+                donorList: donors,
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class DynamicList extends StatefulWidget {
+  final List<Donor> donorList;
+  DynamicList({this.donorList});
+  @override
+  _DynamicListState createState() => _DynamicListState();
+}
+
+class _DynamicListState extends State<DynamicList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: this.widget.donorList.length,
+        itemBuilder: (context, index) {
+          return DonorInfoCard(donor: this.widget.donorList[index]);
+        });
   }
 }
