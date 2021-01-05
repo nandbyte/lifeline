@@ -40,7 +40,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Nexa Bold',
-                  fontSize: 30,
+                  fontSize: 24,
                 ),
               ),
             ],
