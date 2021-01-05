@@ -52,6 +52,12 @@ class _DonorListTabState extends State<DonorListTab> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       color: Colors.white,
@@ -77,6 +83,7 @@ class _DonorListTabState extends State<DonorListTab> {
                   createList();
                   print(donors.length);
                   loadingIndicator = false;
+                  this.build(context);
                 });
                 print(donors.length);
               },
@@ -105,11 +112,14 @@ class _DonorListTabState extends State<DonorListTab> {
               ),
             ),
           ),
-          ListView.builder(
-              itemCount: donors.length,
-              itemBuilder: (context, index) {
-                return DonorInfoCard(donor: donors[index]);
-              }),
+          SizedBox(
+            height: 20.0,
+            child: new ListView.builder(
+                itemCount: donors.length,
+                itemBuilder: (context, index) {
+                  return DonorInfoCard(donor: donors[index]);
+                }),
+          ),
         ],
       ),
     );
