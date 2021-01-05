@@ -54,9 +54,9 @@ class _DonorMapTabState extends State<DonorMapTab> {
 //Donor
 
   Donor donor1 =
-      new Donor("1", 23.7925, 90.4078, "A+", "Saif", "ggmpur", "0173029526");
+      new Donor("1", 23.7925, 90.4078, "A+", "Saif", "Dhaka", "0173029526");
   Donor donor2 =
-      new Donor("2", 23.8103, 90.4125, "B+", "Pagla", "Ganja", "0130882088");
+      new Donor("2", 23.8103, 90.4125, "B+", "Adib", "Dhaka", "0130882088");
 
   List<Donor> list = [];
 
