@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
@@ -8,8 +7,11 @@ import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
+// import 'package:flutter/services.dart';
 
 class UserProfileScreen extends StatefulWidget {
+  static String id = 'user_profile';
+
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
@@ -27,7 +29,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final otherID = new TextEditingController();
   final location = new TextEditingController();
   //final name = new TextEditingController();
-
   Timestamp selectedDate = Timestamp.now();
   TextEditingController _date = new TextEditingController();
 
@@ -56,7 +57,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final _otherID = otherID.text;
     final _location = location.text;
     final _dob = selectedDate;
-
     ProfileData person = new ProfileData(
       name: _name,
       age: _age,
@@ -83,13 +83,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final data = await Database(uid: uid).getData(uid);
     setState(() {
       person = data;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (person == null) loadCurrentData();
-    if (person != null && count < 2) {
       name.text = person.name;
       age.text = person.age;
       contact.text = person.contact;
@@ -101,14 +94,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       location.text = person.location;
       selectedDate = person.dob;
       _date.text = DateFormat.yMd().format(selectedDate.toDate());
-      setState(() {
-        count++;
-        //it's used otherwise you will not be able to input
-        //because each frame it will fetch
-        //now for every user it's fetching 2 times
-      });
-    }
+    });
+  }
 
+  @override
+  void initState() {
+    loadCurrentData();
+    // if (person != null) {
+    //   setState(() {
+    //     //count++;
+    //     //it's used otherwise you will not be able to input
+    //     //because each frame it will fetch
+    //     //now for every user it's fetching 2 times
+    //   });
+    // }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
@@ -138,10 +142,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(5),
+      body: Padding(
+        padding: EdgeInsets.all(12),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               createTextFieldText(
                   context: context,
@@ -200,10 +206,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ),
-              RoundedButton(
-                onPressed: _submit,
-                text: 'Update',
-                color: Colors.green,
+              Container(
+                padding: EdgeInsets.all(10),
+                child: RoundedButton(
+                  onPressed: _submit,
+                  text: 'Update',
+                  color: Colors.green,
+                ),
               ),
             ],
           ),
@@ -211,4 +220,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
+
+  Geolocator() {}
 }

@@ -34,7 +34,7 @@ class _BloodDonationScreenState extends State<BloodDonationScreen> {
                 ),
                 Text(
                   'Blood Donation',
-                  style: kSTextStyle,
+                  style: kTextStyle,
                 ),
               ],
             ),
@@ -47,19 +47,19 @@ class _BloodDonationScreenState extends State<BloodDonationScreen> {
               Tab(
                 child: Text(
                   'My Profile',
-                  style: kSTextStyle.copyWith(fontSize: 20),
+                  style: kTextStyle.copyWith(fontSize: 20),
                 ),
               ),
               Tab(
                 child: Text(
                   'Donor List',
-                  style: kSTextStyle.copyWith(fontSize: 20),
+                  style: kTextStyle.copyWith(fontSize: 20),
                 ),
               ),
               Tab(
                 child: Text(
                   'Donor Map',
-                  style: kSTextStyle.copyWith(fontSize: 20),
+                  style: kTextStyle.copyWith(fontSize: 20),
                 ),
               ),
             ],

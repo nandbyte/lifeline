@@ -36,6 +36,8 @@ dependencies:
   
   
 
+  #geo-locator
+  geolocator: ^6.1.13
 
 dev_dependencies:
   flutter_test:

@@ -48,7 +48,7 @@ class DonorInfoCard extends StatelessWidget {
           children: <Widget>[
             Text(
               this.bloodGroup,
-              style: kSTextStyle.copyWith(
+              style: kTextStyle.copyWith(
                 fontSize: 56,
                 color: Colors.green[900],
                 fontWeight: FontWeight.bold,
@@ -56,19 +56,19 @@ class DonorInfoCard extends StatelessWidget {
             ),
             Text(
               this.name,
-              style: kSTextStyle.copyWith(
+              style: kTextStyle.copyWith(
                 fontSize: 18,
               ),
             ),
             Text(
               this.contact,
-              style: kSTextStyle.copyWith(
+              style: kTextStyle.copyWith(
                 fontSize: 18,
               ),
             ),
             Text(
               this.location,
-              style: kSTextStyle.copyWith(
+              style: kTextStyle.copyWith(
                 fontSize: 18,
               ),
             ),
