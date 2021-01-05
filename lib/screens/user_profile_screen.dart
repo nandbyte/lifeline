@@ -133,7 +133,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Nexa Bold',
-                  fontSize: 30,
+                  fontSize: 24,
                 ),
               ),
             ],

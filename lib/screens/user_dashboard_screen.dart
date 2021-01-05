@@ -75,7 +75,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Nexa Bold',
-                  fontSize: 30,
+                  fontSize: 24,
                 ),
               ),
             ],
