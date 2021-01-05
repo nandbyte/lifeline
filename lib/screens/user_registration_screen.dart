@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
@@ -6,7 +5,6 @@ import 'package:lifeline/screens/user_dashboard_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:toast/toast.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class UserRegistrationScreen extends StatefulWidget {
   static String id = 'user_register';
@@ -21,48 +19,24 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
 
   bool loadingIndicator = false;
 
-     Widget _hipaabutton() {
+    Widget _hipaabutton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 40),
-          //child: FlatButton(
-           // onPressed: () {},
-            child: RichText(
-            maxLines: 2,
-            overflow:TextOverflow.ellipsis,
-            softWrap: false,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: 'You must agree with HIPAA policy to continue. \n',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: MediaQuery.of(context).size.height / 50,
-                  ),
-                ),
-                TextSpan(
-                  text: 'Click Here',
+          child: FlatButton(
+           onPressed: () {},
+            child:Text('Click here for\nTerms and Condition',
                   style:TextStyle(
-                    color: Colors.blue,
-                    fontSize: MediaQuery.of(context).size.height / 40,
-                    fontWeight: FontWeight.w400,
+                    color: Colors.blue[900],
+                    fontSize: MediaQuery.of(context).size.height / 37,
+                    fontFamily:"Nexa Bold",
+                    fontWeight: FontWeight.w900,
                   ),
-                  recognizer: TapGestureRecognizer()..onTap =() async{
-                   var url="https://codeforces.com/";
-                    if(await canLaunch(url)){
-                     await launch(url);
-                    }else{
-                      throw "Cannot Load Url";
-                    }
-                  }
-                )
-              ]),
-            textAlign: TextAlign.justify,
             ),
           ),
-        //),
+        ),
       ],
     );
   }
