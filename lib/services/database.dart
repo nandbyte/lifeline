@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lifeline/models/blood_donor.dart';
 import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/services/api_path.dart';
 
@@ -12,7 +13,7 @@ class Database {
     final reference = FirebaseFirestore.instance.doc(path);
     var snapshot =
         await FirebaseFirestore.instance.collection('profile').doc(uid).get();
-    if(snapshot.exists)
+    if (snapshot.exists)
       reference.update(data);
     else
       reference.set(data);
@@ -84,9 +85,51 @@ class Database {
   }
 
   Future<void> updateLocation(String latitute, String longitude) {
-    FirebaseFirestore.instance.collection('profile').doc(uid).update({
+    return FirebaseFirestore.instance.collection('profile').doc(uid).update({
       "Latitute": latitute,
       "Longitude": longitude,
     });
+  }
+
+  List<Donor> donors;
+
+  // Future<List<Donor>> donorList(String blood) async {
+  //   await FirebaseFirestore.instance
+  //       .collection('profile')
+  //       .where('Blood Group', isEqualTo: blood)
+  //       .where('Donor Status', isEqualTo: true)
+  //       .where('Latitute', isNotEqualTo: null)
+  //       .where('Longitude', isNotEqualTo: null)
+  //       //.orderBy('Age',descending: true)
+  //       //.where('Age',isGreaterThanOrEqualTo: 18)
+  //       .get()
+  //       .then((QuerySnapshot value) {
+  //     if (value.docs.isNotEmpty) {
+  //       for (int i = 0; i < value.docs.length; i++) {
+  //         //if(value.docs[i].data()['Donor Status']==true)
+  //         //print('Name: ${value.docs[i].data()['Name']}\tContact: ${value.docs[i].data()['Contact No']}');
+  //         final data = value.docs[i].data();
+  //         final dummy = Donor(
+  //             blood: data['Blood Group'],
+  //             contact: data['Contact No'],
+  //             latitute: data['Latitute'],
+  //             longitude: data['Longitute'],
+  //             location: data['Location'],
+  //             name: data['Name']);
+  //         donors.insert(i, dummy);
+  //       }
+  //     }
+  //   });
+  //   print(donors[0]);
+  //   return donors;
+  // }
+  Future<QuerySnapshot> donorList(String blood) async {
+    return await FirebaseFirestore.instance
+        .collection('profile')
+        .where('Blood Group', isEqualTo: blood)
+        .where('Donor Status', isEqualTo: true)
+        .where('Latitute', isNotEqualTo: null)
+        .where('Longitude', isNotEqualTo: null)
+        .get();
   }
 }
