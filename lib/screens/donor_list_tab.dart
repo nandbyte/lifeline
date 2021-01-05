@@ -34,16 +34,8 @@ class _DonorListTabState extends State<DonorListTab> {
           longitude: snapshot.docs[i].data()['Longitude'] ?? '',
           location: snapshot.docs[i].data()['Location'],
           name: snapshot.docs[i].data()['Name']);
-      setState(() {
-        donors[i] = dummy;
-      });
+      print(dummy.toMap());
     }
-  }
-
-  @override
-  void initState() {
-    
-    super.initState();
   }
 
   @override
@@ -64,7 +56,6 @@ class _DonorListTabState extends State<DonorListTab> {
                 onEditingComplete: () {
                   print(blood.text);
                   makeDonorList(blood.text);
-                  print(donors.length);
                 },
                 decoration: InputDecoration(
                   hintText: "A+/A-/B+/B-/AB+/AB-/O+/O-",
