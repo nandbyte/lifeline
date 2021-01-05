@@ -64,15 +64,14 @@ class _DonorListTabState extends State<DonorListTab> {
       opacity: 0.9,
       progressIndicator: kWaveLoadingIndicator,
       inAsyncCall: loadingIndicator,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Container(
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.all(5),
-            child: TextFormField(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            TextFormField(
               controller: blood,
               keyboardType: TextInputType.text,
               onEditingComplete: () {
@@ -111,16 +110,15 @@ class _DonorListTabState extends State<DonorListTab> {
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20.0,
-            child: new ListView.builder(
-                itemCount: donors.length,
-                itemBuilder: (context, index) {
-                  return DonorInfoCard(donor: donors[index]);
-                }),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                  itemCount: donors.length,
+                  itemBuilder: (context, index) {
+                    return DonorInfoCard(donor: donors[index]);
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }
