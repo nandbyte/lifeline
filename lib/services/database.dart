@@ -10,7 +10,12 @@ class Database {
 
   Future<void> _setData({String path, Map<String, dynamic> data}) async {
     final reference = FirebaseFirestore.instance.doc(path);
-    reference.set(data);
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    if(snapshot.exists)
+      reference.update(data);
+    else
+      reference.set(data);
   }
 
   Future<void> createProfile(ProfileData profile) async {
@@ -39,8 +44,15 @@ class Database {
         donorStatus: snapshot.data()['Donor Status'],
         lastDonation: snapshot.data()['Last Donation'],
       );
-      else
-        return ProfileData(contact: '', blood: '', name: '', age: '', dob: Timestamp.now(), gender: '', govtID: '');
+    else
+      return ProfileData(
+          contact: '',
+          blood: '',
+          name: '',
+          age: '',
+          dob: Timestamp.now(),
+          gender: '',
+          govtID: '');
   }
 
   Future<String> getName() async {
