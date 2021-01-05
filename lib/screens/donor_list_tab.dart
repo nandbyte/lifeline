@@ -37,7 +37,7 @@ class DonorListTab extends StatelessWidget {
           ),
           DonorInfoCard(
             name: 'Farhan Saif',
-            bloodGroup: 'A+ve',
+            bloodGroup: 'Saif+ve',
             contact: '01793450904',
             location: 'Dhaka',
           ),
