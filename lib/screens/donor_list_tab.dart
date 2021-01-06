@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/components/donor_info_card.dart';
 import 'package:lifeline/models/blood_donor.dart';
@@ -18,7 +19,7 @@ class _DonorListTabState extends State<DonorListTab> {
   final database = Database(uid: Auth().getUID());
   CollectionReference databaseReference;
   QuerySnapshot snapshot;
-  final blood = new TextEditingController();
+  String blood;
 
   List<Donor> donors;
 
@@ -36,7 +37,6 @@ class _DonorListTabState extends State<DonorListTab> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -54,54 +54,46 @@ class _DonorListTabState extends State<DonorListTab> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: [
-            TextFormField(
-              controller: blood,
-              keyboardType: TextInputType.text,
-              onEditingComplete: () async {
-                FocusScope.of(context).unfocus();
+            CustomDropdownMenu(
+              label: "Blood Group",
+              items: [
+                'A+',
+                'A-',
+                'B+',
+                'B-',
+                'AB+',
+                'AB-',
+                'O+',
+                'O-',
+              ],
+              onChanged: (value) async {
                 setState(() {
+                  blood = value;
+                });
+
+                setState(() {
+                  blood = value;
                   loadingIndicator = true;
                 });
 
-                await fetchDonorList(blood.text);
+                await fetchDonorList(blood);
                 donors = [];
                 for (int i = 0; i < snapshot.docs.length; i++) {
-                  donors.add(Donor(
-                      blood: snapshot.docs[i].data()['Blood Group'],
-                      contact: snapshot.docs[i].data()['Contact No'],
-                      latitute: snapshot.docs[i].data()['Latitute'] ?? '',
-                      longitude: snapshot.docs[i].data()['Longitude'] ?? '',
-                      location: snapshot.docs[i].data()['Location'],
-                      name: snapshot.docs[i].data()['Name']));
+                  donors.add(
+                    Donor(
+                        blood: snapshot.docs[i].data()['Blood Group'],
+                        contact: snapshot.docs[i].data()['Contact No'],
+                        latitute: snapshot.docs[i].data()['Latitute'] ?? '',
+                        longitude: snapshot.docs[i].data()['Longitude'] ?? '',
+                        location: snapshot.docs[i].data()['Location'],
+                        name: snapshot.docs[i].data()['Name']),
+                  );
                 }
 
                 setState(() {
                   loadingIndicator = false;
                 });
               },
-              decoration: InputDecoration(
-                hintText: "A+/A-/B+/B-/AB+/AB-/O+/O-",
-                labelText: "Search Blood Donor",
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                hintStyle: TextStyle(
-                  fontFamily: 'Nexa',
-                ),
-                labelStyle: TextStyle(
-                  fontFamily: 'Nexa',
-                ),
-              ),
             ),
             Expanded(
               child: DynamicList(

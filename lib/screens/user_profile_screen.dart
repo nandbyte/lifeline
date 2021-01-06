@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lifeline/components/custom_dropdown_menu.dart';
+import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/profile_data.dart';
@@ -20,9 +23,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final database = new Database(uid: Auth().getUID());
 
   final name = new TextEditingController();
-  final gender = new TextEditingController();
+  String gender;
   final age = new TextEditingController();
-  final blood = new TextEditingController();
+  String blood;
   final contact = new TextEditingController();
   final emergency = new TextEditingController();
   final govtID = new TextEditingController();
@@ -51,8 +54,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final _age = age.text;
     final _contact = contact.text;
     final _emergency = emergency.text;
-    final _gender = gender.text;
-    final _bloodGroup = blood.text;
+    final _gender = gender;
+    final _bloodGroup = blood;
     final _govtID = govtID.text;
     final _otherID = otherID.text;
     final _location = location.text;
@@ -87,8 +90,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       age.text = person.age;
       contact.text = person.contact;
       emergency.text = person.emergency;
-      gender.text = person.gender;
-      blood.text = person.blood;
+      gender = person.gender;
+      blood = person.blood;
       govtID.text = person.govtID;
       otherID.text = person.otherID;
       location.text = person.location;
@@ -149,69 +152,91 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              createTextFieldText(
-                  context: context,
-                  label: "Name",
-                  hint: "Enter your name",
-                  controller: name),
-              createTextFieldNumber(
-                  context: context,
-                  label: "Age",
-                  hint: "Enter your Age",
-                  controller: age),
-              createTextFieldPhone(
-                  context: context,
-                  label: "Phone No",
-                  hint: "Enter your phone number",
-                  controller: contact),
-              createTextFieldPhone(
-                  context: context,
-                  label: "Emergency Contact",
-                  hint: "Emergency contact number",
-                  controller: emergency),
-              createTextFieldText(
-                  context: context,
-                  label: "Gender",
-                  hint: "Male/Female/Other",
-                  controller: gender),
-              createTextFieldText(
-                  context: context,
-                  label: "Blood Group",
-                  hint: "A+/A-/AB+/AB-/B+/B-/O+/O-",
-                  controller: blood),
-              createTextFieldLocation(
-                context: context,
-                label: "Address",
-                hint: "Area/Village,District,Division",
-                controller: location,
+              CustomTextField(
+                label: "Name",
+                hint: "Full Name",
+                controller: name,
+                keyboardType: TextInputType.text,
               ),
-              createTextFieldText(
-                  context: context,
-                  label: 'Govt Issued ID',
-                  hint: 'NID/Passport/Birth ID',
-                  controller: govtID),
-              createTextFieldText(
-                  context: context,
-                  label: 'Other ID',
-                  hint: 'Office/Student ID',
-                  controller: otherID),
+              CustomTextField(
+                label: "Age",
+                hint: "Age in Years",
+                controller: age,
+                keyboardType: TextInputType.number,
+              ),
+              CustomTextField(
+                label: "Phone Number",
+                hint: "Phone",
+                controller: contact,
+                keyboardType: TextInputType.phone,
+              ),
+              CustomTextField(
+                label: "Emergency Contact",
+                hint: "Emergency Contact Number",
+                controller: emergency,
+                keyboardType: TextInputType.phone,
+              ),
+              CustomDropdownMenu(
+                label: 'Gender',
+                items: ['Male', 'Female'],
+                onChanged: (value) {
+                  setState(() {
+                    gender = value;
+                  });
+                },
+              ),
+              CustomDropdownMenu(
+                label: "Blood Group",
+                items: [
+                  'A+',
+                  'A-',
+                  'B+',
+                  'B-',
+                  'AB+',
+                  'AB-',
+                  'O+',
+                  'O-',
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    blood = value;
+                  });
+                },
+              ),
+              CustomTextField(
+                label: "Address",
+                hint: "Street Address",
+                controller: location,
+                keyboardType: TextInputType.streetAddress,
+              ),
+              CustomTextField(
+                label: 'Government ID',
+                hint: 'National ID/ Birth Certificate ID',
+                controller: govtID,
+                keyboardType: TextInputType.number,
+              ),
+              CustomTextField(
+                label: 'Professional ID',
+                hint: 'Office/Student ID',
+                controller: otherID,
+                keyboardType: TextInputType.number,
+              ),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
-                  child: createTextFieldDate(
-                    context: context,
+                  child: CustomTextField(
                     label: "Birth Date",
-                    hint: "Select your date of birth",
+                    hint: "Select your Date of Birth",
                     controller: _date,
+                    keyboardType: TextInputType.datetime,
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(10),
                 child: RoundedButton(
                   onPressed: _submit,
                   text: 'Update',
-                  color: Colors.green,
+                  color: Colors.green[700],
                 ),
               ),
             ],

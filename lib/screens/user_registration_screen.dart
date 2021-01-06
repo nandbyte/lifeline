@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/screens/user_dashboard_screen.dart';
@@ -14,8 +15,8 @@ class UserRegistrationScreen extends StatefulWidget {
 }
 
 class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
-  String email;
-  String password;
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
 
   bool loadingIndicator = false;
 
@@ -46,27 +47,18 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                   SizedBox(
                     height: 48.0,
                   ),
-                  TextField(
+                  CustomTextField(
+                    label: 'E-mail',
+                    hint: 'johndoe@gmail.com',
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      this.email = value;
-                    },
-                    decoration:
-                        kTextFieldDecoration.copyWith(hintText: "Email"),
+                    controller: this.email,
                   ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  TextField(
+                  CustomTextField(
+                    label: 'Password',
+                    hint: 'Type your password',
+                    keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
-                    onChanged: (value) {
-                      this.password = value;
-                    },
-                    decoration:
-                        kTextFieldDecoration.copyWith(hintText: "Password"),
-                  ),
-                  SizedBox(
-                    height: 24.0,
+                    controller: this.password,
                   ),
                   RoundedButton(
                     text: 'Register',
@@ -77,8 +69,8 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                       });
 
                       try {
-                        final user =
-                            await Auth().register(this.email, this.password);
+                        final user = await Auth()
+                            .register(this.email.text, this.password.text);
                         if (user != null)
                           Navigator.pushNamed(context, UserDashboardScreen.id);
                         setState(() {
