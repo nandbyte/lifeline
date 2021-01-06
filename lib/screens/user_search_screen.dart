@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/components/searched_user_info_card.dart';
 import 'package:lifeline/constants.dart';
@@ -19,7 +20,7 @@ class UserSearchScreen extends StatefulWidget {
 
 class _UserSearchScreenState extends State<UserSearchScreen> {
   bool loadingIndicator = false;
-  String id;
+  TextEditingController id = new TextEditingController();
   final database = Database(uid: Auth().getUID());
   QuerySnapshot snapshot;
   String name = '';
@@ -97,15 +98,11 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      setState(() {
-                        this.id = value;
-                      });
-                    },
-                    decoration: kTextFieldDecoration.copyWith(
-                        hintText: "Any ID number"),
+                  CustomTextField(
+                    label: 'ID',
+                    hint: 'Any ID number',
+                    controller: this.id,
+                    keyboardType: TextInputType.text,
                   ),
                   RoundedButton(
                     text: 'Search',
@@ -117,7 +114,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
 
                       try {
                         print("Tapped");
-                        await printMatched(this.id);
+                        await printMatched(this.id.text);
                         setState(() {
                           loadingIndicator = false;
                         });

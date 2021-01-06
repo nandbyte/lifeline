@@ -11,7 +11,7 @@ class SearchedUserInfoCard extends StatelessWidget {
   SearchedUserInfoCard({this.searchedUser});
 
   callNumber(BuildContext context, String number) async {
-    var url = 'tel://$number';
+    var url = 'tel:$number';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -54,7 +54,7 @@ class SearchedUserInfoCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Name: ' + this.searchedUser.name,
+                this.searchedUser.name,
                 style: kTextStyle.copyWith(
                   fontSize: 24,
                   color: Colors.green[900],
@@ -89,29 +89,29 @@ class SearchedUserInfoCard extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RoundedButton(
-                  text: 'Call Emergency Number',
-                  color: Colors.green[900],
-                  onPressed: () {
-                    callNumber(
-                      context,
-                      searchedUser.contact,
-                    );
-                  }),
-            ),
+            RoundedButton(
+                text: 'Call Emergency Number',
+                color: Colors.green[900],
+                onPressed: () {
+                  callNumber(
+                    context,
+                    searchedUser.contact,
+                  );
+                }),
           ],
         ),
       );
     } else {
       return Container(
-        padding: EdgeInsets.all(24),
+        padding: EdgeInsets.all(8.0),
         margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
         child: Center(
           child: Text(
             'No User Found',
-            style: kTextStyle,
+            style: kTextStyle.copyWith(
+              color: Colors.black54,
+              fontSize: 24,
+            ),
           ),
         ),
       );
