@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
 import 'package:lifeline/components/log_out_alert_dialog.dart';
 import 'package:lifeline/screens/blood_donation_screen.dart';
+import 'package:lifeline/screens/health_record_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/screens/user_search_screen.dart';
 import 'package:lifeline/screens/verify_report_screen.dart';
@@ -129,18 +130,20 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   ),
                   label: 'Health Record',
                   onTap: () {
-                    // TODO: Change screens
+                    Navigator.pushNamed(context, HealthRecordScreen.id);
                   },
                 ),
                 GridCard(
                   image: Image.asset(
                     // TODO: Update Icon
+
                     'assets/images/lifeline_logo.png',
                     height: 60,
                   ),
                   label: 'Medical History',
                   onTap: () {
                     // TODO: Change screens
+                    //  Navigator.pushNamed(context, .id);
                   },
                 ),
                 GridCard(
