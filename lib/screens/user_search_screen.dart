@@ -1,21 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:lifeline/components/donor_info_card.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
+import 'package:lifeline/models/blood_donor.dart';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:toast/toast.dart';
 
 class UserSearchScreen extends StatefulWidget {
   static String id = 'user_search';
-
+  
   @override
   _UserSearchScreenState createState() => _UserSearchScreenState();
 }
 
 class _UserSearchScreenState extends State<UserSearchScreen> {
   bool loadingIndicator = false;
-
-  String name;
+  String id;
+  final database = Database(uid: Auth().getUID());
+  QuerySnapshot snapshot;
+  String name='',contact='',blood='',address='';
+  Future<void> printMatched(String query) async {
+    QuerySnapshot _snapshot = await database.searchUserWithGovt(query);
+    if(_snapshot.docs.length == 0)
+      _snapshot = await database.searchUserWithOtherID(query);
+    if(_snapshot.docs.length == 0)
+      print("No user found");
+    else{
+      for(int i = 0;i<_snapshot.docs.length;i++){
+        print(_snapshot.docs[i].data());
+        setState(() {
+          snapshot = _snapshot;
+          name = snapshot.docs[i].data()['Name'];
+          contact = snapshot.docs[i].data()['Emergency No'];
+          address = snapshot.docs[i].data()['Location'];
+          blood = snapshot.docs[i].data()['Blood Group'];
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,34 +90,50 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                   TextField(
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) {
-                      this.name = value;
+                      setState(() {
+                        this.id = value;
+                      });
                     },
                     decoration:
-                        kTextFieldDecoration.copyWith(hintText: "User Name"),
+                        kTextFieldDecoration.copyWith(hintText: "Any kind of ID number"),
                   ),
                   RoundedButton(
                     text: 'Search',
                     color: Colors.green[900],
                     onPressed: () async {
-                      setState(() {
-                        loadingIndicator = true;
-                      });
+                      print(" pressed");
+                      await printMatched(this.id);
+                      print("$name $contact $blood $address");
+                      // setState(() {
+                      //   loadingIndicator = true;
+                      // });
 
-                      try {
-                        // TODO: Verify Doctor ID here
-                        setState(() {
-                          loadingIndicator = false;
-                        });
-                      } catch (e) {
-                        print(e);
-                        Toast.show(
-                          e.message,
-                          context,
-                          duration: Toast.LENGTH_LONG,
-                          gravity: Toast.TOP,
-                        );
-                      }
+                      // try{
+                      //   print("Tapped");
+                      //   printMatched(this.name);
+                      //   setState(() {
+                      //     loadingIndicator = false;
+                      //   });
+                      // } catch (e) {
+                      //   print(e);
+                      //   Toast.show(
+                      //     e.message,
+                      //     context,
+                      //     duration: Toast.LENGTH_LONG,
+                      //     gravity: Toast.TOP,
+                      //   );
+                      // }
                     },
+                  ),
+                  DonorInfoCard(
+                    donor: Donor(
+                      name: name,
+                      contact: contact,
+                      blood: blood,
+                      location: address,
+                      latitute: '',
+                      longitude: '',
+                    ),
                   ),
                 ],
               ),
