@@ -5,11 +5,13 @@ class CustomDropdownMenu extends StatefulWidget {
   final String label;
   List<String> items;
   String value;
+  String initialValue;
   final Function onChanged;
 
   CustomDropdownMenu({
     @required this.label,
     @required this.items,
+    this.initialValue,
     this.onChanged,
   });
 
@@ -20,7 +22,7 @@ class CustomDropdownMenu extends StatefulWidget {
 class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
   @override
   Widget build(BuildContext context) {
-    this.widget.value = this.widget.items.first;
+    this.widget.value = this.widget.initialValue ?? this.widget.items.first;
     final dropdownMenuOptions = this
         .widget
         .items

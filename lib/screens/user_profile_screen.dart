@@ -176,6 +176,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
               CustomDropdownMenu(
                 label: 'Gender',
+                initialValue: gender,
                 items: ['Male', 'Female'],
                 onChanged: (value) {
                   setState(() {
@@ -185,6 +186,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
               CustomDropdownMenu(
                 label: "Blood Group",
+                initialValue: blood,
                 items: [
                   'A+',
                   'A-',
