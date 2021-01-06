@@ -70,6 +70,16 @@ class _TermsPagesState extends State<TermsPages> {
                   ),
                   SizedBox(height: 10.0),
                   AutoSizeText(
+                    '-Lifeline will access your camera for scanning.',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 2,
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(height: 10.0),
+                  AutoSizeText(
                     '-Any user  within the app can view your public health information.',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
@@ -126,9 +136,7 @@ class _TermsPagesState extends State<TermsPages> {
                     ]),
                   ),
                   RoundedButton(
-                      text: 'Agree',
-                      color: Colors.green[900],
-                      onPressed: () {})
+                      text: 'Agree', color: Colors.green[900], onPressed: () {})
                 ],
               ),
             ),

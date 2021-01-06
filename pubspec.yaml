@@ -14,6 +14,8 @@ dependencies:
 
   # Icons
   cupertino_icons: ^0.1.2
+  # Text
+  auto_size_text: ^2.1.0
  
   # UI
   animated_text_kit: ^3.1.0
