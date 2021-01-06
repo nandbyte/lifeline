@@ -101,35 +101,35 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                     text: 'Search',
                     color: Colors.green[900],
                     onPressed: () async {
-                      print(" pressed");
-                      await printMatched(this.id);
-                      print("$name $contact $blood $address");
-                      // setState(() {
-                      //   loadingIndicator = true;
-                      // });
+                      // print(" pressed");
+                      // await printMatched(this.id);
+                      // print("$name $contact $blood $address");
+                      setState(() {
+                        loadingIndicator = true;
+                      });
 
-                      // try{
-                      //   print("Tapped");
-                      //   printMatched(this.name);
-                      //   setState(() {
-                      //     loadingIndicator = false;
-                      //   });
-                      // } catch (e) {
-                      //   print(e);
-                      //   Toast.show(
-                      //     e.message,
-                      //     context,
-                      //     duration: Toast.LENGTH_LONG,
-                      //     gravity: Toast.TOP,
-                      //   );
-                      // }
+                      try{
+                        print("Tapped");
+                        await printMatched(this.id);
+                        setState(() {
+                          loadingIndicator = false;
+                        });
+                      } catch (e) {
+                        print(e);
+                        Toast.show(
+                          e.message,
+                          context,
+                          duration: Toast.LENGTH_LONG,
+                          gravity: Toast.TOP,
+                        );
+                      }
                     },
                   ),
                   DonorInfoCard(
                     donor: Donor(
-                      name: name,
+                      name: blood,
                       contact: contact,
-                      blood: blood,
+                      blood: name,
                       location: address,
                       latitute: '',
                       longitude: '',
