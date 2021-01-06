@@ -23,9 +23,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final database = new Database(uid: Auth().getUID());
 
   final name = new TextEditingController();
-  String gender;
+  String gender = '';
   final age = new TextEditingController();
-  String blood;
+  String blood = '';
   final contact = new TextEditingController();
   final emergency = new TextEditingController();
   final govtID = new TextEditingController();
@@ -176,7 +176,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
               CustomDropdownMenu(
                 label: 'Gender',
-                initialValue: gender,
+                initialValue: gender == '' ? null : gender,
                 items: ['Male', 'Female'],
                 onChanged: (value) {
                   setState(() {
@@ -186,7 +186,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
               CustomDropdownMenu(
                 label: "Blood Group",
-                initialValue: blood,
+                initialValue: blood == '' ? null : blood,
                 items: [
                   'A+',
                   'A-',
