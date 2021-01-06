@@ -2,21 +2,22 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 
-double own_x;
-double own_y;
+double selfX;
+double selfY;
 
 double getUserLat() {
-  own_x = 23.7925;
-  return own_x;
+  selfX = 23.7925;
+  return selfX;
 }
 
 double getUserLong() {
-  own_y = 90.4078;
-  return own_y;
+  selfY = 90.4078;
+  return selfY;
 }
 
 class Donor {
@@ -62,12 +63,12 @@ class _DonorMapTabState extends State<DonorMapTab> {
 
   Completer _controller = Completer();
   Map<MarkerId, Marker> markers = {};
-  double own_x, own_y;
+  double ownX, ownY;
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(getUserLat(), getUserLong()),
     zoom: 14.0,
   );
-  List listMarkerIds = List();
+  List listMarkerIds = [];
 
   @override
   void initState() {
@@ -78,58 +79,101 @@ class _DonorMapTabState extends State<DonorMapTab> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         key: scaffoldKey,
-        appBar: AppBar(
-          leading: Icon(Icons.map),
-          backgroundColor: Colors.blue,
-          title: Text("Blood Donor Location"),
-        ),
         body: Container(
-          child: GoogleMap(
-            initialCameraPosition: _kGooglePlex,
-            onTap: (_) {},
-            mapType: MapType.normal,
-            markers: Set.of(markers.values),
-            onMapCreated: (GoogleMapController controler) {
-              _controller.complete(controler);
-              for (int i = 0; i < list.length; i++) {
-                MarkerId markerId1 = MarkerId(list[i].id);
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomDropdownMenu(
+                  label: "Blood Group",
+                  items: [
+                    'A+',
+                    'A-',
+                    'B+',
+                    'B-',
+                    'AB+',
+                    'AB-',
+                    'O+',
+                    'O-',
+                  ],
+                  onChanged: (value) async {
+// TODO: Implement map search functionality
 
-                listMarkerIds.add(markerId1);
+                    // setState(() {
+                    //   blood = value;
+                    // });
 
-                Marker marker1 = Marker(
-                    markerId: markerId1,
-                    position: LatLng(list[i].lat, list[i].long),
-                    icon: (list[i].lat == getUserLat() &&
-                            list[i].long == getUserLong())
-                        ? BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueViolet)
-                        : BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueRed),
+                    // setState(() {
+                    //   blood = value;
+                    //   loadingIndicator = true;
+                    // });
 
-                    /* icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueCyan),
-                    */
-                    infoWindow: InfoWindow(
-                        title: list[i].name,
-                        onTap: () {
-                          var bottomSheetController =
-                              Scaffold.of(scaffoldKey.currentContext)
-                                  .showBottomSheet((context) => Container(
-                                        child: getBottomSheet(list[i]),
-                                        height: 250,
-                                        color: Colors.transparent,
-                                      ));
-                        },
-                        snippet: list[i].bg));
+                    // await fetchDonorList(blood);
+                    // donors = [];
+                    // for (int i = 0; i < snapshot.docs.length; i++) {
+                    //   donors.add(
+                    //     Donor(
+                    //         blood: snapshot.docs[i].data()['Blood Group'],
+                    //         contact: snapshot.docs[i].data()['Contact No'],
+                    //         latitute: snapshot.docs[i].data()['Latitute'] ?? '',
+                    //         longitude: snapshot.docs[i].data()['Longitude'] ?? '',
+                    //         location: snapshot.docs[i].data()['Location'],
+                    //         name: snapshot.docs[i].data()['Name']),
+                    //   );
+                    // }
 
-                setState(() {
-                  markers[markerId1] = marker1;
-                });
-              }
-            },
+                    // setState(() {
+                    //   loadingIndicator = false;
+                    // });
+                  },
+                ),
+                GoogleMap(
+                  initialCameraPosition: _kGooglePlex,
+                  onTap: (_) {},
+                  mapType: MapType.normal,
+                  markers: Set.of(markers.values),
+                  onMapCreated: (GoogleMapController controler) {
+                    _controller.complete(controler);
+                    for (int i = 0; i < list.length; i++) {
+                      MarkerId markerId1 = MarkerId(list[i].id);
+
+                      listMarkerIds.add(markerId1);
+
+                      Marker marker1 = Marker(
+                          markerId: markerId1,
+                          position: LatLng(list[i].lat, list[i].long),
+                          icon: (list[i].lat == getUserLat() &&
+                                  list[i].long == getUserLong())
+                              ? BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueViolet)
+                              : BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueRed),
+
+                          /* icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueCyan),
+                          */
+                          infoWindow: InfoWindow(
+                              title: list[i].name,
+                              onTap: () {
+                                var bottomSheetController =
+                                    Scaffold.of(scaffoldKey.currentContext)
+                                        .showBottomSheet((context) => Container(
+                                              child: getBottomSheet(list[i]),
+                                              height: 250,
+                                              color: Colors.transparent,
+                                            ));
+                              },
+                              snippet: list[i].bg));
+
+                      setState(() {
+                        markers[markerId1] = marker1;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ));
   }
