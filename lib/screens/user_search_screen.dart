@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:lifeline/components/donor_info_card.dart';
 import 'package:lifeline/components/rounded_button.dart';
+import 'package:lifeline/components/searched_user_info_card.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/blood_donor.dart';
 import 'package:lifeline/services/authenticate.dart';
@@ -12,7 +12,7 @@ import 'package:toast/toast.dart';
 
 class UserSearchScreen extends StatefulWidget {
   static String id = 'user_search';
-  
+
   @override
   _UserSearchScreenState createState() => _UserSearchScreenState();
 }
@@ -22,22 +22,32 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
   String id;
   final database = Database(uid: Auth().getUID());
   QuerySnapshot snapshot;
-  String name='',contact='',blood='',address='';
+  String name = '';
+  String emergencyContact = '';
+  String blood = '';
+  String address = '';
+
   Future<void> printMatched(String query) async {
-    QuerySnapshot _snapshot = await database.searchUserWithGovt(query);
-    if(_snapshot.docs.length == 0)
-      _snapshot = await database.searchUserWithOtherID(query);
-    if(_snapshot.docs.length == 0)
-      print("No user found");
-    else{
-      for(int i = 0;i<_snapshot.docs.length;i++){
+    QuerySnapshot _snapshot = await database.searchUserWithGovernmentID(query);
+    if (_snapshot.docs.length == 0) {
+      _snapshot = await database.searchUserWithAdditionalID(query);
+    }
+    if (_snapshot.docs.length == 0) {
+      setState(() {
+        name = '';
+        emergencyContact = '';
+        blood = '';
+        address = '';
+      });
+    } else {
+      for (int i = 0; i < _snapshot.docs.length; i++) {
         print(_snapshot.docs[i].data());
         setState(() {
           snapshot = _snapshot;
           name = snapshot.docs[i].data()['Name'];
-          contact = snapshot.docs[i].data()['Emergency No'];
-          address = snapshot.docs[i].data()['Location'];
+          emergencyContact = snapshot.docs[i].data()['Emergency No'];
           blood = snapshot.docs[i].data()['Blood Group'];
+          address = snapshot.docs[i].data()['Location'];
         });
       }
     }
@@ -94,21 +104,18 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                         this.id = value;
                       });
                     },
-                    decoration:
-                        kTextFieldDecoration.copyWith(hintText: "Any kind of ID number"),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: "Any ID number"),
                   ),
                   RoundedButton(
                     text: 'Search',
                     color: Colors.green[900],
                     onPressed: () async {
-                      // print(" pressed");
-                      // await printMatched(this.id);
-                      // print("$name $contact $blood $address");
                       setState(() {
                         loadingIndicator = true;
                       });
 
-                      try{
+                      try {
                         print("Tapped");
                         await printMatched(this.id);
                         setState(() {
@@ -125,14 +132,12 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                       }
                     },
                   ),
-                  DonorInfoCard(
-                    donor: Donor(
-                      name: blood,
-                      contact: contact,
-                      blood: name,
+                  SearchedUserInfoCard(
+                    searchedUser: Donor(
+                      name: name,
+                      contact: emergencyContact,
+                      blood: blood,
                       location: address,
-                      latitute: '',
-                      longitude: '',
                     ),
                   ),
                 ],
