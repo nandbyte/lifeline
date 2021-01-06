@@ -132,4 +132,18 @@ class Database {
         .where('Longitude', isNotEqualTo: null)
         .get();
   }
+
+  Future<QuerySnapshot> searchUserWithGovt(String id)async{
+    return await FirebaseFirestore.instance
+      .collection('profile')
+      .where('Govt ID',isEqualTo: id)
+      .get();
+  }
+  Future<QuerySnapshot> searchUserWithOtherID(String id)async{
+    return await FirebaseFirestore.instance
+      .collection('profile')
+      .where('Other ID',isEqualTo: id)
+      .get();
+  }
+  //Future<QuerySnapshot>
 }
