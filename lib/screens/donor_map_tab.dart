@@ -81,99 +81,98 @@ class _DonorMapTabState extends State<DonorMapTab> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        body: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CustomDropdownMenu(
-                  label: "Blood Group",
-                  items: [
-                    'A+',
-                    'A-',
-                    'B+',
-                    'B-',
-                    'AB+',
-                    'AB-',
-                    'O+',
-                    'O-',
-                  ],
-                  onChanged: (value) async {
+        appBar: AppBar(
+          leadingWidth: 0,
+          title: CustomDropdownMenu(
+            label: "Blood Group",
+            items: [
+              'A+',
+              'A-',
+              'B+',
+              'B-',
+              'AB+',
+              'AB-',
+              'O+',
+              'O-',
+            ],
+            onChanged: (value) async {
 // TODO: Implement map search functionality
 
-                    // setState(() {
-                    //   blood = value;
-                    // });
+              // setState(() {
+              //   blood = value;
+              // });
 
-                    // setState(() {
-                    //   blood = value;
-                    //   loadingIndicator = true;
-                    // });
+              // setState(() {
+              //   blood = value;
+              //   loadingIndicator = true;
+              // });
 
-                    // await fetchDonorList(blood);
-                    // donors = [];
-                    // for (int i = 0; i < snapshot.docs.length; i++) {
-                    //   donors.add(
-                    //     Donor(
-                    //         blood: snapshot.docs[i].data()['Blood Group'],
-                    //         contact: snapshot.docs[i].data()['Contact No'],
-                    //         latitute: snapshot.docs[i].data()['Latitute'] ?? '',
-                    //         longitude: snapshot.docs[i].data()['Longitude'] ?? '',
-                    //         location: snapshot.docs[i].data()['Location'],
-                    //         name: snapshot.docs[i].data()['Name']),
-                    //   );
-                    // }
+              // await fetchDonorList(blood);
+              // donors = [];
+              // for (int i = 0; i < snapshot.docs.length; i++) {
+              //   donors.add(
+              //     Donor(
+              //         blood: snapshot.docs[i].data()['Blood Group'],
+              //         contact: snapshot.docs[i].data()['Contact No'],
+              //         latitute: snapshot.docs[i].data()['Latitute'] ?? '',
+              //         longitude: snapshot.docs[i].data()['Longitude'] ?? '',
+              //         location: snapshot.docs[i].data()['Location'],
+              //         name: snapshot.docs[i].data()['Name']),
+              //   );
+              // }
 
-                    // setState(() {
-                    //   loadingIndicator = false;
-                    // });
-                  },
-                ),
-                GoogleMap(
-                  initialCameraPosition: _kGooglePlex,
-                  onTap: (_) {},
-                  mapType: MapType.normal,
-                  markers: Set.of(markers.values),
-                  onMapCreated: (GoogleMapController controler) {
-                    _controller.complete(controler);
-                    for (int i = 0; i < list.length; i++) {
-                      MarkerId markerId1 = MarkerId(list[i].id);
+              // setState(() {
+              //   loadingIndicator = false;
+              // });
+            },
+          ),
+          backgroundColor: Colors.white,
+          shadowColor: Colors.black54,
+        ),
+        body: Container(
+          child: GoogleMap(
+            initialCameraPosition: _kGooglePlex,
+            onTap: (_) {},
+            mapType: MapType.normal,
+            markers: Set.of(markers.values),
+            onMapCreated: (GoogleMapController controler) {
+              _controller.complete(controler);
+              for (int i = 0; i < list.length; i++) {
+                MarkerId markerId1 = MarkerId(list[i].id);
 
-                      listMarkerIds.add(markerId1);
+                listMarkerIds.add(markerId1);
 
-                      Marker marker1 = Marker(
-                          markerId: markerId1,
-                          position: LatLng(list[i].lat, list[i].long),
-                          icon: (list[i].lat == getUserLat() &&
-                                  list[i].long == getUserLong())
-                              ? BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueViolet)
-                              : BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueRed),
+                Marker marker1 = Marker(
+                    markerId: markerId1,
+                    position: LatLng(list[i].lat, list[i].long),
+                    icon: (list[i].lat == getUserLat() &&
+                            list[i].long == getUserLong())
+                        ? BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueViolet)
+                        : BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueRed),
 
-                          /* icon: BitmapDescriptor.defaultMarkerWithHue(
+                    /* icon: BitmapDescriptor.defaultMarkerWithHue(
                               BitmapDescriptor.hueCyan),
                           */
-                          infoWindow: InfoWindow(
-                              title: list[i].name,
-                              onTap: () {
-                                var bottomSheetController =
-                                    Scaffold.of(scaffoldKey.currentContext)
-                                        .showBottomSheet((context) => Container(
-                                              child: getBottomSheet(list[i]),
-                                              height: 250,
-                                              color: Colors.transparent,
-                                            ));
-                              },
-                              snippet: list[i].bg));
+                    infoWindow: InfoWindow(
+                        title: list[i].name,
+                        onTap: () {
+                          // var bottomSheetController = Scaffold.of(
+                          //         scaffoldKey.currentContext)
+                          //     .showBottomSheet((context) => Container(
+                          //           child: getBottomSheet(list[i]),
+                          //           height: 250,
+                          //           color: Colors.transparent,
+                          //         ));
+                        },
+                        snippet: list[i].bg));
 
-                      setState(() {
-                        markers[markerId1] = marker1;
-                      });
-                    }
-                  },
-                ),
-              ],
-            ),
+                setState(() {
+                  markers[markerId1] = marker1;
+                });
+              }
+            },
           ),
         ));
   }

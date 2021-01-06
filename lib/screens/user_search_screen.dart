@@ -23,28 +23,26 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leadingWidth: 0,
-        title: Expanded(
-          child: Row(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/lifeline_logo.png',
-                  ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
                 ),
               ),
-              Text(
-                'Search User',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Nexa Bold',
-                  fontSize: 24,
-                ),
+            ),
+            Text(
+              'Search User',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,

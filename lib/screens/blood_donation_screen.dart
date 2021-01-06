@@ -20,24 +20,22 @@ class _BloodDonationScreenState extends State<BloodDonationScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           leadingWidth: 0,
-          title: Expanded(
-            child: Row(
-              children: [
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                    height: 40.0,
-                    child: Image.asset(
-                      'assets/images/lifeline_logo.png',
-                    ),
+          title: Row(
+            children: [
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 40.0,
+                  child: Image.asset(
+                    'assets/images/lifeline_logo.png',
                   ),
                 ),
-                Text(
-                  'Blood Donation',
-                  style: kTextStyle.copyWith(fontSize: 24),
-                ),
-              ],
-            ),
+              ),
+              Text(
+                'Blood Donation',
+                style: kTextStyle.copyWith(fontSize: 24),
+              ),
+            ],
           ),
           backgroundColor: Colors.white,
           shadowColor: Colors.black54,

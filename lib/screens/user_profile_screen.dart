@@ -119,28 +119,26 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
-        title: Expanded(
-          child: Row(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/lifeline_logo.png',
-                  ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
                 ),
               ),
-              Text(
-                'Profile',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Nexa Bold',
-                  fontSize: 24,
-                ),
+            ),
+            Text(
+              'Profile',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,

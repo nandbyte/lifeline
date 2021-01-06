@@ -58,28 +58,26 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 );
               })
         ],
-        title: Expanded(
-          child: Row(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/lifeline_logo.png',
-                  ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
                 ),
               ),
-              Text(
-                'Dashboard',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Nexa Bold',
-                  fontSize: 24,
-                ),
+            ),
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
