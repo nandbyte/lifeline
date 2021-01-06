@@ -58,7 +58,7 @@ class _TermsPagesState extends State<TermsPages> {
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                   ),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 20.0),
                   AutoSizeText(
                     '-Lifeline will access your location through GPS.',
                     style: TextStyle(
@@ -68,7 +68,7 @@ class _TermsPagesState extends State<TermsPages> {
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                   ),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 20.0),
                   AutoSizeText(
                     '-Lifeline will access your camera for scanning.',
                     style: TextStyle(
@@ -78,7 +78,7 @@ class _TermsPagesState extends State<TermsPages> {
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                   ),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 20.0),
                   AutoSizeText(
                     '-Any user  within the app can view your public health information.',
                     style:
@@ -86,7 +86,7 @@ class _TermsPagesState extends State<TermsPages> {
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                   ),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 20.0),
                   AutoSizeText(
                     '-Medical Professionals can acess your private health information.',
                     style:
@@ -96,25 +96,16 @@ class _TermsPagesState extends State<TermsPages> {
                   ),
                   SizedBox(height: 10.0),
                   AutoSizeText(
-                    '-Any user found accountable for misusing data will be penaltalized through HIPAA policy.',
+                    '-Any user found accountable for misusing data will be penaltalized following the',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
                     maxLines: 3,
                     textAlign: TextAlign.justify,
                   ),
-                  SizedBox(height: 30.0),
                   RichText(
                     text: TextSpan(children: [
                       TextSpan(
-                        text: 'For more Information ',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: MediaQuery.of(context).size.height / 35,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Click Here',
+                        text: 'HIPAA policy.',
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url =
@@ -127,7 +118,7 @@ class _TermsPagesState extends State<TermsPages> {
                             }
                           },
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.green,
                           decoration: TextDecoration.underline,
                           fontSize: MediaQuery.of(context).size.height / 35,
                           fontWeight: FontWeight.bold,
@@ -135,8 +126,11 @@ class _TermsPagesState extends State<TermsPages> {
                       )
                     ]),
                   ),
+                  SizedBox(height:190),
                   RoundedButton(
-                      text: 'Agree', color: Colors.green[900], onPressed: () {})
+                      text: 'Agree', color: Colors.green[900],
+                       onPressed: () {}
+                      ),
                 ],
               ),
             ),
