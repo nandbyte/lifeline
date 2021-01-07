@@ -44,18 +44,25 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.green[50],
+        child: Padding(
           padding: EdgeInsets.all(12),
           child: Center(
             child: QrImage(
               data: this.widget.qrCodeData,
               errorCorrectionLevel: QrErrorCorrectLevel.M,
-              gapless: false,
+              gapless: true,
+              embeddedImage: NetworkImage(
+                'https://raw.githubusercontent.com/NandByte/Old-LifeLine/master/assets/lifeline_logo.png',
+              ),
               foregroundColor: Colors.black,
               version: QrVersions.auto,
               size: MediaQuery.of(context).size.width / 1.25,
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
