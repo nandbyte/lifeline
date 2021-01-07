@@ -85,8 +85,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
               children: <Widget>[
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/check_record_icon.png',
                     height: 60,
                   ),
                   label: 'Check Record',
@@ -96,9 +95,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
                 ),
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/verify_record_icon.png',
                     height: 60,
                   ),
                   label: 'Verify Record',
