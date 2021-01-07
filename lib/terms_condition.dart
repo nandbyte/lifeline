@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:lifeline/components/rounded_button.dart';
+import 'package:lifeline/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TermsPages extends StatefulWidget {
@@ -26,11 +27,11 @@ class _TermsPagesState extends State<TermsPages> {
               ),
               Center(
                 child: Text(
-                  'Terms And Conditions',
-                  style: TextStyle(
+                  'Terms & Conditions',
+                  style: kTextStyle.copyWith(
                     color: Colors.black,
                     fontFamily: 'Nexa Bold',
-                    fontSize: 30,
+                    fontSize: 24,
                   ),
                 ),
               ),
@@ -44,13 +45,13 @@ class _TermsPagesState extends State<TermsPages> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 0.0),
+              padding: EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   AutoSizeText(
-                    'Welcome to Lifeline,this are the terms and conditions for our application.',
-                    style: TextStyle(
+                    'Terms and conditions for proper usage of LifeLine application:',
+                    style: kTextStyle.copyWith(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nexa Bold',
@@ -60,8 +61,8 @@ class _TermsPagesState extends State<TermsPages> {
                   ),
                   SizedBox(height: 20.0),
                   AutoSizeText(
-                    '-Lifeline will access your location through GPS.',
-                    style: TextStyle(
+                    '-  Lifeline will access device location through GPS.',
+                    style: kTextStyle.copyWith(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
                     ),
@@ -70,8 +71,8 @@ class _TermsPagesState extends State<TermsPages> {
                   ),
                   SizedBox(height: 20.0),
                   AutoSizeText(
-                    '-Lifeline will access your camera for scanning.',
-                    style: TextStyle(
+                    '-  Lifeline will access phone camera for scanning QR codes.',
+                    style: kTextStyle.copyWith(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
                     ),
@@ -80,25 +81,25 @@ class _TermsPagesState extends State<TermsPages> {
                   ),
                   SizedBox(height: 20.0),
                   AutoSizeText(
-                    '-Any user  within the app can view your public health information.',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
+                    '-  Any user within the app can view your public health information (following HIPAA protocol).',
+                    style: kTextStyle.copyWith(
+                        fontSize: 20.0, fontWeight: FontWeight.w400),
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 20.0),
                   AutoSizeText(
-                    '-Medical Professionals can acess your private health information.',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
+                    '-  Medical professionals can acess your private health information.',
+                    style: kTextStyle.copyWith(
+                        fontSize: 20.0, fontWeight: FontWeight.w400),
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 10.0),
                   AutoSizeText(
-                    '-Any user found accountable for misusing data will be penaltalized following the',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
+                    '-  Any user found accountable for misusing data will be penalized following the',
+                    style: kTextStyle.copyWith(
+                        fontSize: 20.0, fontWeight: FontWeight.w400),
                     maxLines: 3,
                     textAlign: TextAlign.justify,
                   ),
@@ -117,7 +118,7 @@ class _TermsPagesState extends State<TermsPages> {
                               throw "Cannot launch url";
                             }
                           },
-                        style: TextStyle(
+                        style: kTextStyle.copyWith(
                           color: Colors.green,
                           decoration: TextDecoration.underline,
                           fontSize: MediaQuery.of(context).size.height / 35,
@@ -126,11 +127,11 @@ class _TermsPagesState extends State<TermsPages> {
                       )
                     ]),
                   ),
-                  SizedBox(height:190),
+                  SizedBox(height: 190),
                   RoundedButton(
-                      text: 'Agree', color: Colors.green[900],
-                       onPressed: () {}
-                      ),
+                      text: 'Agree',
+                      color: Colors.green[900],
+                      onPressed: () {}),
                 ],
               ),
             ),
