@@ -5,27 +5,12 @@ import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 //import 'package:location/location.dart';
 //import 'package:modal_progress_hud/modal_progress_hud.dart';
-
-double selfX;
-double selfY;
-
-class LattLongg {
-  String lat;
-  String long;
-  LattLongg(this.lat, this.long);
-  Map<String, dynamic> toMap() {
-    return {
-      'lat': lat,
-      'long': long,
-    };
-  }
-}
 
 class Donor {
   String id;
@@ -59,25 +44,6 @@ class DonorMapTab extends StatefulWidget {
 }
 
 class _DonorMapTabState extends State<DonorMapTab> {
-  final GlobalKey scaffoldKey = GlobalKey();
-//database class init
-
-  bool loadingIndicator = false;
-  String uid = Auth().getUID();
-  final database = Database(uid: Auth().getUID());
-  CollectionReference databaseReference;
-  QuerySnapshot snapshot;
-  String blood;
-
-//Location self
-
-  void getLatLong() {
-    var snapshot =
-        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
-    x = LattLongg(
-        snapshot.docs.data()['Latitute'], snapshot.docs.data()['Longitude']);
-  }
-
 //Donor
 
   Donor donor1 =
@@ -91,23 +57,25 @@ class _DonorMapTabState extends State<DonorMapTab> {
   Map<MarkerId, Marker> markers = {};
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(double.parse(x.lat), double.parse(x.long)),
+    target: LatLng(23.7925, 90.4078),
     zoom: 14.0,
   );
   List listMarkerIds = [];
 
   @override
   void initState() {
-    //list.add(donor1);
-    //list.add(donor2);
+    list.add(donor1);
+    list.add(donor2);
 
-    databaseReference = database.users;
-    getLatLong();
+    //databaseReference = database.users;
+    //getLatLong();
+    //locAdd();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    //locAdd();
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -176,8 +144,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
                 Marker marker1 = Marker(
                     markerId: markerId1,
                     position: LatLng(list[i].lat, list[i].long),
-                    icon: (list[i].lat == double.parse(x.lat) &&
-                            list[i].long == double.parse(x.long))
+                    icon: (list[i].lat == 23.7925 && list[i].long == 90.4078)
                         ? BitmapDescriptor.defaultMarkerWithHue(
                             BitmapDescriptor.hueViolet)
                         : BitmapDescriptor.defaultMarkerWithHue(
@@ -217,8 +184,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
           child: Column(
             children: [
               Container(
-                color: (donor.lat == double.parse(x.lat) &&
-                        donor.long == double.parse(x.long))
+                color: (donor.lat == 23.7925 && donor.long == 90.4078)
                     ? Colors.black45
                     : Colors.redAccent,
                 //color: Colors.blueAccent,

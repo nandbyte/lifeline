@@ -37,14 +37,6 @@ class _State extends State<DonorProfileTab> {
     }
   }
 
-  Future<void> locAdd() async {
-    String uid = Auth().getUID();
-
-    final _position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    await Database(uid: uid).updateLocation(
-        _position.latitude.toString(), _position.longitude.toString());
-  }
   // void _getLocation() async {
   //   final _position = await Geolocator.getCurrentPosition(
   //       desiredAccuracy: LocationAccuracy.high);
@@ -56,7 +48,6 @@ class _State extends State<DonorProfileTab> {
 
   @override
   Widget build(BuildContext context) {
-    locAdd();
     if (fetch < 2) {
       getInfo();
       setState(() {
