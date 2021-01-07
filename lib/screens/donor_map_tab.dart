@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/custom_dropdown_menu.dart';
@@ -14,6 +14,18 @@ import 'donor_list_tab.dart';
 import 'package:lifeline/models/blood_donor.dart';
 //import 'package:location/location.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+class Loc {
+  String lat;
+  String long;
+  Loc({this.lat, this.long});
+  Map<String, dynamic> toMap() {
+    return {
+      "Longitude": long,
+      "Latitude": lat,
+    };
+  }
+}
 
 /*class Donor {
   String id;
@@ -52,6 +64,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
   final database = Database(uid: Auth().getUID());
   CollectionReference databaseReference;
   QuerySnapshot snapshot;
+  DocumentSnapshot snapLoc;
   String blood;
 
   List<Donor> donors;
@@ -60,6 +73,9 @@ class _DonorMapTabState extends State<DonorMapTab> {
     snapshot = await database.donorList(str);
   }
 
+  Future<void> fetchLoc() async {
+    snapLoc = await database.getLoc();
+  }
 //Donor
 
   //Donor donor1 =
@@ -72,10 +88,10 @@ class _DonorMapTabState extends State<DonorMapTab> {
   Completer _controller = Completer();
   Map<MarkerId, Marker> markers = {};
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  /*static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(23.7925, 90.4078),
     zoom: 14.0,
-  );
+  );*/
   List listMarkerIds = [];
 
   @override
@@ -84,9 +100,21 @@ class _DonorMapTabState extends State<DonorMapTab> {
     //list.add(donor2);
 
     databaseReference = database.users;
+    getLoc();
     //getLatLong();
     //locAdd();
     super.initState();
+  }
+
+  String lat, long;
+  void getLoc() async {
+    Loc obj;
+    await fetchLoc();
+    obj = Loc(
+        lat: (snapshot.docs.data()['Latitute']).toString(),
+        long: (snapshot.docs.data()['Longitute']).toString());
+    lat = obj.lat;
+    long = obj.long;
   }
 
   void createList(String blood) async {
@@ -97,12 +125,12 @@ class _DonorMapTabState extends State<DonorMapTab> {
       print("xxxxxxx");
       list.add(
         Donor(
-            blood: snapshot.docs[i].data()['Blood Group'],
-            contact: snapshot.docs[i].data()['Contact No'],
-            latitute: snapshot.docs[i].data()['Latitute'] ?? '',
-            longitude: snapshot.docs[i].data()['Longitude'] ?? '',
-            location: snapshot.docs[i].data()['Location'],
-            name: snapshot.docs[i].data()['Name']),
+            blood: (snapshot.docs[i].data()['Blood Group']).toString(),
+            contact: snapshot.docs[i].data()['Contact No'].toString(),
+            latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
+            longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
+            location: snapshot.docs[i].data()['Location'].toString(),
+            name: snapshot.docs[i].data()['Name'].toString()),
       );
     }
   }
@@ -155,6 +183,12 @@ class _DonorMapTabState extends State<DonorMapTab> {
   }
 
   Widget map(List<Donor> list) {
+    // Position location = new Location();
+
+    final CameraPosition _kGooglePlex = CameraPosition(
+      target: LatLng(double.parse(lat), double.parse(long)),
+      zoom: 14.0,
+    );
     return Scaffold(
       body: GoogleMap(
         initialCameraPosition: _kGooglePlex,
@@ -166,7 +200,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
           print(list.length);
           for (int i = 0; i < list.length; i++) {
             print("testetstetst");
-            print("list blood " + list[i].blood + "\n");
+            print(list[i].toMap());
             MarkerId markerId1 = MarkerId(i.toString());
 
             listMarkerIds.add(markerId1);
@@ -188,13 +222,13 @@ class _DonorMapTabState extends State<DonorMapTab> {
                 infoWindow: InfoWindow(
                     title: list[i].name,
                     onTap: () {
-                      // var bottomSheetController = Scaffold.of(
-                      //         scaffoldKey.currentContext)
-                      //     .showBottomSheet((context) => Container(
-                      //           child: getBottomSheet(list[i]),
-                      //           height: 250,
-                      //           color: Colors.transparent,
-                      //         ));
+                      var bottomSheetController =
+                          Scaffold.of(scaffoldKey.currentContext)
+                              .showBottomSheet((context) => Container(
+                                    child: getBottomSheet(list[i]),
+                                    height: 250,
+                                    color: Colors.transparent,
+                                  ));
                     },
                     snippet: list[i].blood));
 
