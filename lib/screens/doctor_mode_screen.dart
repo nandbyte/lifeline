@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:toast/toast.dart';
 
 class DoctorModeScreen extends StatefulWidget {
-  static String id = 'verify_report';
+  static String id = 'doctor_mode';
 
   @override
   _DoctorModeScreenState createState() => _DoctorModeScreenState();
@@ -15,7 +16,7 @@ class DoctorModeScreen extends StatefulWidget {
 class _DoctorModeScreenState extends State<DoctorModeScreen> {
   bool loadingIndicator = false;
 
-  String doctorID;
+  TextEditingController doctorIdController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,47 +53,66 @@ class _DoctorModeScreenState extends State<DoctorModeScreen> {
         opacity: 0.9,
         progressIndicator: kWaveLoadingIndicator,
         inAsyncCall: loadingIndicator,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (value) {
-                    this.doctorID = value;
-                  },
-                  decoration:
-                      kTextFieldDecoration.copyWith(hintText: "Doctor ID"),
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Center(
+                child: Text(
+                  'Verify yourself with your',
+                  style: kTextStyle.copyWith(
+                    fontSize: 20,
+                  ),
                 ),
-                RoundedButton(
-                  text: 'Verify',
-                  color: Colors.green[900],
-                  onPressed: () async {
-                    setState(() {
-                      loadingIndicator = true;
-                    });
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Text(
+                  'BMDC registration number',
+                  style: kTextStyle.copyWith(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                label: 'Doctor Registration Number',
+                hint: 'BMDC Registration Number',
+                controller: doctorIdController,
+                keyboardType: TextInputType.number,
+              ),
+              RoundedButton(
+                text: 'Verify',
+                color: Colors.green[900],
+                onPressed: () async {
+                  setState(() {
+                    loadingIndicator = true;
+                  });
 
-                    try {
-                      // TODO: Verify Doctor ID here
-                      setState(() {
-                        loadingIndicator = false;
-                      });
-                    } catch (e) {
-                      print(e);
-                      Toast.show(
-                        e.message,
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
+                  try {
+                    // TODO: Verify Doctor ID here
+                    //TODO: If you are verified push to doctor dashboard
+                    setState(() {
+                      loadingIndicator = false;
+                    });
+                  } catch (e) {
+                    print(e);
+                    Toast.show(
+                      e.message,
+                      context,
+                      duration: Toast.LENGTH_LONG,
+                      gravity: Toast.TOP,
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
