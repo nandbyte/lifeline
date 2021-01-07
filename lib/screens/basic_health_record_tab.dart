@@ -65,7 +65,23 @@ class _BasicHealthRecordTabState extends State<BasicHealthRecordTab> {
                   '~141-200 mg/dL',
                   '>200 mg/dL',
                 ]),
-                // TODO: Complete the list of basic health record data (RBC count, WBC count, Platelet count, Blodd Pressure as dropdown)
+                CustomDropdownMenu(label: 'RBC Count', items: [
+                  'less than 4.7 mcL',
+                  '~4.7-6.1 mcL',
+                  'higher than 6.1 mcL'
+                ]),
+                CustomDropdownMenu(label: 'WBC Count', items: [
+                  '~9,000-30,000 mcL',
+                  '~6,200-17,000 mcL',
+                  '~5,000-10,000 mcL'
+                ]),
+                CustomDropdownMenu(label: 'Blood Pressure(Sys/Dias)', items: [
+                  '120/80',
+                  '(120-129)/(<80)',
+                  '(130-139)/(80-89)',
+                  '140/90',
+                  '180/120',
+                ]),
                 Container(
                   child: RoundedButton(
                     onPressed: () {
