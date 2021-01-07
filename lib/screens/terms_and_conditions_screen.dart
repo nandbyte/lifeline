@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
+import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TermsAndConditionsScreen extends StatefulWidget {
@@ -143,7 +144,12 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                                   await launch(url,
                                       forceSafariVC: true, forceWebView: true);
                                 } else {
-                                  throw "Cannot launch url";
+                                  Toast.show(
+                                    'Cannot launch browser',
+                                    context,
+                                    duration: Toast.LENGTH_SHORT,
+                                    gravity: Toast.BOTTOM,
+                                  );
                                 }
                               },
                             style: kTextStyle.copyWith(
