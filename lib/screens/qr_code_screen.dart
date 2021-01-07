@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCodeScreen extends StatefulWidget {
   final String appBarTitle;
@@ -16,6 +17,45 @@ class QrCodeScreen extends StatefulWidget {
 class _QrCodeScreenState extends State<QrCodeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 0,
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
+                ),
+              ),
+            ),
+            Text(
+              this.widget.appBarTitle,
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black54,
+      ),
+      body: Padding(
+          padding: EdgeInsets.all(12),
+          child: Center(
+            child: QrImage(
+              data: this.widget.qrCodeData,
+              errorCorrectionLevel: QrErrorCorrectLevel.M,
+              gapless: false,
+              foregroundColor: Colors.black,
+              version: QrVersions.auto,
+              size: MediaQuery.of(context).size.width / 1.25,
+            ),
+          )),
+    );
   }
 }
