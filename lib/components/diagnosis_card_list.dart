@@ -15,7 +15,7 @@ class _DiagnosisCardListState extends State<DiagnosisCardList> {
     return ListView.builder(
         itemCount: this.widget.diagnosisList.length,
         itemBuilder: (context, index) {
-          return DiagnosisInfoCard(diagnosis: this.widget.diagnosisList[index]);
+          return DiagnosisCard(diagnosis: this.widget.diagnosisList[index]);
         });
   }
 }
