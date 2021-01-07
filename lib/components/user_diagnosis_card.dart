@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/blood_donor.dart';
 import 'package:lifeline/models/diagnosis.dart';
-import 'package:toast/toast.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class UserDiagnosisCard extends StatelessWidget {
   final Donor targetUser;

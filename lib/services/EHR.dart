@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lifeline/models/basic_health.dart';
+import 'package:lifeline/models/diagnosis.dart';
 import 'package:lifeline/services/api_path.dart';
+import 'package:lifeline/services/authenticate.dart';
 
 class EHR {
   final String uid;
@@ -43,5 +44,27 @@ class EHR {
         wbc: '~9,000-30,000 mcL',
         bp: '120/80',
       );
+  }
+
+  // History Data Base From Here
+
+  CollectionReference diagnosisRef = FirebaseFirestore.instance
+      .collection('health_record')
+      .doc(Auth().getUID())
+      .collection('history');
+
+  Future<void> _setDiagnosis({String path, Map<String, dynamic> data}) async {
+    final referrence = FirebaseFirestore.instance.doc(path);
+    var snapshot = await diagnosisRef.doc('history').get();
+    await referrence.set(data);
+  }
+
+  Future<void> createDiagnosis(Diagnosis diagnosis) async {
+    int currentID = await diagnosisRef.snapshots().length ?? 0;
+    currentID++;
+    print(currentID);
+    await _setDiagnosis(
+        path: APIPath.diagnosis(uid, currentID.toString()),
+        data: diagnosis.toMap());
   }
 }
