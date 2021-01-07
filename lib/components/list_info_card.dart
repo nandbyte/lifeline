@@ -20,7 +20,7 @@ class ListInfoCard extends StatelessWidget {
                 flex: 2,
                 child: Text(
                   this.title,
-                  style: kSTextStyle.copyWith(
+                  style: kTextStyle.copyWith(
                     fontSize: 18,
                   ),
                 ),
@@ -29,7 +29,7 @@ class ListInfoCard extends StatelessWidget {
                 flex: 3,
                 child: Text(
                   this.description,
-                  style: kSTextStyle.copyWith(
+                  style: kTextStyle.copyWith(
                     fontFamily: 'Nexa',
                     fontSize: 18,
                     fontWeight: FontWeight.w500,

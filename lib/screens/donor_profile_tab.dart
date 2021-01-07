@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/components/list_info_card.dart';
 import 'package:lifeline/models/profile_data.dart';
-import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 
@@ -16,6 +16,7 @@ class _State extends State<DonorProfileTab> {
   ProfileData profile;
   int fetch = 0;
   bool donorStatus = true;
+  Position position;
   Future<void> getInfo() async {
     String uid = Auth().getUID();
     final _profile = await Database(uid: uid).getData(uid);
@@ -28,7 +29,22 @@ class _State extends State<DonorProfileTab> {
   Future<void> updateStatus() async {
     String uid = Auth().getUID();
     await Database(uid: uid).updateDonorStatus(donorStatus);
+    if (donorStatus) {
+      final _position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      await Database(uid: uid).updateLocation(
+          _position.latitude.toString(), _position.longitude.toString());
+    }
   }
+
+  // void _getLocation() async {
+  //   final _position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+  //   setState(() {
+  //     position = _position;
+  //   });
+  //   //print(position);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +97,7 @@ class _State extends State<DonorProfileTab> {
               activeColor: Colors.green,
               title: Text(
                 'Donor Status',
-                style: kSTextStyle.copyWith(
+                style: kTextStyle.copyWith(
                   fontSize: 18,
                 ),
               ),
