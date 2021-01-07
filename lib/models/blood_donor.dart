@@ -16,11 +16,12 @@ class Donor {
   Map<String, dynamic> toMap() {
     return {
       'Name': name,
-      'Blood Group': blood,
       'Contact No': contact,
-      'Location': location,
+      //'Location': location,
       'Latitute': latitute,
       'Longitude': longitude,
+      'Location': location,
+      'Blood Group': blood,
     };
   }
 }

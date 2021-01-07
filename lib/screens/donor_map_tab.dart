@@ -6,37 +6,38 @@ import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lifeline/screens/donor_list_tab.dart';
 import 'dart:async';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
+import 'donor_list_tab.dart';
+import 'package:lifeline/models/blood_donor.dart';
 //import 'package:location/location.dart';
-//import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class Donor {
+/*class Donor {
   String id;
-  double lat;
-  double long;
-  String bg;
+  double latitute;
+  double longitude;
+  String blood;
   String name;
   String location;
   String contact;
 
-  Donor(this.id, this.lat, this.long, this.bg, this.name, this.location,
+  Donor(this.id, this.latitute, this.longitude, this.blood, this.name, this.location,
       this.contact);
   Map<String, dynamic> toMap() {
     return {
       'Name': name,
-      'lat': lat,
-      'long': long,
-      'bg': bg,
+      'latitute': latitute,
+      'longitude': longitude,
+      'blood': blood,
       'id': id,
       'location': location,
       'contact': contact,
     };
   }
-}
-
-LattLongg x;
+}*/
 
 class DonorMapTab extends StatefulWidget {
   @override
@@ -44,12 +45,27 @@ class DonorMapTab extends StatefulWidget {
 }
 
 class _DonorMapTabState extends State<DonorMapTab> {
+  final GlobalKey scaffoldKey = GlobalKey();
+
+  bool loadingIndicator = false;
+
+  final database = Database(uid: Auth().getUID());
+  CollectionReference databaseReference;
+  QuerySnapshot snapshot;
+  String blood;
+
+  List<Donor> donors;
+
+  Future<void> fetchDonorList(String str) async {
+    snapshot = await database.donorList(str);
+  }
+
 //Donor
 
-  Donor donor1 =
-      new Donor("1", 23.7925, 90.4078, "A+", "Saif", "Dhaka", "0173029526");
-  Donor donor2 =
-      new Donor("2", 23.8103, 90.4125, "B+", "Adib", "Dhaka", "0130882088");
+  //Donor donor1 =
+  // new Donor("farhan", "01309320882", "23.8103", "90.4078", "Dhaka", "A+");
+  // Donor donor2 =
+  //  new Donor("2", 23.8103, 90.4125, "B+", "Adib", "Dhaka", "0130882088");
 
   List<Donor> list = [];
 
@@ -64,13 +80,31 @@ class _DonorMapTabState extends State<DonorMapTab> {
 
   @override
   void initState() {
-    list.add(donor1);
-    list.add(donor2);
+    //list.add(donor1);
+    //list.add(donor2);
 
-    //databaseReference = database.users;
+    databaseReference = database.users;
     //getLatLong();
     //locAdd();
     super.initState();
+  }
+
+  void createList(String blood) async {
+    print("test+++");
+    await fetchDonorList(blood);
+    List<Donor> donors = [];
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      print("xxxxxxx");
+      list.add(
+        Donor(
+            blood: snapshot.docs[i].data()['Blood Group'],
+            contact: snapshot.docs[i].data()['Contact No'],
+            latitute: snapshot.docs[i].data()['Latitute'] ?? '',
+            longitude: snapshot.docs[i].data()['Longitude'] ?? '',
+            location: snapshot.docs[i].data()['Location'],
+            name: snapshot.docs[i].data()['Name']),
+      );
+    }
   }
 
   @override
@@ -95,84 +129,82 @@ class _DonorMapTabState extends State<DonorMapTab> {
             onChanged: (value) async {
               //Position position;
 
-// TODO: Implement map search functionality
+              // TODO: Implement map search functionality
 
-              // setState(() {
-              //   blood = value;
-              // });
+              setState(() {
+                blood = value;
+              });
 
-              // setState(() {
-              //   blood = value;
-              //   loadingIndicator = true;
-              // });
+              setState(() {
+                blood = value;
+                loadingIndicator = true;
+              });
 
-              // await fetchDonorList(blood);
-              // donors = [];
-              // for (int i = 0; i < snapshot.docs.length; i++) {
-              //   donors.add(
-              //     Donor(
-              //         blood: snapshot.docs[i].data()['Blood Group'],
-              //         contact: snapshot.docs[i].data()['Contact No'],
-              //         latitute: snapshot.docs[i].data()['Latitute'] ?? '',
-              //         longitude: snapshot.docs[i].data()['Longitude'] ?? '',
-              //         location: snapshot.docs[i].data()['Location'],
-              //         name: snapshot.docs[i].data()['Name']),
-              //   );
-              // }
-
-              // setState(() {
-              //   loadingIndicator = false;
-              // });
+              createList(blood);
+              print(list.length);
+              setState(() {
+                loadingIndicator = false;
+                map(list);
+              });
             },
           ),
           backgroundColor: Colors.white,
           shadowColor: Colors.black54,
         ),
-        body: Container(
-          child: GoogleMap(
-            initialCameraPosition: _kGooglePlex,
-            onTap: (_) {},
-            mapType: MapType.normal,
-            markers: Set.of(markers.values),
-            onMapCreated: (GoogleMapController controler) {
-              _controller.complete(controler);
-              for (int i = 0; i < list.length; i++) {
-                MarkerId markerId1 = MarkerId(list[i].id);
+        body: Container(child: map(list)));
+  }
 
-                listMarkerIds.add(markerId1);
+  Widget map(List<Donor> list) {
+    return Scaffold(
+      body: GoogleMap(
+        initialCameraPosition: _kGooglePlex,
+        onTap: (_) {},
+        mapType: MapType.normal,
+        markers: Set.of(markers.values),
+        onMapCreated: (GoogleMapController controler) {
+          _controller.complete(controler);
+          print(list.length);
+          for (int i = 0; i < list.length; i++) {
+            print("testetstetst");
+            print("list blood " + list[i].blood + "\n");
+            MarkerId markerId1 = MarkerId(i.toString());
 
-                Marker marker1 = Marker(
-                    markerId: markerId1,
-                    position: LatLng(list[i].lat, list[i].long),
-                    icon: (list[i].lat == 23.7925 && list[i].long == 90.4078)
-                        ? BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueViolet)
-                        : BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueRed),
+            listMarkerIds.add(markerId1);
 
-                    /* icon: BitmapDescriptor.defaultMarkerWithHue(
+            Marker marker1 = Marker(
+                markerId: markerId1,
+                position: LatLng(double.parse(list[i].latitute),
+                    double.parse(list[i].longitude)),
+                icon: (list[i].latitute == 23.7925 &&
+                        list[i].longitude == 90.4078)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueViolet)
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
+
+                /* icon: BitmapDescriptor.defaultMarkerWithHue(
                               BitmapDescriptor.hueCyan),
                           */
-                    infoWindow: InfoWindow(
-                        title: list[i].name,
-                        onTap: () {
-                          // var bottomSheetController = Scaffold.of(
-                          //         scaffoldKey.currentContext)
-                          //     .showBottomSheet((context) => Container(
-                          //           child: getBottomSheet(list[i]),
-                          //           height: 250,
-                          //           color: Colors.transparent,
-                          //         ));
-                        },
-                        snippet: list[i].bg));
+                infoWindow: InfoWindow(
+                    title: list[i].name,
+                    onTap: () {
+                      // var bottomSheetController = Scaffold.of(
+                      //         scaffoldKey.currentContext)
+                      //     .showBottomSheet((context) => Container(
+                      //           child: getBottomSheet(list[i]),
+                      //           height: 250,
+                      //           color: Colors.transparent,
+                      //         ));
+                    },
+                    snippet: list[i].blood));
 
-                setState(() {
-                  markers[markerId1] = marker1;
-                });
-              }
-            },
-          ),
-        ));
+            setState(() {
+              markers[markerId1] = marker1;
+            });
+          }
+        },
+      ),
+    );
   }
 
   Widget getBottomSheet(Donor donor) {
@@ -184,7 +216,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
           child: Column(
             children: [
               Container(
-                color: (donor.lat == 23.7925 && donor.long == 90.4078)
+                color: (donor.latitute == 23.7925 && donor.longitude == 90.4078)
                     ? Colors.black45
                     : Colors.redAccent,
                 //color: Colors.blueAccent,
@@ -202,7 +234,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
                       ),
                       Row(
                         children: [
-                          Text(donor.bg,
+                          Text(donor.blood,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 12)),
                           Icon(
@@ -239,7 +271,9 @@ class _DonorMapTabState extends State<DonorMapTab> {
                   SizedBox(
                     width: 20,
                   ),
-                  Text((donor.lat).toString() + "," + (donor.long).toString())
+                  Text((donor.latitute).toString() +
+                      "," +
+                      (donor.longitude).toString())
                 ],
               ),
               SizedBox(

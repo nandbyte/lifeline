@@ -10,10 +10,10 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class DonorListTab extends StatefulWidget {
   @override
-  _DonorListTabState createState() => _DonorListTabState();
+  DonorListTabState createState() => DonorListTabState();
 }
 
-class _DonorListTabState extends State<DonorListTab> {
+class DonorListTabState extends State<DonorListTab> {
   bool loadingIndicator = false;
 
   final database = Database(uid: Auth().getUID());
@@ -104,6 +104,10 @@ class _DonorListTabState extends State<DonorListTab> {
         ),
       ),
     );
+  }
+
+  List getList() {
+    return donors;
   }
 }
 
