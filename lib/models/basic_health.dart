@@ -5,7 +5,7 @@ class basicRecord {
   String wbc;
   String bp;
   String sugerLevel;
-
+  int count;
   basicRecord({
     this.height,
     this.weight,
@@ -13,6 +13,7 @@ class basicRecord {
     this.wbc,
     this.bp,
     this.sugerLevel,
+    this.count,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +24,7 @@ class basicRecord {
       'WBC Count': wbc,
       'Suger Level': sugerLevel,
       'Blood Pressure': bp,
+      'Count': count ?? 0,
     };
   }
 }

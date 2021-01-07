@@ -7,13 +7,14 @@ class Diagnosis {
   String date;
   String verifiedBy;
   bool verified = false;
-
+  int id;
   Diagnosis({
     this.type,
     this.problem,
     this.date,
     this.verified, // For testing
     this.verifiedBy, // For testing
+    this.id,
   }) {
     verified = verified ?? false;
   }
@@ -24,6 +25,7 @@ class Diagnosis {
       'Date': this.date,
       'Verified': this.verified,
       'VerifiedBy': this.verifiedBy,
+      
     };
   }
 }
