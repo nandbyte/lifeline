@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/diagnosis.dart';
 import 'package:lifeline/screens/qr_code_screen.dart';

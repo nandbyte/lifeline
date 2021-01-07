@@ -45,7 +45,7 @@ class _BasicHealthRecordTabState extends State<BasicHealthRecordTab> {
     final _rbcCount = rbcCount;
     final _bloodPressure = bloodPressure;
     final _wbcCount = wbcCount;
-
+    final _count = await ehrDatabase.getCount();
     basicRecord _record = new basicRecord(
       height: _height,
       weight: _weight,
@@ -53,6 +53,7 @@ class _BasicHealthRecordTabState extends State<BasicHealthRecordTab> {
       bp: _bloodPressure,
       rbc: _rbcCount,
       wbc: _wbcCount,
+      count: _count,
     );
     print(_record.toMap());
     ehrDatabase.createRecord(_record);
