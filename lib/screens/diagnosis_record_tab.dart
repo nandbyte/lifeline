@@ -38,14 +38,16 @@ class _DiagnosisRecordTabState extends State<DiagnosisRecordTab> {
   final erhRecord = EHR(uid: Auth().getUID());
   CollectionReference refference;
   QuerySnapshot snapshot;
+
   List<Diagnosis> diagnosisList;
 
-  Future<void> fetchHistory() async {
+  Future<List<Diagnosis>> fetchHistory() async {
+    List<Diagnosis> _diagnosisList = [];
     snapshot = await erhRecord.historySnap();
     for (int i = 0; i < snapshot.docs.length; i++) {
       var _history = snapshot.docs[i];
       print(_history.data());
-      diagnosisList.add(new Diagnosis(
+      _diagnosisList.add(new Diagnosis(
         type: _history.data()['Type'],
         date: _history.data()['Date'],
         problem: _history.data()['Problem'],
@@ -53,13 +55,19 @@ class _DiagnosisRecordTabState extends State<DiagnosisRecordTab> {
         verifiedBy: _history.data()['VerifiedBy'],
       ));
     }
+    setState(() {
+      diagnosisList = _diagnosisList;
+    });
+    return diagnosisList;
   }
 
+  void nonAsync(){
+      fetchHistory();
+  }
   @override
-  Future<void> initState() {
-    setState(() {
-      diagnosisList = [];
-    });
+  void initState() {
+    diagnosisList = [];
+    nonAsync();
     super.initState();
   }
 
@@ -71,9 +79,6 @@ class _DiagnosisRecordTabState extends State<DiagnosisRecordTab> {
   @override
   Widget build(BuildContext context) {
     //fetchHistory();
-    setState(() {
-      fetchHistory();
-    });
     loadingIndicator = false;
     return ModalProgressHUD(
       color: Colors.white,
