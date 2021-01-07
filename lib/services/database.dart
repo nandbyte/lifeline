@@ -10,8 +10,9 @@ class Loc {
   Loc({this.lat, this.long});
   Map<String, dynamic> toMap() {
     return {
+      "Latitute": lat,
       "Longitude": long,
-      "Latitude": lat,
+      //"Latitude": lat,
     };
   }
 }
@@ -146,9 +147,8 @@ class Database {
   }
 
   Future<DocumentSnapshot> getLoc() async {
-    return await FirebaseFirestore.instance
-        .collection('profile')
-        .doc(uid)
-        .get();
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    return snapshot;
   }
 }

@@ -14,6 +14,7 @@ import 'donor_list_tab.dart';
 import 'package:lifeline/models/blood_donor.dart';
 //import 'package:location/location.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Loc {
   String lat;
@@ -111,8 +112,8 @@ class _DonorMapTabState extends State<DonorMapTab> {
     Loc obj;
     await fetchLoc();
     obj = Loc(
-        lat: (snapshot.docs.data()['Latitute']).toString(),
-        long: (snapshot.docs.data()['Longitute']).toString());
+        lat: (snapshot.data()['Latitute']).toString(),
+        long: (snapshot.data()['Longitute']).toString());
     lat = obj.lat;
     long = obj.long;
   }

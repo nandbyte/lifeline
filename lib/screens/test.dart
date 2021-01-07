@@ -1,199 +1,90 @@
-/*import 'dart:async';
-
+import 'dart:ffi';
+import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lifeline/components/custom_dropdown_menu.dart';
+import 'package:lifeline/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lifeline/screens/donor_list_tab.dart';
+import 'dart:async';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
+import 'donor_list_tab.dart';
+import 'package:lifeline/models/blood_donor.dart';
+//import 'package:location/location.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'donor_profile_tab.dart';
+import 'package:geolocator/geolocator.dart';
 
-class MyMaps extends StatefulWidget{
-  @override
-  State createState() {
-    // TODO: implement createState
-    return MyMapsState();
-  }
-
-}
-class MyMapsState extends State{
-  final GlobalKey scaffoldKey = GlobalKey();
-
-  Completer _controller = Completer();
-  Map<MarkerId,Marker> markers = {};
-  static final CameraPosition _kGooglePlex =
-  CameraPosition(
-    target: LatLng(17.4435, 78.3772),
-    zoom: 14.0,
-  );
-  List listMarkerIds=List();
-  //final MarkerId markerId = MarkerId("current");
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-        key: scaffoldKey,
-        appBar: AppBar(leading: Icon(Icons.map),
-          backgroundColor: Colors.blue,title:
-          Text("Google Maps With Markers"),),
-        body: Container(
-          child: GoogleMap(initialCameraPosition: _kGooglePlex,
-
-            onTap: (_){
-
-            },
-            mapType: MapType.normal,
-            markers: Set.of(markers.values),
-
-            onMapCreated: (GoogleMapController controler){
-              _controller.complete(controler);
-
-              MarkerId markerId1 = MarkerId("1");
-              MarkerId markerId2 = MarkerId("2");
-              MarkerId markerId3 = MarkerId("3");
-
-              listMarkerIds.add(markerId1);
-              listMarkerIds.add(markerId2);
-              listMarkerIds.add(markerId3);
-
-
-              Marker marker1=Marker(markerId: markerId1,
-                  position: LatLng(17.4435, 78.3772),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueCyan),
-                  infoWindow: InfoWindow(
-                      title: "Hytech City",onTap: (){
-
-                    var  bottomSheetController=Scaffold.of(scaffoldKey.currentContext).
-                    showBottomSheet((context) => Container(
-                      child:
-                      getBottomSheet("17.4435, 78.3772"),
-                      height: 250,
-                      color: Colors.transparent,
-                    ));
-
-                  },snippet: "Snipet Hitech City"
-                  ));
-
-              Marker marker2=Marker(markerId: markerId2,
-                position: LatLng(17.4837, 78.3158),
-                icon:
-                BitmapDescriptor.defaultMarkerWithHue
-                  (BitmapDescriptor.hueGreen),);
-              Marker marker3=
-              Marker(markerId:
-              markerId3,position:
-              LatLng(17.5169, 78.3428),
-                  infoWindow: InfoWindow(
-                      title: "Miyapur",onTap: (){},snippet: "Miyapur"
-                  ));
-
-              setState(() {
-                markers[markerId1]=marker1;
-                markers[markerId2]=marker2;
-                markers[markerId3]=marker3;
-              });
-            },
-
-          ),
-        )
-    );
-  }
-
-  Widget getBottomSheet(String s)
-  {
-    return Stack(
-      children: [
-        Container(
-
-          margin: EdgeInsets.only(top: 32),
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                color: Colors.blueAccent,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Hytech City Public School \n CBSC",style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14
-                      ),),
-                      SizedBox(height: 5,),
-                      Row(children: [
-
-                        Text("4.5",style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12
-                        )),
-                        Icon(Icons.star,color: Colors.yellow,),
-                        SizedBox(width: 20,),
-                        Text("970 Folowers",style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14
-                        ))
-                      ],),
-                      SizedBox(height: 5,),
-                      Text("Memorial Park",style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14
-                      )),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                children: [SizedBox(width: 20,),
-                  Icon(Icons.map,color: Colors.blue,),
-                  SizedBox(width: 20,),Text("$s")],
-              ),
-              SizedBox(height: 20,),
-              Row(
-                children: [SizedBox(width: 20,),
-                  Icon(Icons.call,color: Colors.blue,),
-                  SizedBox(width: 20,),
-                  Text("040-123456")],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Align(
-            alignment: Alignment.topRight,
-
-            child: FloatingActionButton(
-                child: Icon(Icons.navigation),
-                onPressed: (){
-
-                }),
-          ),
-        )
-      ],
-
-    );
-  }
-
-}
-*/
-/*
 class DonorMapTab extends StatefulWidget {
   @override
   _DonorMapTabState createState() => _DonorMapTabState();
 }
 
 class _DonorMapTabState extends State<DonorMapTab> {
+  final GlobalKey scaffoldKey = GlobalKey();
+
+  bool loadingIndicator = false;
+
+  final database = Database(uid: Auth().getUID());
+  CollectionReference databaseReference;
+  QuerySnapshot snapshot;
+
+  String blood;
+
+  List<Donor> donors = [];
+
+  Future<void> fetchDonorList(String str) async {
+    snapshot = await database.donorList(str);
+  }
+
+  String lat, long;
+  Future<void> loc() async {
+    String uid = Auth().getUID();
+    final _position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    await Database(uid: uid).updateLocation(
+        _position.latitude.toString(), _position.longitude.toString());
+    lat = _position.latitude.toString();
+    long = _position.longitude.toString();
+  }
+
+  void loccup() async {
+    loc();
+  }
+
+  List<Donor> list = [];
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      
-    );
+  void initState() {
+    databaseReference = database.users;
+
+    super.initState();
+  }
+
+  void createList(String blood) async {
+    print("test+++");
+    await fetchDonorList(blood);
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      print("xxxxxxx");
+      list.add(
+        Donor(
+            blood: (snapshot.docs[i].data()['Blood Group']).toString(),
+            contact: snapshot.docs[i].data()['Contact No'].toString(),
+            latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
+            longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
+            location: snapshot.docs[i].data()['Location'].toString(),
+            name: snapshot.docs[i].data()['Name'].toString()),
+      );
+    }
+    print("Length : " + list[0].name);
+  }
+
+  Widget build(BuildContext contxet) {
+    loccup();
+    createList("A+");
+
+    return Scaffold(body: Text("running"));
   }
 }
-*/
