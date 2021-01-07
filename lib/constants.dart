@@ -10,7 +10,11 @@ const kSendButtonTextStyle = TextStyle(
 const kTextStyle = TextStyle(
   color: Colors.black,
   fontFamily: 'Nexa Bold',
-  fontSize: 30,
+  fontSize: 24,
+);
+const kNormalTextStyle = TextStyle(
+  color: Colors.black,
+  fontFamily: 'Nexa',
 );
 
 const kMessageTextFieldDecoration = InputDecoration(
@@ -21,7 +25,7 @@ const kMessageTextFieldDecoration = InputDecoration(
 
 const kMessageContainerDecoration = BoxDecoration(
   border: Border(
-    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    top: BorderSide(color: Colors.green, width: 2.0),
   ),
 );
 
@@ -46,188 +50,3 @@ var kTextFieldDecoration = InputDecoration(
 var kWaveLoadingIndicator = SpinKitWave(
   color: Colors.green,
 );
-
-Container createTextFieldText(
-    {BuildContext context,
-    String label,
-    String hint,
-    TextEditingController controller}) {
-  return Container(
-    margin: EdgeInsets.all(5),
-    padding: EdgeInsets.all(5),
-    child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
-  );
-}
-
-Container createTextFieldNumber(
-    {BuildContext context,
-    String label,
-    String hint,
-    TextEditingController controller}) {
-  return Container(
-    margin: EdgeInsets.all(5),
-    padding: EdgeInsets.all(5),
-    child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
-  );
-}
-
-Container createTextFieldPhone(
-    {BuildContext context,
-    String label,
-    String hint,
-    TextEditingController controller}) {
-  return Container(
-    margin: EdgeInsets.all(5),
-    padding: EdgeInsets.all(5),
-    child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
-  );
-}
-
-Container createTextFieldDate(
-    {BuildContext context,
-    String label,
-    String hint,
-    TextEditingController controller}) {
-  return Container(
-    margin: EdgeInsets.all(5),
-    padding: EdgeInsets.all(5),
-    child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.datetime,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
-  );
-}
-
-Container createTextFieldLocation(
-    {BuildContext context,
-    String label,
-    String hint,
-    TextEditingController controller}) {
-  return Container(
-    margin: EdgeInsets.all(5),
-    padding: EdgeInsets.all(5),
-    child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.streetAddress,
-        decoration: InputDecoration(
-          hintText: hint,
-          labelText: label,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-          labelStyle: TextStyle(
-            fontFamily: 'Nexa',
-          ),
-        )),
-  );
-}

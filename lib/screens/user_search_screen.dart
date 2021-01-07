@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
+import 'package:lifeline/components/searched_user_info_card.dart';
 import 'package:lifeline/constants.dart';
+import 'package:lifeline/models/blood_donor.dart';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:toast/toast.dart';
 
@@ -14,8 +20,39 @@ class UserSearchScreen extends StatefulWidget {
 
 class _UserSearchScreenState extends State<UserSearchScreen> {
   bool loadingIndicator = false;
+  TextEditingController id = new TextEditingController();
+  final database = Database(uid: Auth().getUID());
+  QuerySnapshot snapshot;
+  String name = '';
+  String emergencyContact = '';
+  String blood = '';
+  String address = '';
 
-  String name;
+  Future<void> printMatched(String query) async {
+    QuerySnapshot _snapshot = await database.searchUserWithGovernmentID(query);
+    if (_snapshot.docs.length == 0) {
+      _snapshot = await database.searchUserWithAdditionalID(query);
+    }
+    if (_snapshot.docs.length == 0) {
+      setState(() {
+        name = '';
+        emergencyContact = '';
+        blood = '';
+        address = '';
+      });
+    } else {
+      for (int i = 0; i < _snapshot.docs.length; i++) {
+        print(_snapshot.docs[i].data());
+        setState(() {
+          snapshot = _snapshot;
+          name = snapshot.docs[i].data()['Name'];
+          emergencyContact = snapshot.docs[i].data()['Emergency No'];
+          blood = snapshot.docs[i].data()['Blood Group'];
+          address = snapshot.docs[i].data()['Location'];
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +60,26 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leadingWidth: 0,
-        title: Expanded(
-          child: Row(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/lifeline_logo.png',
-                  ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
                 ),
               ),
-              Text(
-                'Search User',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Nexa Bold',
-                  fontSize: 30,
-                ),
+            ),
+            Text(
+              'Search User',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
@@ -63,13 +98,11 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      this.name = value;
-                    },
-                    decoration:
-                        kTextFieldDecoration.copyWith(hintText: "User Name"),
+                  CustomTextField(
+                    label: 'ID',
+                    hint: 'Any ID number',
+                    controller: this.id,
+                    keyboardType: TextInputType.text,
                   ),
                   RoundedButton(
                     text: 'Search',
@@ -80,7 +113,8 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                       });
 
                       try {
-                        // TODO: Verify Doctor ID here
+                        print("Tapped");
+                        await printMatched(this.id.text);
                         setState(() {
                           loadingIndicator = false;
                         });
@@ -94,6 +128,14 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                         );
                       }
                     },
+                  ),
+                  SearchedUserInfoCard(
+                    searchedUser: Donor(
+                      name: name,
+                      contact: emergencyContact,
+                      blood: blood,
+                      location: address,
+                    ),
                   ),
                 ],
               ),

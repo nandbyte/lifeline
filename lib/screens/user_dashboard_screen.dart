@@ -3,9 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
 import 'package:lifeline/components/log_out_alert_dialog.dart';
 import 'package:lifeline/screens/blood_donation_screen.dart';
+import 'package:lifeline/screens/health_record_screen.dart';
+import 'package:lifeline/screens/medical_history_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
 import 'package:lifeline/screens/user_search_screen.dart';
-import 'package:lifeline/screens/verify_report_screen.dart';
+import 'package:lifeline/screens/doctor_mode_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
 
@@ -58,28 +60,26 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 );
               })
         ],
-        title: Expanded(
-          child: Row(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/lifeline_logo.png',
-                  ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
                 ),
               ),
-              Text(
-                'Dashboard',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Nexa Bold',
-                  fontSize: 30,
-                ),
+            ),
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
@@ -131,18 +131,19 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   ),
                   label: 'Health Record',
                   onTap: () {
-                    // TODO: Change screens
+                    Navigator.pushNamed(context, HealthRecordScreen.id);
                   },
                 ),
                 GridCard(
                   image: Image.asset(
                     // TODO: Update Icon
+
                     'assets/images/lifeline_logo.png',
                     height: 60,
                   ),
                   label: 'Medical History',
                   onTap: () {
-                    // TODO: Change screens
+                    Navigator.pushNamed(context, MedicalHistoryScreen.id);
                   },
                 ),
                 GridCard(
@@ -184,9 +185,9 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                     'assets/images/lifeline_logo.png',
                     height: 60,
                   ),
-                  label: 'Verify Records',
+                  label: 'Doctor Mode',
                   onTap: () {
-                    Navigator.pushNamed(context, VerifyReportScreen.id);
+                    Navigator.pushNamed(context, DoctorModeScreen.id);
                   },
                 ),
               ],

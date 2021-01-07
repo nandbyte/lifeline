@@ -5,14 +5,14 @@ import 'package:lifeline/constants.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:toast/toast.dart';
 
-class VerifyReportScreen extends StatefulWidget {
+class DoctorModeScreen extends StatefulWidget {
   static String id = 'verify_report';
 
   @override
-  _VerifyReportScreenState createState() => _VerifyReportScreenState();
+  _DoctorModeScreenState createState() => _DoctorModeScreenState();
 }
 
-class _VerifyReportScreenState extends State<VerifyReportScreen> {
+class _DoctorModeScreenState extends State<DoctorModeScreen> {
   bool loadingIndicator = false;
 
   String doctorID;
@@ -23,28 +23,26 @@ class _VerifyReportScreenState extends State<VerifyReportScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leadingWidth: 0,
-        title: Expanded(
-          child: Row(
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 40.0,
-                  child: Image.asset(
-                    'assets/images/lifeline_logo.png',
-                  ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
                 ),
               ),
-              Text(
-                'ID Verification',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Nexa Bold',
-                  fontSize: 30,
-                ),
+            ),
+            Text(
+              'Doctor Mode',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.black54,
