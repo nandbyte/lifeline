@@ -89,10 +89,10 @@ class _DonorMapTabState extends State<DonorMapTab> {
   Completer _controller = Completer();
   Map<MarkerId, Marker> markers = {};
 
-  /*static final CameraPosition _kGooglePlex = CameraPosition(
+  static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(23.7925, 90.4078),
     zoom: 14.0,
-  );*/
+  );
   List listMarkerIds = [];
 
   @override
