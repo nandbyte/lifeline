@@ -22,7 +22,7 @@ class VerifiableDiagnosisCard extends StatelessWidget {
                   qrCodeData: '${diagnosis.id} ${Auth().getUID()}'),
             ),
           );
-        print('${diagnosis.id} ${Auth().getUID()}');
+          print('${diagnosis.id} ${Auth().getUID()}');
         },
         icon: Icon(
           Icons.check,
