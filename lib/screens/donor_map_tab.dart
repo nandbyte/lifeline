@@ -9,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
-import 'package:location/location.dart';
+//import 'package:location/location.dart';
 //import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 double selfX;
@@ -51,6 +51,8 @@ class Donor {
   }
 }
 
+LattLongg x;
+
 class DonorMapTab extends StatefulWidget {
   @override
   _DonorMapTabState createState() => _DonorMapTabState();
@@ -68,11 +70,11 @@ class _DonorMapTabState extends State<DonorMapTab> {
   String blood;
 
 //Location self
-  LattLongg x;
+
   void getLatLong() {
     var snapshot =
         await FirebaseFirestore.instance.collection('profile').doc(uid).get();
-    x = new LattLongg(
+    x = LattLongg(
         snapshot.docs.data()['Latitute'], snapshot.docs.data()['Longitude']);
   }
 
@@ -87,17 +89,17 @@ class _DonorMapTabState extends State<DonorMapTab> {
 
   Completer _controller = Completer();
   Map<MarkerId, Marker> markers = {};
-  double ownX, ownY;
+
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(x.lat, x.long),
+    target: LatLng(double.parse(x.lat), double.parse(x.long)),
     zoom: 14.0,
   );
   List listMarkerIds = [];
 
   @override
   void initState() {
-    list.add(donor1);
-    list.add(donor2);
+    //list.add(donor1);
+    //list.add(donor2);
 
     databaseReference = database.users;
     getLatLong();
@@ -123,7 +125,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
               'O-',
             ],
             onChanged: (value) async {
-              Position position;
+              //Position position;
 
 // TODO: Implement map search functionality
 
@@ -174,8 +176,8 @@ class _DonorMapTabState extends State<DonorMapTab> {
                 Marker marker1 = Marker(
                     markerId: markerId1,
                     position: LatLng(list[i].lat, list[i].long),
-                    icon: (list[i].lat == getUserLat() &&
-                            list[i].long == getUserLong())
+                    icon: (list[i].lat == double.parse(x.lat) &&
+                            list[i].long == double.parse(x.long))
                         ? BitmapDescriptor.defaultMarkerWithHue(
                             BitmapDescriptor.hueViolet)
                         : BitmapDescriptor.defaultMarkerWithHue(
@@ -215,10 +217,10 @@ class _DonorMapTabState extends State<DonorMapTab> {
           child: Column(
             children: [
               Container(
-                color:
-                    (donor.lat == getUserLat() && donor.long == getUserLong())
-                        ? Colors.black45
-                        : Colors.redAccent,
+                color: (donor.lat == double.parse(x.lat) &&
+                        donor.long == double.parse(x.long))
+                    ? Colors.black45
+                    : Colors.redAccent,
                 //color: Colors.blueAccent,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

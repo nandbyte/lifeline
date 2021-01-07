@@ -35,7 +35,7 @@ dependencies:
   # GPS
   google_maps_flutter: ^1.0.6
   geolocator: ^6.1.13
-  location: ^3.0.0
+ 
   
 dev_dependencies:
   flutter_test:
