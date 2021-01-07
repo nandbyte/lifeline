@@ -146,6 +146,16 @@ class Database {
         .get();
   }
 
+  Future<QuerySnapshot> bloodDonorList(String blood) async {
+    return await FirebaseFirestore.instance
+        .collection('profile')
+        //.where('Blood Group', isEqualTo: blood)
+        .where('Donor Status', isEqualTo: true)
+        .where('Latitute', isNotEqualTo: null)
+        .where('Longitude', isNotEqualTo: null)
+        .get();
+  }
+
   Future<DocumentSnapshot> getLoc() async {
     var snapshot =
         await FirebaseFirestore.instance.collection('profile').doc(uid).get();

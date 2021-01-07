@@ -36,7 +36,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
   List<Donor> donors = [];
 
   Future<void> fetchDonorList(String str) async {
-    snapshot = await database.donorList(str);
+    snapshot = await database.bloodDonorList(str);
   }
 
   List<Donor> list = [];
@@ -71,15 +71,17 @@ class _DonorMapTabState extends State<DonorMapTab> {
 
     for (int i = 0; i < snapshot.docs.length; i++) {
       print("xxxxxxx");
-      list.add(
-        Donor(
-            blood: (snapshot.docs[i].data()['Blood Group']).toString(),
-            contact: snapshot.docs[i].data()['Contact No'].toString(),
-            latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
-            longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
-            location: snapshot.docs[i].data()['Location'].toString(),
-            name: snapshot.docs[i].data()['Name'].toString()),
-      );
+      setState(() {
+        list.add(
+          Donor(
+              blood: (snapshot.docs[i].data()['Blood Group']).toString(),
+              contact: snapshot.docs[i].data()['Contact No'].toString(),
+              latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
+              longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
+              location: snapshot.docs[i].data()['Location'].toString(),
+              name: snapshot.docs[i].data()['Name'].toString()),
+        );
+      });
     }
     print("Length : " + list[0].name);
   }
@@ -110,7 +112,11 @@ class _DonorMapTabState extends State<DonorMapTab> {
         onMapCreated: (GoogleMapController controler) {
           _controller.complete(controler);
           print(list.length);
-          for (int i = 0; i < list.length; i++) {
+
+          for (int i = 1; i <= list.length; i++) {
+            if (list[i] != blood) {
+              continue;
+            }
             print("testetstetst");
             print(list[i].toMap());
             MarkerId markerId1 = MarkerId(i.toString());
