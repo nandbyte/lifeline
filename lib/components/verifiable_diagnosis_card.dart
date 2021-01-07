@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/diagnosis.dart';
 import 'package:lifeline/screens/qr_code_screen.dart';
+import 'package:lifeline/services/authenticate.dart';
 
 class VerifiableDiagnosisCard extends StatelessWidget {
   // TODO: Create a new model diagnosis and pass it as its parameter
   final Diagnosis diagnosis;
-
+  final uid = Auth().getUID();
   VerifiableDiagnosisCard({this.diagnosis});
   Widget getTickIfNotVerified(BuildContext context) {
     if (!this.diagnosis.verified) {
@@ -18,9 +19,10 @@ class VerifiableDiagnosisCard extends StatelessWidget {
               builder: (context) => QrCodeScreen(
                   // TODO: Replace qrCodeData with real data (UID + DiagnosisID) => this will provide a screen to the doctor with the corresponding diagnosis data
                   appBarTitle: 'Verify Report',
-                  qrCodeData: 'qrCodeData'),
+                  qrCodeData: '${diagnosis.id} ${Auth().getUID()}'),
             ),
           );
+        print('${diagnosis.id} ${Auth().getUID()}');
         },
         icon: Icon(
           Icons.check,
