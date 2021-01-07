@@ -57,6 +57,10 @@ class _DonorMapTabState extends State<DonorMapTab> {
   ///
   ///
   ///
+
+  ///
+  ///
+  ///
   @override
   void initState() {
     databaseReference = database.users;
@@ -67,31 +71,33 @@ class _DonorMapTabState extends State<DonorMapTab> {
 
   void createList(String blood) async {
     print("test+++");
+
     await fetchDonorList(blood);
 
     for (int i = 0; i < snapshot.docs.length; i++) {
       print("xxxxxxx");
-      setState(() {
-        list.add(
-          Donor(
-              blood: (snapshot.docs[i].data()['Blood Group']).toString(),
-              contact: snapshot.docs[i].data()['Contact No'].toString(),
-              latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
-              longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
-              location: snapshot.docs[i].data()['Location'].toString(),
-              name: snapshot.docs[i].data()['Name'].toString()),
-        );
-      });
+
+      list.add(
+        Donor(
+            blood: (snapshot.docs[i].data()['Blood Group']).toString(),
+            contact: snapshot.docs[i].data()['Contact No'].toString(),
+            latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
+            longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
+            location: snapshot.docs[i].data()['Location'].toString(),
+            name: snapshot.docs[i].data()['Name'].toString()),
+      );
     }
+    setState(() {});
     print("Length : " + list[0].name);
   }
 
   @override
   Widget build(BuildContext contxet) {
+    setState(() {});
     //loccup();
     createList("A+");
     // print("lat long self " + lat.toString());
-
+    setState(() {});
     return Scaffold(
         key: scaffoldKey,
         body: Container(
@@ -112,11 +118,23 @@ class _DonorMapTabState extends State<DonorMapTab> {
         onMapCreated: (GoogleMapController controler) {
           _controller.complete(controler);
           print(list.length);
+          // setState(() {
+          //////////
+          MarkerId selfid = MarkerId("me");
+          listMarkerIds.add(selfid);
+
+          Marker self = Marker(
+              markerId: selfid,
+              position: LatLng(initpos.latitude, initpos.longitude),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueViolet),
+              infoWindow: InfoWindow(title: "you", onTap: () {}, snippet: " "));
+
+          setState(() {
+            markers[selfid] = self;
+          });
 
           for (int i = 1; i <= list.length; i++) {
-            if (list[i] != blood) {
-              continue;
-            }
             print("testetstetst");
             print(list[i].toMap());
             MarkerId markerId1 = MarkerId(i.toString());
@@ -154,6 +172,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
               markers[markerId1] = marker1;
             });
           }
+          //});
         },
       ),
     );

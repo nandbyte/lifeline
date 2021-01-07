@@ -1,10 +1,10 @@
 class Donor {
-  final String name;
-  final String contact;
-  final String latitute;
-  final String longitude;
-  final String location;
-  final String blood;
+  String name;
+  String contact;
+  String latitute;
+  String longitude;
+  String location;
+  String blood;
 
   Donor(
       {this.name,
