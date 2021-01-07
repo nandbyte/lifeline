@@ -18,11 +18,12 @@ class AlertDialogForm extends StatefulWidget {
 }
 
 class _AlertDialogFormState extends State<AlertDialogForm> {
+  bool active = true;
   String type = '';
   TextEditingController problemController = new TextEditingController();
   TextEditingController dateController = new TextEditingController();
   final ehrDatabase = new EHR(uid: Auth().getUID());
-  
+
   Future<void> _submit() async {
     final _date = dateController.text;
     final _type = type;
@@ -50,48 +51,50 @@ class _AlertDialogFormState extends State<AlertDialogForm> {
           fontSize: 24,
         ),
       ),
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomDropdownMenu(
-            label: 'Type',
-            items: [
-              'Disease',
-              'Accident',
-            ],
-            onChanged: (value){
-              setState(() {
-                type = value;
-              });
-            },
-          ),
-          CustomTextField(
-            label: 'Description',
-            hint: 'Diagnosed problem',
-            controller: problemController,
-            keyboardType: TextInputType.text,
-          ),
-          CustomTextField(
-            label: 'Date',
-            hint: 'MM, YYYY',
-            controller: dateController,
-            keyboardType: TextInputType.text,
-          ),
-        ],
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomDropdownMenu(
+              label: 'Type',
+              items: [
+                'Disease',
+                'Accident',
+              ],
+              onChanged: (value) {
+                setState(() {
+                  type = value;
+                });
+              },
+            ),
+            CustomTextField(
+              label: 'Description',
+              hint: 'Diagnosed problem',
+              controller: problemController,
+              keyboardType: TextInputType.text,
+            ),
+            CustomTextField(
+              label: 'Date',
+              hint: 'MM, YYYY',
+              controller: dateController,
+              keyboardType: TextInputType.text,
+            ),
+          ],
+        ),
       ),
       actions: [
         FlatButton(
           onPressed: () async {
+            active = false;
             FocusScope.of(context).unfocus();
             // TODO: Submit new diagnosis data to the database
             print("Before");
             await _submit();
             print("After");
-            setState(() {
-              
-            });
+            setState(() {});
+            Navigator.pop(context);
             Navigator.pop(context);
           },
           child: Text(
