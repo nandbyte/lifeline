@@ -32,7 +32,7 @@ class EHR {
         sugerLevel: snapshot.data()['Suger Level'] ?? '~70-140 mg/dL',
         bp: snapshot.data()['Blood Pressure'] ?? '120/80',
         rbc: snapshot.data()['RBC Count'] ?? '~4.7-6.1 mcL',
-        wbc: snapshot.data()['Blood Pressure'] ?? '~9,000-30,000 mcL',
+        wbc: snapshot.data()['WBC Count'] ?? '~9,000-30,000 mcL',
       );
     else
       return basicRecord(
