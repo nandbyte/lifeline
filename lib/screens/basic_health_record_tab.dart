@@ -4,6 +4,7 @@ import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
+import 'package:lifeline/screens/qr_code_screen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class BasicHealthRecordTab extends StatefulWidget {
@@ -71,6 +72,23 @@ class _BasicHealthRecordTabState extends State<BasicHealthRecordTab> {
                       // TODO: Update basic health record for the user
                     },
                     text: 'Update',
+                    color: Colors.green[700],
+                  ),
+                ),
+                Container(
+                  child: RoundedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QrCodeScreen(
+                              // TODO: Replace qrCodeData with real data (UID only => this will provide health record)
+                              appBarTitle: 'Share Private Data',
+                              qrCodeData: 'qrCodeData'),
+                        ),
+                      );
+                    },
+                    text: 'Share',
                     color: Colors.green[700],
                   ),
                 ),
