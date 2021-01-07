@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/custom_text_field.dart';
 import 'package:lifeline/components/rounded_button.dart';
 import 'package:lifeline/constants.dart';
+import 'package:lifeline/screens/doctor_dashboard_screen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:toast/toast.dart';
 
@@ -97,7 +98,8 @@ class _DoctorModeScreenState extends State<DoctorModeScreen> {
 
                   try {
                     // TODO: Verify Doctor ID here
-                    //TODO: If you are verified push to doctor dashboard
+                    // TODO: If verified push to doctor dashboard
+                    Navigator.pushNamed(context, DoctorDashboardScreen.id);
                     setState(() {
                       loadingIndicator = false;
                     });

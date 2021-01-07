@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lifeline/screens/blood_donation_screen.dart';
+import 'package:lifeline/screens/doctor_dashboard_screen.dart';
 import 'package:lifeline/screens/health_record_screen.dart';
 import 'package:lifeline/screens/medical_history_screen.dart';
 import 'package:lifeline/screens/terms_and_conditions_screen.dart';
@@ -59,6 +60,7 @@ class LifeLine extends StatelessWidget {
         HealthRecordScreen.id: (context) => HealthRecordScreen(),
         MedicalHistoryScreen.id: (context) => MedicalHistoryScreen(),
         TermsAndConditionsScreen.id: (context) => TermsAndConditionsScreen(),
+        DoctorDashboardScreen.id: (context) => DoctorDashboardScreen(),
       },
     );
   }
