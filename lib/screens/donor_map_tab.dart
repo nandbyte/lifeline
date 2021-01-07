@@ -5,19 +5,26 @@ import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'dart:async';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
+import 'package:location/location.dart';
+//import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 double selfX;
 double selfY;
 
-double getUserLat() {
-  selfX = 23.7925;
-  return selfX;
-}
-
-double getUserLong() {
-  selfY = 90.4078;
-  return selfY;
+class LattLongg {
+  String lat;
+  String long;
+  LattLongg(this.lat, this.long);
+  Map<String, dynamic> toMap() {
+    return {
+      'lat': lat,
+      'long': long,
+    };
+  }
 }
 
 class Donor {
@@ -51,6 +58,23 @@ class DonorMapTab extends StatefulWidget {
 
 class _DonorMapTabState extends State<DonorMapTab> {
   final GlobalKey scaffoldKey = GlobalKey();
+//database class init
+
+  bool loadingIndicator = false;
+  String uid = Auth().getUID();
+  final database = Database(uid: Auth().getUID());
+  CollectionReference databaseReference;
+  QuerySnapshot snapshot;
+  String blood;
+
+//Location self
+  LattLongg x;
+  void getLatLong() {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    x = new LattLongg(
+        snapshot.docs.data()['Latitute'], snapshot.docs.data()['Longitude']);
+  }
 
 //Donor
 
@@ -65,7 +89,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
   Map<MarkerId, Marker> markers = {};
   double ownX, ownY;
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(getUserLat(), getUserLong()),
+    target: LatLng(x.lat, x.long),
     zoom: 14.0,
   );
   List listMarkerIds = [];
@@ -74,6 +98,9 @@ class _DonorMapTabState extends State<DonorMapTab> {
   void initState() {
     list.add(donor1);
     list.add(donor2);
+
+    databaseReference = database.users;
+    getLatLong();
     super.initState();
   }
 
@@ -96,6 +123,8 @@ class _DonorMapTabState extends State<DonorMapTab> {
               'O-',
             ],
             onChanged: (value) async {
+              Position position;
+
 // TODO: Implement map search functionality
 
               // setState(() {
