@@ -9,10 +9,10 @@ class CustomTextField extends StatefulWidget {
   final obscureText;
 
   CustomTextField({
-    this.label,
-    this.hint,
-    this.controller,
-    this.keyboardType,
+    @required this.label,
+    @required this.hint,
+    @required this.controller,
+    @required this.keyboardType,
     this.obscureText,
   });
 

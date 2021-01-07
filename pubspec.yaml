@@ -1,7 +1,7 @@
 name: lifeline
 description: Electronic Health Record application.
 
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -14,7 +14,7 @@ dependencies:
 
   # Icons
   cupertino_icons: ^0.1.2
- 
+
   # UI
   animated_text_kit: ^3.1.0
   toast: ^0.1.5
@@ -36,6 +36,9 @@ dependencies:
   google_maps_flutter: ^1.0.6
   geolocator: ^6.1.13
 
+  # Services
+  url_launcher: ^5.7.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,15 +47,13 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/images/lifeline_logo.png
-
+    - assets/images/lifeline_logo.png
 
   fonts:
     - family: Nexa
       fonts:
         - asset: assets/fonts/nexa_light.otf
-      
+
     - family: Nexa Bold
       fonts:
-         - asset: assets/fonts/nexa_bold.otf
-
+        - asset: assets/fonts/nexa_bold.otf

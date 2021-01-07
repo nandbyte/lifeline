@@ -16,6 +16,8 @@ class _DiagnosisRecordTabState extends State<DiagnosisRecordTab> {
       type: 'Disease',
       problem: 'COVID19',
       date: 'December, 2020',
+      verified: true,
+      verifiedBy: 'Dr. Corona Chang',
     ),
     Diagnosis(
       type: 'Accident',
@@ -29,6 +31,7 @@ class _DiagnosisRecordTabState extends State<DiagnosisRecordTab> {
     ),
   ];
 
+// Dialo
   @override
   void initState() {
     super.initState();

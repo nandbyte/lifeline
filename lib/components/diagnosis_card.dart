@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/diagnosis.dart';
 
-class DiagnosisInfoCard extends StatelessWidget {
+class DiagnosisCard extends StatelessWidget {
   // TODO: Create a new model diagnosis and pass it as its parameter
   final Diagnosis diagnosis;
 
-  DiagnosisInfoCard({this.diagnosis});
+  DiagnosisCard({this.diagnosis});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class DiagnosisInfoCard extends StatelessWidget {
       padding: EdgeInsets.all(24),
       margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: this.diagnosis.verified ? Colors.green[100] : Colors.green[50],
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -60,6 +60,19 @@ class DiagnosisInfoCard extends StatelessWidget {
               this.diagnosis.date,
               style: kTextStyle.copyWith(
                 fontSize: 16,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+            child: Text(
+              'Verified By: ' +
+                  (this.diagnosis.verified
+                      ? this.diagnosis.verifiedBy
+                      : 'Not yet verified'),
+              style: kTextStyle.copyWith(
+                fontSize: 16,
+                color: Colors.black45,
               ),
             ),
           ),

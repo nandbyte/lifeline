@@ -64,6 +64,7 @@ class _BloodDonationScreenState extends State<BloodDonationScreen> {
           ),
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             DonorProfileTab(),
             DonorListTab(),
