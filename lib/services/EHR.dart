@@ -68,6 +68,7 @@ class EHR {
         .then((value) => print("Count updated to $count"))
         .catchError((error) => print("Failed to update $error"));
   }
+
   // History Data Base From Here
 
   CollectionReference diagnosisRef = FirebaseFirestore.instance
@@ -86,6 +87,7 @@ class EHR {
     int currentID;
     await updateHistoryCount();
     currentID = await getCount();
+    diagnosis.id = currentID;
     print(currentID);
     await _setDiagnosis(
         path: APIPath.diagnosis(uid, currentID.toString()),

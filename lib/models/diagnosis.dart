@@ -1,4 +1,3 @@
-// TODO: Delete this model after making the real mdodel
 import 'package:lifeline/screens/donor_list_tab.dart';
 
 class Diagnosis {
@@ -25,7 +24,7 @@ class Diagnosis {
       'Date': this.date,
       'Verified': this.verified,
       'VerifiedBy': this.verifiedBy,
-      
+      'ID': this.id,
     };
   }
 }
