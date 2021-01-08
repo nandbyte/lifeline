@@ -3,16 +3,30 @@ import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
 import 'package:lifeline/components/log_out_alert_dialog.dart';
 import 'package:lifeline/screens/record_verification_screen.dart';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 
 class DoctorDashboardScreen extends StatefulWidget {
   static String id = 'doctor_dashboard';
-
   @override
   _DoctorDashboardScreenState createState() => _DoctorDashboardScreenState();
 }
 
 class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
   bool loadingIndicator = false;
+  String name;
+  Future<void> getName() async {
+    final _name = await Database(uid: Auth().getUID()).getName();
+    setState(() async {
+      name = _name;
+    });
+  }
+
+  @override
+  void initState() {
+    getName();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +78,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
                   height: 10,
                 ),
                 Text(
-                  'Dr. ' + 'Younus', // TODO: Replace Younus with actual name
+                  this.name, // TODO: Replace Younus with actual name
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40,
