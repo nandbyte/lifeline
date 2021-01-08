@@ -5,6 +5,19 @@ import 'package:lifeline/models/diagnosis.dart';
 import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/services/api_path.dart';
 
+class Loc {
+  String lat;
+  String long;
+  Loc({this.lat, this.long});
+  Map<String, dynamic> toMap() {
+    return {
+      "Latitute": lat,
+      "Longitude": long,
+      //"Latitude": lat,
+    };
+  }
+}
+
 class Database {
   final String uid;
   CollectionReference users = FirebaseFirestore.instance.collection('profile');
@@ -151,11 +164,11 @@ class Database {
         .get();
 
     return Diagnosis(
-        date: snapshot.data()['Date'],
-        type: snapshot.data()['Type'],
-        problem: snapshot.data()['Problem'],
-        verified: false,
-        );
+      date: snapshot.data()['Date'],
+      type: snapshot.data()['Type'],
+      problem: snapshot.data()['Problem'],
+      verified: false,
+    );
   }
 
   Future<void> updateRecord(String _uid, String _id) async {
@@ -166,8 +179,25 @@ class Database {
         .doc(_id);
     String _name = await getName();
     return dummy
-        .update({'Varified': true, 'VerifiedBy':'Dr. '+_name})
+        .update({'Varified': true, 'VerifiedBy': 'Dr. ' + _name})
         .then((value) => print("Status updated"))
         .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  //Future<QuerySnapshot>
+  Future<QuerySnapshot> bloodDonorList(String blood) async {
+    return await FirebaseFirestore.instance
+        .collection('profile')
+        //.where('Blood Group', isEqualTo: blood)
+        .where('Donor Status', isEqualTo: true)
+        .where('Latitute', isNotEqualTo: null)
+        .where('Longitude', isNotEqualTo: null)
+        .get();
+  }
+
+  Future<DocumentSnapshot> getLoc() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    return snapshot;
   }
 }

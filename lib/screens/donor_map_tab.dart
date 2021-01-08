@@ -1,48 +1,21 @@
 import 'dart:ffi';
-
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/custom_dropdown_menu.dart';
 import 'package:lifeline/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lifeline/screens/donor_list_tab.dart';
 import 'dart:async';
-
-double selfX;
-double selfY;
-
-double getUserLat() {
-  selfX = 23.7925;
-  return selfX;
-}
-
-double getUserLong() {
-  selfY = 90.4078;
-  return selfY;
-}
-
-class Donor {
-  String id;
-  double lat;
-  double long;
-  String bg;
-  String name;
-  String location;
-  String contact;
-
-  Donor(this.id, this.lat, this.long, this.bg, this.name, this.location,
-      this.contact);
-  Map<String, dynamic> toMap() {
-    return {
-      'Name': name,
-      'lat': lat,
-      'long': long,
-      'bg': bg,
-      'id': id,
-      'location': location,
-      'contact': contact,
-    };
-  }
-}
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
+import 'donor_list_tab.dart';
+import 'package:lifeline/models/blood_donor.dart';
+//import 'package:location/location.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'donor_profile_tab.dart';
+import 'package:geolocator/geolocator.dart';
 
 class DonorMapTab extends StatefulWidget {
   @override
@@ -52,149 +25,157 @@ class DonorMapTab extends StatefulWidget {
 class _DonorMapTabState extends State<DonorMapTab> {
   final GlobalKey scaffoldKey = GlobalKey();
 
-//Donor
+  bool loadingIndicator = false;
 
-  Donor donor1 =
-      new Donor("1", 23.7925, 90.4078, "A+", "Saif", "Dhaka", "0173029526");
-  Donor donor2 =
-      new Donor("2", 23.8103, 90.4125, "B+", "Adib", "Dhaka", "0130882088");
+  final database = Database(uid: Auth().getUID());
+  CollectionReference databaseReference;
+  QuerySnapshot snapshot;
+
+  String blood;
+
+  List<Donor> donors = [];
+
+  Future<void> fetchDonorList(String str) async {
+    snapshot = await database.bloodDonorList(str);
+  }
 
   List<Donor> list = [];
 
   Completer _controller = Completer();
   Map<MarkerId, Marker> markers = {};
-  double ownX, ownY;
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(getUserLat(), getUserLong()),
-    zoom: 14.0,
-  );
   List listMarkerIds = [];
+  static LatLng initpos;
+  void getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      initpos = LatLng(position.latitude, position.longitude);
+    });
+  }
 
+/////////////////
+  ///
+  ///
+  ///
+
+  ///
+  ///
+  ///
   @override
   void initState() {
-    list.add(donor1);
-    list.add(donor2);
+    databaseReference = database.users;
+
     super.initState();
+    getUserLocation();
+  }
+
+  void createList(String blood) async {
+    print("test+++");
+
+    await fetchDonorList(blood);
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      print("xxxxxxx");
+
+      list.add(
+        Donor(
+            blood: (snapshot.docs[i].data()['Blood Group']).toString(),
+            contact: snapshot.docs[i].data()['Contact No'].toString(),
+            latitute: snapshot.docs[i].data()['Latitute'].toString() ?? '',
+            longitude: snapshot.docs[i].data()['Longitude'].toString() ?? '',
+            location: snapshot.docs[i].data()['Location'].toString(),
+            name: snapshot.docs[i].data()['Name'].toString()),
+      );
+    }
+    setState(() {});
+    print("Length : " + list[0].name);
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contxet) {
+    setState(() {});
+    //loccup();
+    createList("A+");
+    // print("lat long self " + lat.toString());
+    setState(() {});
     return Scaffold(
         key: scaffoldKey,
-// //         appBar: AppBar(
-// //           leadingWidth: 0,
-// //           title: CustomDropdownMenu(
-// //             label: "Blood Group",
-// //             items: [
-// //               'A+',
-// //               'A-',
-// //               'B+',
-// //               'B-',
-// //               'AB+',
-// //               'AB-',
-// //               'O+',
-// //               'O-',
-// //             ],
-// //             onChanged: (value) async {
-// // // TODO: Implement map search functionality
+        body: Container(
+          child: map(),
+        ));
+  }
 
-// //               // setState(() {
-// //               //   blood = value;
-// //               // });
+  Widget map() {
+    return Scaffold(
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: initpos,
+          zoom: 14.00,
+        ),
+        onTap: (_) {},
+        mapType: MapType.normal,
+        markers: Set.of(markers.values),
+        onMapCreated: (GoogleMapController controler) {
+          _controller.complete(controler);
+          print(list.length);
+          // setState(() {
+          //////////
+          MarkerId selfid = MarkerId("me");
+          listMarkerIds.add(selfid);
 
-// //               // setState(() {
-// //               //   blood = value;
-// //               //   loadingIndicator = true;
-// //               // });
+          Marker self = Marker(
+              markerId: selfid,
+              position: LatLng(initpos.latitude, initpos.longitude),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueViolet),
+              infoWindow: InfoWindow(title: "you", onTap: () {}, snippet: " "));
 
-// //               // await fetchDonorList(blood);
-// //               // donors = [];
-// //               // for (int i = 0; i < snapshot.docs.length; i++) {
-// //               //   donors.add(
-// //               //     Donor(
-// //               //         blood: snapshot.docs[i].data()['Blood Group'],
-// //               //         contact: snapshot.docs[i].data()['Contact No'],
-// //               //         latitute: snapshot.docs[i].data()['Latitute'] ?? '',
-// //               //         longitude: snapshot.docs[i].data()['Longitude'] ?? '',
-// //               //         location: snapshot.docs[i].data()['Location'],
-// //               //         name: snapshot.docs[i].data()['Name']),
-// //               //   );
-// //               // }
+          setState(() {
+            markers[selfid] = self;
+          });
 
-// //               // setState(() {
-// //               //   loadingIndicator = false;
-// //               // });
-// //             },
-// //           ),
-//           // backgroundColor: Colors.white,
-//           // shadowColor: Colors.black54,
-//         ),
-        body: Stack(children: <Widget>[
-          Container(
-            child: GoogleMap(
-              initialCameraPosition: _kGooglePlex,
-              onTap: (_) {},
-              mapType: MapType.normal,
-              markers: Set.of(markers.values),
-              onMapCreated: (GoogleMapController controler) {
-                _controller.complete(controler);
-                for (int i = 0; i < list.length; i++) {
-                  MarkerId markerId1 = MarkerId(list[i].id);
+          for (int i = 1; i <= list.length; i++) {
+            print("testetstetst");
+            print(list[i].toMap());
+            MarkerId markerId1 = MarkerId(i.toString());
 
-                  listMarkerIds.add(markerId1);
+            listMarkerIds.add(markerId1);
 
-                  Marker marker1 = Marker(
-                      markerId: markerId1,
-                      position: LatLng(list[i].lat, list[i].long),
-                      icon: (list[i].lat == getUserLat() &&
-                              list[i].long == getUserLong())
-                          ? BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueViolet)
-                          : BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueRed),
+            Marker marker1 = Marker(
+                markerId: markerId1,
+                position: LatLng(double.parse(list[i].latitute),
+                    double.parse(list[i].longitude)),
+                icon: (list[i].latitute == initpos.latitude &&
+                        list[i].longitude == initpos.longitude)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueViolet)
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
 
-                      /* icon: BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueCyan),
-                            */
-                      infoWindow: InfoWindow(
-                          title: list[i].name,
-                          onTap: () {
-                            // var bottomSheetController = Scaffold.of(
-                            //         scaffoldKey.currentContext)
-                            //     .showBottomSheet((context) => Container(
-                            //           child: getBottomSheet(list[i]),
-                            //           height: 250,
-                            //           color: Colors.transparent,
-                            //         ));
-                          },
-                          snippet: list[i].bg));
+                /* icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueCyan),
+                          */
+                infoWindow: InfoWindow(
+                    title: list[i].name,
+                    onTap: () {
+                      var bottomSheetController =
+                          Scaffold.of(scaffoldKey.currentContext)
+                              .showBottomSheet((context) => Container(
+                                    child: getBottomSheet(list[i]),
+                                    height: 250,
+                                    color: Colors.transparent,
+                                  ));
+                    },
+                    snippet: list[i].blood));
 
-                  setState(() {
-                    markers[markerId1] = marker1;
-                  });
-                }
-              },
-            ),
-          ),
-          Container(
-            child: CustomDropdownMenu(
-              label: "Blood Group",
-              items: [
-                'A+',
-                'A-',
-                'B+',
-                'B-',
-                'AB+',
-                'AB-',
-                'O+',
-                'O-',
-              ],
-              onChanged: (value) async {
-                
-              },
-            ),
-          ),
-        ]));
+            setState(() {
+              markers[markerId1] = marker1;
+            });
+          }
+          //});
+        },
+      ),
+    );
   }
 
   Widget getBottomSheet(Donor donor) {
@@ -206,10 +187,10 @@ class _DonorMapTabState extends State<DonorMapTab> {
           child: Column(
             children: [
               Container(
-                color:
-                    (donor.lat == getUserLat() && donor.long == getUserLong())
-                        ? Colors.black45
-                        : Colors.redAccent,
+                color: (donor.latitute == initpos.latitude &&
+                        donor.longitude == initpos.longitude)
+                    ? Colors.black45
+                    : Colors.redAccent,
                 //color: Colors.blueAccent,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -225,7 +206,7 @@ class _DonorMapTabState extends State<DonorMapTab> {
                       ),
                       Row(
                         children: [
-                          Text(donor.bg,
+                          Text(donor.blood,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 12)),
                           Icon(
@@ -262,7 +243,9 @@ class _DonorMapTabState extends State<DonorMapTab> {
                   SizedBox(
                     width: 20,
                   ),
-                  Text((donor.lat).toString() + "," + (donor.long).toString())
+                  Text((donor.latitute).toString() +
+                      "," +
+                      (donor.longitude).toString())
                 ],
               ),
               SizedBox(
