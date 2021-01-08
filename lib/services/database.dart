@@ -4,6 +4,19 @@ import 'package:lifeline/models/blood_donor.dart';
 import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/services/api_path.dart';
 
+class Loc {
+  String lat;
+  String long;
+  Loc({this.lat, this.long});
+  Map<String, dynamic> toMap() {
+    return {
+      "Latitute": lat,
+      "Longitude": long,
+      //"Latitude": lat,
+    };
+  }
+}
+
 class Database {
   final String uid;
   CollectionReference users = FirebaseFirestore.instance.collection('profile');
@@ -146,5 +159,21 @@ class Database {
         .where('Other ID', isEqualTo: id)
         .get();
   }
+
   //Future<QuerySnapshot>
+  Future<QuerySnapshot> bloodDonorList(String blood) async {
+    return await FirebaseFirestore.instance
+        .collection('profile')
+        //.where('Blood Group', isEqualTo: blood)
+        .where('Donor Status', isEqualTo: true)
+        .where('Latitute', isNotEqualTo: null)
+        .where('Longitude', isNotEqualTo: null)
+        .get();
+  }
+
+  Future<DocumentSnapshot> getLoc() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    return snapshot;
+  }
 }

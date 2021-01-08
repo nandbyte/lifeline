@@ -36,6 +36,7 @@ dependencies:
   # GPS
   google_maps_flutter: ^1.0.6
   geolocator: ^6.1.13
+<<<<<<< HEAD
 
   # Services
   url_launcher: ^5.7.10
@@ -43,6 +44,10 @@ dependencies:
   qr_flutter: ^3.1.0
   qr_code_scanner: ^0.2.1
 
+=======
+ 
+  
+>>>>>>> updated_map
 dev_dependencies:
   flutter_test:
     sdk: flutter
