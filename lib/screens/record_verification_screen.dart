@@ -42,7 +42,6 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   final database = Database(uid: Auth().getUID());
   Future<void> cardData(String uid, String recordID) async {
     final _profile = await database.getData(Auth().getUID());
-    final _diagnosis;
   }
 
   Widget getUserDiagnosisCard() {
