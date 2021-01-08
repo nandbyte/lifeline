@@ -30,7 +30,9 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   Donor qrDonor;
 
   final database = Database(uid: Auth().getUID());
-  Future<void> cardData(String _uid,String _recordID) async {
+  Future<void> cardData(String _uid, String _recordID) async {
+    print(_uid);
+    print(_recordID);
     final _profile = await database.getData(_uid);
     final _diagnosis = await database.getRecord(_uid, _recordID);
     final _qrDonor = new Donor(
@@ -43,6 +45,8 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
       qrDiagnosis = _diagnosis;
       qrDonor = _qrDonor;
     });
+    //print(qrDiagnosis.toMap());
+    print(qrDonor.toMap());
   }
 
   Widget getUserDiagnosisCard() {
@@ -92,8 +96,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   Widget getVerifyButton() {
     if (qrCodeResult == null) {
       return SizedBox(height: 1);
-    } 
-    else {
+    } else {
       return Padding(
         padding: const EdgeInsets.all(12.0),
         child: RoundedButton(
@@ -163,30 +166,30 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                   color: Colors.green[900],
                   onPressed: () async {
                     String codeScanner = await BarcodeScanner.scan();
+
                     setState(() {
                       qrCodeResult = codeScanner;
-                      qrData = qrCodeResult.split(':');
-                      if (qrData.length == 3) {
-                        qrCodeType = qrData[0];
-                        diagnosisID = qrData[1];
-                        uID = qrData[2];
-                      }
-
-                      print(qrCodeType);
-                      print(diagnosisID);
-                      print(uID);
                     });
-                    if (qrCodeType != null) {
-                      if (qrCodeType == 'LIFELINE_DIAGNOSIS') {
-                        setState(() {
-                          loadingIndicator = true;
-                        });
-                        cardData(uID, diagnosisID);
-                        setState(() {
-                          loadingIndicator = false;
-                        });
-                      }
-                    }
+                    print("I'm the hunter $codeScanner");
+                    qrData = codeScanner.split('_');
+                    qrCodeType = qrData[0];
+                    diagnosisID = qrData[1];
+                    uID = qrData[2];
+
+                    print("Here am I to print $qrCodeType");
+                    print(diagnosisID);
+                    print(uID);
+                    //if (qrCodeType != null) {
+                    //if (qrCodeType == 'LIFELINE_DIAGNOSIS') {
+                    setState(() {
+                      loadingIndicator = true;
+                    });
+                    await cardData(uID, diagnosisID);
+                    setState(() {
+                      loadingIndicator = false;
+                    });
+                    //}
+                    //}
                   },
                 ),
               ),

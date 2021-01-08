@@ -127,31 +127,34 @@ class Database {
         .where('Other ID', isEqualTo: id)
         .get();
   }
+
   //Future<QuerySnapshot>
   Future<bool> verifyDoctor(String doctorID) async {
     final _govtID = await getGovtID();
-    var snapshot =
-        await FirebaseFirestore.instance.collection('doctor').doc(doctorID).get();
+    var snapshot = await FirebaseFirestore.instance
+        .collection('doctor')
+        .doc(doctorID)
+        .get();
     final _fetchedID = await snapshot.data()['Govt ID'];
-    if(_govtID == _fetchedID)
+    if (_govtID == _fetchedID)
       return true;
     else
       return false;
   }
 
-  Future<Diagnosis> getRecord(String _uid,String _recordID) async {
-    var snapshot =
-        await FirebaseFirestore.instance.collection('health_record').doc(_uid)
-              .collection('history').doc(_recordID).get();
-    if (snapshot.exists)
-      return Diagnosis(
+  Future<Diagnosis> getRecord(String _uid, String _recordID) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('health_record')
+        .doc(_uid)
+        .collection('history')
+        .doc(_recordID)
+        .get();
+
+    return Diagnosis(
         date: snapshot.data()['Date'],
         type: snapshot.data()['Type'],
         problem: snapshot.data()['Problem'],
-        verified: false
-      );
-    else
-      return null;
+        verified: false,
+        );
   }
 }
-
