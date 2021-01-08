@@ -26,22 +26,23 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   String diagnosisID; // contained fetched diagnosis ID after scanning
   String uID; // contained fetched UID after scanning
 
-  Diagnosis qrDiagnosis = Diagnosis(
-    type: 'Disease',
-    problem: 'COVID19',
-    date: 'December, 2020',
-  );
-
-  Donor qrDonor = Donor(
-    name: 'Patient X',
-    contact: '017363213972',
-    location: 'Dhaka',
-    blood: 'A+',
-  );
+  Diagnosis qrDiagnosis;
+  Donor qrDonor;
 
   final database = Database(uid: Auth().getUID());
-  Future<void> cardData(String uid, String recordID) async {
+  Future<void> cardData(String _uid,String _recordID) async {
     final _profile = await database.getData(Auth().getUID());
+    final _diagnosis = await database.getRecord(_uid, _recordID);
+    final _qrDonor = Donor(
+      name: _profile.name,
+      contact: _profile.contact,
+      location: _profile.location,
+      blood: _profile.blood,
+    );
+    setState(() {
+      qrDiagnosis = _diagnosis;
+      qrDonor = _qrDonor;
+    });
   }
 
   Widget getUserDiagnosisCard() {
