@@ -57,7 +57,13 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
               ),
             ],
           ),
-          child: Text('No Information'),
+          child: Text(
+            'No Information. Please scan to get diagnosis report.',
+            textAlign: TextAlign.center,
+            style: kTextStyle.copyWith(
+              fontSize: 24,
+            ),
+          ),
         ),
       );
     } else {
@@ -66,6 +72,32 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
         child: UserDiagnosisCard(
           targetDiagnosis: qrDiagnosis,
           targetUser: qrDonor,
+        ),
+      );
+    }
+  }
+
+  Widget getVerifyButton() {
+    if (qrCodeResult == null) {
+      return SizedBox(height: 1);
+    } else if (qrDiagnosis.verified == true) {
+      return SizedBox(height: 1);
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: RoundedButton(
+          text: 'Verify',
+          color: Colors.green[900],
+          onPressed: () async {
+            setState(() {
+              loadingIndicator = true;
+            });
+            // TODO: Database update the verified value and approvedBy value of DiagnosisID
+            // TODO: Go Back to Doctor Dashboard screen.
+            setState(() {
+              loadingIndicator = false;
+            });
+          },
         ),
       );
     }
@@ -133,23 +165,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: RoundedButton(
-                  text: 'Verify',
-                  color: Colors.green[900],
-                  onPressed: () async {
-                    setState(() {
-                      loadingIndicator = true;
-                    });
-                    // TODO: Database update the verified value and approvedBy value of DiagnosisID
-                    // TODO: Go Back to Doctor Dashboard screen.
-                    setState(() {
-                      loadingIndicator = false;
-                    });
-                  },
-                ),
-              ),
+              getVerifyButton(),
             ],
           ),
         ),
