@@ -6,6 +6,8 @@ import 'package:lifeline/components/user_diagnosis_card.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/blood_donor.dart';
 import 'package:lifeline/models/diagnosis.dart';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class RecordVerificationScreen extends StatefulWidget {
@@ -32,6 +34,12 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
     location: 'Dhaka',
     blood: 'A+',
   );
+
+  final database = Database(uid: Auth().getUID());
+  Future<void> cardData(String uid,String recordID) async {
+    final _profile = await database.getData(Auth().getUID());
+    final _diagnosis 
+  }
 
   Widget getUserDiagnosisCard() {
     if (qrCodeResult == null) {
