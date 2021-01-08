@@ -66,6 +66,16 @@ class Database {
     }
   }
 
+  Future<String> getGovtID() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    if (snapshot.exists)
+      return snapshot.data()['Govt ID'];
+    else {
+      return '';
+    }
+  }
+
   Future<void> updateDonorStatus(bool donorStatus) async {
     return users
         .doc(uid)
@@ -93,36 +103,6 @@ class Database {
 
   List<Donor> donors;
 
-  // Future<List<Donor>> donorList(String blood) async {
-  //   await FirebaseFirestore.instance
-  //       .collection('profile')
-  //       .where('Blood Group', isEqualTo: blood)
-  //       .where('Donor Status', isEqualTo: true)
-  //       .where('Latitute', isNotEqualTo: null)
-  //       .where('Longitude', isNotEqualTo: null)
-  //       //.orderBy('Age',descending: true)
-  //       //.where('Age',isGreaterThanOrEqualTo: 18)
-  //       .get()
-  //       .then((QuerySnapshot value) {
-  //     if (value.docs.isNotEmpty) {
-  //       for (int i = 0; i < value.docs.length; i++) {
-  //         //if(value.docs[i].data()['Donor Status']==true)
-  //         //print('Name: ${value.docs[i].data()['Name']}\tContact: ${value.docs[i].data()['Contact No']}');
-  //         final data = value.docs[i].data();
-  //         final dummy = Donor(
-  //             blood: data['Blood Group'],
-  //             contact: data['Contact No'],
-  //             latitute: data['Latitute'],
-  //             longitude: data['Longitute'],
-  //             location: data['Location'],
-  //             name: data['Name']);
-  //         donors.insert(i, dummy);
-  //       }
-  //     }
-  //   });
-  //   print(donors[0]);
-  //   return donors;
-  // }
   Future<QuerySnapshot> donorList(String blood) async {
     return await FirebaseFirestore.instance
         .collection('profile')
@@ -147,4 +127,14 @@ class Database {
         .get();
   }
   //Future<QuerySnapshot>
+  Future<bool> verifyDoctor(String doctorID) async {
+    final _govtID = await getGovtID();
+    var snapshot =
+        await FirebaseFirestore.instance.collection('doctor').doc(doctorID).get();
+    final _fetchedID = await snapshot.data()['Govt ID'];
+    if(_govtID == _fetchedID)
+      return true;
+    else
+      return false;
+  }
 }
