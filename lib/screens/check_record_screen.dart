@@ -160,20 +160,49 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
   Widget build(BuildContext context) {
     //fetchHistory();
     loadingIndicator = false;
-    return ModalProgressHUD(
-      color: Colors.white,
-      opacity: 0.9,
-      progressIndicator: kWaveLoadingIndicator,
-      inAsyncCall: loadingIndicator,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leadingWidth: 0,
+        title: Row(
           children: [
-            showScanOrListWidget(),
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 40.0,
+                child: Image.asset(
+                  'assets/images/lifeline_logo.png',
+                ),
+              ),
+            ),
+            Text(
+              'Check Record',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Nexa Bold',
+                fontSize: 24,
+              ),
+            ),
           ],
+        ),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black54,
+      ),
+      body: ModalProgressHUD(
+        color: Colors.white,
+        opacity: 0.9,
+        progressIndicator: kWaveLoadingIndicator,
+        inAsyncCall: loadingIndicator,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              showScanOrListWidget(),
+            ],
+          ),
         ),
       ),
     );
