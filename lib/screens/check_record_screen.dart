@@ -55,9 +55,10 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
 
   List<Diagnosis> diagnosisList;
 
-  Future<List<Diagnosis>> fetchHistory() async {
+  Future<List<Diagnosis>> fetchHistory(String _uid) async {
     List<Diagnosis> _diagnosisList = [];
-    snapshot = await erhRecord
+    final _erhRecord = EHR(uid: _uid);
+    snapshot = await _erhRecord
         .historySnap(); // I guess you need a clone of this function with a uid parameter
     for (int i = 0; i < snapshot.docs.length; i++) {
       var _history = snapshot.docs[i];
@@ -76,14 +77,14 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
     return diagnosisList;
   }
 
-  void nonAsync() {
-    fetchHistory();
+  void nonAsync(String _uid) {
+    fetchHistory(_uid);
   }
 
   @override
   void initState() {
     diagnosisList = [];
-    nonAsync();
+    //nonAsync(_uid);
     super.initState();
   }
 
@@ -95,6 +96,7 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
   Future<void> recordData(String _uid, String _recordID) async {
     print(_uid);
     print(_recordID);
+    final database = Database(uid: _uid);
     final _profile = await database.getData(_uid);
 
     final _qrDonor = new Donor(
@@ -136,7 +138,7 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
             setState(() {
               loadingIndicator = true;
             });
-            await recordData(uID); // Change this for taking uID only
+            await fetchHistory(uID); // Change this for taking uID only
             setState(() {
               loadingIndicator = false;
             });
