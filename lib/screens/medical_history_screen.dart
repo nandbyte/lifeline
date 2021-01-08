@@ -32,6 +32,7 @@ class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
         problem: _history.data()['Problem'],
         verified: _history.data()['Verified'],
         verifiedBy: _history.data()['VerifiedBy'],
+        id: _history.data()['ID'],
       ));
     }
     setState(() {
