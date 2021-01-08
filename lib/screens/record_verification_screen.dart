@@ -30,6 +30,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   Donor qrDonor;
 
   final database = Database(uid: Auth().getUID());
+
   Future<void> cardData(String _uid, String _recordID) async {
     print(_uid);
     print(_recordID);
@@ -47,6 +48,10 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
     });
     //print(qrDiagnosis.toMap());
     print(qrDonor.toMap());
+  }
+
+  Future<void> _verify(String _uID, String _id) async {
+    return database.updateRecord(_uID, _id);
   }
 
   Widget getUserDiagnosisCard() {
@@ -106,8 +111,10 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
             setState(() {
               loadingIndicator = true;
             });
-            // TODO: Database update the verified value and approvedBy value of DiagnosisID
+            _verify(uID,diagnosisID);
+            Navigator.of(context).pop();
             // TODO: Go Back to Doctor Dashboard screen.
+
             setState(() {
               loadingIndicator = false;
             });

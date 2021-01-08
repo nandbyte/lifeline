@@ -157,4 +157,17 @@ class Database {
         verified: false,
         );
   }
+
+  Future<void> updateRecord(String _uid, String _id) async {
+    final dummy = await FirebaseFirestore.instance
+        .collection('health_record')
+        .doc(_uid)
+        .collection('history')
+        .doc(_id);
+    String _name = await getName();
+    return dummy
+        .update({'Varified': true, 'VerifiedBy':'Dr. '+_name})
+        .then((value) => print("Status updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 }
