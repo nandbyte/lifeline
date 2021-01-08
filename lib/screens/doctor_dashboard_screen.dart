@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
-import 'package:lifeline/components/log_out_alert_dialog.dart';
 import 'package:lifeline/screens/record_verification_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
@@ -17,7 +16,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
   String name;
   Future<void> getName() async {
     final _name = await Database(uid: Auth().getUID()).getName();
-    setState(() async {
+    setState((){
       name = _name;
     });
   }
@@ -78,7 +77,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
                   height: 10,
                 ),
                 Text(
-                  this.name, // TODO: Replace Younus with actual name
+                  this.name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40,
