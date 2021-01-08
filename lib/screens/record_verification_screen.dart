@@ -31,7 +31,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
 
   final database = Database(uid: Auth().getUID());
   Future<void> cardData(String _uid,String _recordID) async {
-    final _profile = await database.getData(Auth().getUID());
+    final _profile = await database.getData(_uid);
     final _diagnosis = await database.getRecord(_uid, _recordID);
     final _qrDonor = Donor(
       name: _profile.name,
@@ -92,9 +92,8 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   Widget getVerifyButton() {
     if (qrCodeResult == null) {
       return SizedBox(height: 1);
-    } else if (qrDiagnosis.verified == true) {
-      return SizedBox(height: 1);
-    } else {
+    } 
+    else {
       return Padding(
         padding: const EdgeInsets.all(12.0),
         child: RoundedButton(
@@ -182,7 +181,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                         setState(() {
                           loadingIndicator = true;
                         });
-                        // TODO: fetch diagnosis id and uid and pass the data to qrDonor and qrDiagnosis
+                        cardData(uID, diagnosisID);
                         setState(() {
                           loadingIndicator = false;
                         });

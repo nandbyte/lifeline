@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeline/models/blood_donor.dart';
+import 'package:lifeline/models/diagnosis.dart';
 import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/services/api_path.dart';
 
@@ -138,35 +139,19 @@ class Database {
       return false;
   }
 
-  Future<ProfileData> getRecord(String _uid,String _recordID) async {
+  Future<Diagnosis> getRecord(String _uid,String _recordID) async {
     var snapshot =
         await FirebaseFirestore.instance.collection('health_record').doc(_uid)
               .collection('history').doc(_recordID).get();
     if (snapshot.exists)
-      return ProfileData(
-        name: snapshot.data()['Name'] ?? '',
-        age: snapshot.data()['Age'] ?? '',
-        dob: snapshot.data()['Birth Date'] ?? '',
-        blood: snapshot.data()['Blood Group'] ?? '',
-        contact: snapshot.data()['Contact No'] ?? '',
-        emergency: snapshot.data()['Emergency No'] ?? '',
-        gender: snapshot.data()['Gender'] ?? '',
-        govtID: snapshot.data()['Govt ID'] ?? '',
-        location: snapshot.data()['Location'] ?? '',
-        otherID: snapshot.data()['Other ID'] ?? '',
-        donorStatus: snapshot.data()['Donor Status'],
-        lastDonation: snapshot.data()['Last Donation'],
+      return Diagnosis(
+        date: snapshot.data()['Date'],
+        type: snapshot.data()['Type'],
+        problem: snapshot.data()['Problem'],
+        verified: false
       );
     else
-      return ProfileData(
-          contact: '',
-          blood: '',
-          name: '',
-          age: '',
-          dob: Timestamp.now(),
-          gender: '',
-          govtID: '');
+      return null;
   }
-
-
 }
+
