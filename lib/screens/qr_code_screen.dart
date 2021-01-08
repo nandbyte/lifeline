@@ -53,9 +53,6 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
               data: this.widget.qrCodeData,
               errorCorrectionLevel: QrErrorCorrectLevel.M,
               gapless: true,
-              embeddedImage: NetworkImage(
-                'https://raw.githubusercontent.com/NandByte/Old-LifeLine/master/assets/lifeline_logo.png',
-              ),
               foregroundColor: Colors.black,
               version: QrVersions.auto,
               size: MediaQuery.of(context).size.width / 1.25,
