@@ -33,7 +33,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   Future<void> cardData(String _uid,String _recordID) async {
     final _profile = await database.getData(_uid);
     final _diagnosis = await database.getRecord(_uid, _recordID);
-    final _qrDonor = Donor(
+    final _qrDonor = new Donor(
       name: _profile.name,
       contact: _profile.contact,
       location: _profile.location,
@@ -46,7 +46,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   }
 
   Widget getUserDiagnosisCard() {
-    if (qrCodeResult == null) {
+    if (qrCodeResult == null || qrDonor == null || qrDiagnosis == null) {
       return Padding(
         padding: const EdgeInsets.all(12.0),
         child: Container(
