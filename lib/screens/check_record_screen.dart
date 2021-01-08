@@ -141,6 +141,7 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
             await fetchHistory(uID); // Change this for taking uID only
             setState(() {
               loadingIndicator = false;
+              allDataFetched = true;
             });
             //}
             //}
