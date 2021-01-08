@@ -1,3 +1,4 @@
+import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/rounded_button.dart';
@@ -17,8 +18,8 @@ class RecordVerificationScreen extends StatefulWidget {
 
 class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   bool loadingIndicator = false;
+  String qrCodeResult;
 
-  // TODO: Fetch Diagnosis using diagnosis ID and donor from Donor ID
   Diagnosis qrDiagnosis = Diagnosis(
     type: 'Disease',
     problem: 'COVID19',
@@ -32,7 +33,43 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
     blood: 'A+',
   );
 
-  // TODO: Fetch QrText and create a InfoCard
+  Widget getUserDiagnosisCard() {
+    if (qrCodeResult == null) {
+      return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Container(
+          padding: EdgeInsets.all(24),
+          margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Text('No Information'),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: UserDiagnosisCard(
+          targetDiagnosis: qrDiagnosis,
+          targetUser: qrDonor,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +106,31 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
         opacity: 0.9,
         progressIndicator: kWaveLoadingIndicator,
         inAsyncCall: loadingIndicator,
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
             children: [
+              getUserDiagnosisCard(),
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: UserDiagnosisCard(
-                  targetDiagnosis: qrDiagnosis,
-                  targetUser: qrDonor,
+                child: RoundedButton(
+                  text: 'Open Camera',
+                  color: Colors.green[900],
+                  onPressed: () async {
+                    String codeScanner = await BarcodeScanner.scan();
+                    setState(() {
+                      qrCodeResult = codeScanner;
+                    });
+                    setState(() {
+                      loadingIndicator = true;
+                    });
+                    // TODO: fetch diagnosis id and uid and pass the data to qrDonor and qrDiagnosis
+                    setState(() {
+                      loadingIndicator = false;
+                    });
+                  },
                 ),
               ),
               Padding(
@@ -85,7 +138,7 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                 child: RoundedButton(
                   text: 'Verify',
                   color: Colors.green[900],
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       loadingIndicator = true;
                     });
@@ -97,7 +150,9 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                   },
                 ),
               ),
-            ]),
+            ],
+          ),
+        ),
       ),
     );
   }
