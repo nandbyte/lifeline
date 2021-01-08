@@ -125,31 +125,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
               children: <Widget>[
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
-                    height: 60,
-                  ),
-                  label: 'Health Record',
-                  onTap: () {
-                    Navigator.pushNamed(context, HealthRecordScreen.id);
-                  },
-                ),
-                GridCard(
-                  image: Image.asset(
-                    // TODO: Update Icon
-
-                    'assets/images/lifeline_logo.png',
-                    height: 60,
-                  ),
-                  label: 'Medical History',
-                  onTap: () {
-                    Navigator.pushNamed(context, MedicalHistoryScreen.id);
-                  },
-                ),
-                GridCard(
-                  image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/profie_icon.png',
                     height: 60,
                   ),
                   label: 'Profile',
@@ -159,19 +135,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 ),
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
-                    height: 60,
-                  ),
-                  label: 'Blood Donation',
-                  onTap: () {
-                    Navigator.pushNamed(context, BloodDonationScreen.id);
-                  },
-                ),
-                GridCard(
-                  image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/search_user_icon.png',
                     height: 60,
                   ),
                   label: 'Search User',
@@ -181,8 +145,37 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 ),
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/health_record_icon.png',
+                    height: 60,
+                  ),
+                  label: 'Health Record',
+                  onTap: () {
+                    Navigator.pushNamed(context, HealthRecordScreen.id);
+                  },
+                ),
+                GridCard(
+                  image: Image.asset(
+                    'assets/images/lifeline_icons/medical_history_icon.png',
+                    height: 60,
+                  ),
+                  label: 'Medical History',
+                  onTap: () {
+                    Navigator.pushNamed(context, MedicalHistoryScreen.id);
+                  },
+                ),
+                GridCard(
+                  image: Image.asset(
+                    'assets/images/lifeline_icons/blood_donation_icon.png',
+                    height: 60,
+                  ),
+                  label: 'Blood Donation',
+                  onTap: () {
+                    Navigator.pushNamed(context, BloodDonationScreen.id);
+                  },
+                ),
+                GridCard(
+                  image: Image.asset(
+                    'assets/images/lifeline_icons/doctor_mode_icon.png',
                     height: 60,
                   ),
                   label: 'Doctor Mode',

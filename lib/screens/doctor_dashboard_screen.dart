@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
-import 'package:lifeline/components/log_out_alert_dialog.dart';
+import 'package:lifeline/screens/check_record_screen.dart';
 import 'package:lifeline/screens/record_verification_screen.dart';
+import 'package:lifeline/services/authenticate.dart';
+import 'package:lifeline/services/database.dart';
 
 class DoctorDashboardScreen extends StatefulWidget {
   static String id = 'doctor_dashboard';
-
   @override
   _DoctorDashboardScreenState createState() => _DoctorDashboardScreenState();
 }
 
 class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
   bool loadingIndicator = false;
+  String name;
+  Future<void> getName() async {
+    final _name = await Database(uid: Auth().getUID()).getName();
+    setState(() {
+      name = _name;
+    });
+  }
+
+  @override
+  void initState() {
+    getName();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +78,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
                   height: 10,
                 ),
                 Text(
-                  'Dr. ' + 'Younus', // TODO: Replace Younus with actual name
+                  this.name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40,
@@ -85,32 +99,22 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
               children: <Widget>[
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/check_record_icon.png',
                     height: 60,
                   ),
                   label: 'Check Record',
                   onTap: () {
-                    // TODO: Go to QR Scanner
+                    Navigator.pushNamed(context, CheckRecordScreen.id);
                   },
                 ),
                 GridCard(
                   image: Image.asset(
-                    // TODO: Update Icon
-
-                    'assets/images/lifeline_logo.png',
+                    'assets/images/lifeline_icons/verify_record_icon.png',
                     height: 60,
                   ),
                   label: 'Verify Record',
                   onTap: () {
-                    // TODO: Go to QR Scanner
-                    // TESTING
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecordVerificationScreen(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, RecordVerificationScreen.id);
                   },
                 ),
               ],

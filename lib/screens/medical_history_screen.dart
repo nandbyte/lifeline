@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeline/components/alert_dialog_form.dart';
 import 'package:lifeline/components/verifiable_diagnosis_card_list.dart';
 import 'package:lifeline/constants.dart';
 import 'package:lifeline/models/diagnosis.dart';
+import 'package:lifeline/services/EHR.dart';
+import 'package:lifeline/services/authenticate.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class MedicalHistoryScreen extends StatefulWidget {
@@ -13,32 +16,42 @@ class MedicalHistoryScreen extends StatefulWidget {
 
 class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
   bool loadingIndicator = false;
-  List<Diagnosis> diagnosisList = [
-    Diagnosis(
-      type: 'Disease',
-      problem: 'COVID19',
-      date: 'December, 2020',
-    ),
-    Diagnosis(
-      type: 'Accident',
-      problem: 'Thorax Fracture',
-      date: 'November, 2020',
-      verified: true,
-      verifiedBy: 'Dr. Who',
-    ),
-    Diagnosis(
-      type: 'Accident',
-      problem: 'Leg Fracture',
-      date: 'January, 2019',
-    ),
-  ];
+  List<Diagnosis> diagnosisList;
+  final erhRecord = EHR(uid: Auth().getUID());
+  CollectionReference refference;
+  QuerySnapshot snapshot;
+  Future<List<Diagnosis>> fetchHistory() async {
+    List<Diagnosis> _diagnosisList = [];
+    snapshot = await erhRecord.historySnap();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      var _history = snapshot.docs[i];
+      print(_history.data());
+      _diagnosisList.add(new Diagnosis(
+        type: _history.data()['Type'],
+        date: _history.data()['Date'],
+        problem: _history.data()['Problem'],
+        verified: _history.data()['Verified'],
+        verifiedBy: _history.data()['VerifiedBy'],
+        id: _history.data()['ID'],
+      ));
+    }
+    setState(() {
+      diagnosisList = _diagnosisList;
+    });
+    return diagnosisList;
+  }
+
+  void nonAsync() {
+    fetchHistory();
+  }
 
   @override
   void initState() {
     setState(() {
       loadingIndicator = true;
     });
-    // TODO: Fetch all diagnosis data and put that into diagnosisList
+    diagnosisList = [];
+    nonAsync();
     setState(() {
       loadingIndicator = false;
     });

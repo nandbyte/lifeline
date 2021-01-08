@@ -1,8 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeline/models/blood_donor.dart';
+import 'package:lifeline/models/diagnosis.dart';
 import 'package:lifeline/models/profile_data.dart';
 import 'package:lifeline/services/api_path.dart';
+
+class Loc {
+  String lat;
+  String long;
+  Loc({this.lat, this.long});
+  Map<String, dynamic> toMap() {
+    return {
+      "Latitute": lat,
+      "Longitude": long,
+      //"Latitude": lat,
+    };
+  }
+}
 
 class Database {
   final String uid;
@@ -66,6 +80,16 @@ class Database {
     }
   }
 
+  Future<String> getGovtID() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    if (snapshot.exists)
+      return snapshot.data()['Govt ID'];
+    else {
+      return '';
+    }
+  }
+
   Future<void> updateDonorStatus(bool donorStatus) async {
     return users
         .doc(uid)
@@ -93,36 +117,6 @@ class Database {
 
   List<Donor> donors;
 
-  // Future<List<Donor>> donorList(String blood) async {
-  //   await FirebaseFirestore.instance
-  //       .collection('profile')
-  //       .where('Blood Group', isEqualTo: blood)
-  //       .where('Donor Status', isEqualTo: true)
-  //       .where('Latitute', isNotEqualTo: null)
-  //       .where('Longitude', isNotEqualTo: null)
-  //       //.orderBy('Age',descending: true)
-  //       //.where('Age',isGreaterThanOrEqualTo: 18)
-  //       .get()
-  //       .then((QuerySnapshot value) {
-  //     if (value.docs.isNotEmpty) {
-  //       for (int i = 0; i < value.docs.length; i++) {
-  //         //if(value.docs[i].data()['Donor Status']==true)
-  //         //print('Name: ${value.docs[i].data()['Name']}\tContact: ${value.docs[i].data()['Contact No']}');
-  //         final data = value.docs[i].data();
-  //         final dummy = Donor(
-  //             blood: data['Blood Group'],
-  //             contact: data['Contact No'],
-  //             latitute: data['Latitute'],
-  //             longitude: data['Longitute'],
-  //             location: data['Location'],
-  //             name: data['Name']);
-  //         donors.insert(i, dummy);
-  //       }
-  //     }
-  //   });
-  //   print(donors[0]);
-  //   return donors;
-  // }
   Future<QuerySnapshot> donorList(String blood) async {
     return await FirebaseFirestore.instance
         .collection('profile')
@@ -146,5 +140,64 @@ class Database {
         .where('Other ID', isEqualTo: id)
         .get();
   }
+
   //Future<QuerySnapshot>
+  Future<bool> verifyDoctor(String doctorID) async {
+    final _govtID = await getGovtID();
+    var snapshot = await FirebaseFirestore.instance
+        .collection('doctor')
+        .doc(doctorID)
+        .get();
+    final _fetchedID = await snapshot.data()['Govt ID'];
+    if (_govtID == _fetchedID)
+      return true;
+    else
+      return false;
+  }
+
+  Future<Diagnosis> getRecord(String _uid, String _recordID) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('health_record')
+        .doc(_uid)
+        .collection('history')
+        .doc(_recordID)
+        .get();
+
+    return Diagnosis(
+      date: snapshot.data()['Date'],
+      type: snapshot.data()['Type'],
+      problem: snapshot.data()['Problem'],
+      verified: false,
+    );
+  }
+
+  Future<void> updateRecord(String _uid, String _id) async {
+    final dummy = await FirebaseFirestore.instance
+        .collection('health_record')
+        .doc(_uid)
+        .collection('history')
+        .doc(_id);
+    String _name = await getName();
+    return dummy
+        .update({'Varified': true, 'VerifiedBy': 'Dr. ' + _name})
+        .then((value) => print("Status updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  //Future<QuerySnapshot>
+  Future<QuerySnapshot> bloodDonorList(String blood) async {
+    return await FirebaseFirestore.instance
+        .collection('profile')
+        //.where('Blood Group', isEqualTo: blood)
+        .where('Donor Status', isEqualTo: true)
+        .where('Latitute', isNotEqualTo: null)
+        .where('Longitude', isNotEqualTo: null)
+        .get();
+  }
+
+  Future<DocumentSnapshot> getLoc() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+    return snapshot;
+  }
 }
