@@ -47,10 +47,9 @@ class LifeLine extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: RecordVerificationScreen.id,
-      // initialRoute: (Auth().getUser() == null)
-      //     ? WelcomeScreen.id
-      //     : UserDashboardScreen.id,
+      initialRoute: (Auth().getUser() == null)
+          ? WelcomeScreen.id
+          : UserDashboardScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         UserLoginScreen.id: (context) => UserLoginScreen(),
