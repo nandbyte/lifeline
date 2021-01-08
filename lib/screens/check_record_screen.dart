@@ -138,8 +138,9 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
             setState(() {
               loadingIndicator = true;
             });
-            await fetchHistory(uID); // Change this for taking uID only
+            final _records = await fetchHistory(uID); // Change this for taking uID only
             setState(() {
+              diagnosisList = _records;
               loadingIndicator = false;
               allDataFetched = true;
             });
@@ -196,15 +197,13 @@ class _CheckRecordScreenState extends State<CheckRecordScreen> {
         inAsyncCall: loadingIndicator,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                showScanOrListWidget(),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              showScanOrListWidget(),
+            ],
           ),
         ),
       ),
