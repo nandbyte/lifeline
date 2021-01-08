@@ -99,9 +99,11 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   }
 
   Widget getVerifyButton() {
-    if (qrCodeResult == null) {
+    if (qrDiagnosis == null) {
       return SizedBox(height: 1);
-    } else {
+    } else if(qrDiagnosis.verified == true) {
+  return SizedBox(height: 1);
+      }else {
       return Padding(
         padding: const EdgeInsets.all(12.0),
         child: RoundedButton(
@@ -111,10 +113,8 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
             setState(() {
               loadingIndicator = true;
             });
-            _verify(uID,diagnosisID);
+            _verify(uID, diagnosisID);
             Navigator.of(context).pop();
-            // TODO: Go Back to Doctor Dashboard screen.
-
             setState(() {
               loadingIndicator = false;
             });
@@ -177,26 +177,23 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                     setState(() {
                       qrCodeResult = codeScanner;
                     });
-                    print("I'm the hunter $codeScanner");
+
                     qrData = codeScanner.split('_');
                     qrCodeType = qrData[0];
                     diagnosisID = qrData[1];
                     uID = qrData[2];
 
-                    print("Here am I to print $qrCodeType");
-                    print(diagnosisID);
-                    print(uID);
-                    //if (qrCodeType != null) {
-                    //if (qrCodeType == 'LIFELINE_DIAGNOSIS') {
-                    setState(() {
-                      loadingIndicator = true;
-                    });
-                    await cardData(uID, diagnosisID);
-                    setState(() {
-                      loadingIndicator = false;
-                    });
-                    //}
-                    //}
+                    if (qrCodeType != null) {
+                      if (qrCodeType == 'LIFELINE_DIAGNOSIS') {
+                        setState(() {
+                          loadingIndicator = true;
+                        });
+                        await cardData(uID, diagnosisID);
+                        setState(() {
+                          loadingIndicator = false;
+                        });
+                      }
+                    }
                   },
                 ),
               ),
