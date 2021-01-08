@@ -5,6 +5,8 @@ import 'package:lifeline/screens/blood_donation_screen.dart';
 import 'package:lifeline/screens/doctor_dashboard_screen.dart';
 import 'package:lifeline/screens/health_record_screen.dart';
 import 'package:lifeline/screens/medical_history_screen.dart';
+import 'package:lifeline/screens/qr_code_scanner_screen.dart';
+import 'package:lifeline/screens/record_verification_screen.dart';
 import 'package:lifeline/screens/terms_and_conditions_screen.dart';
 import 'package:lifeline/screens/user_login_screen.dart';
 import 'package:lifeline/screens/user_profile_screen.dart';
@@ -45,9 +47,10 @@ class LifeLine extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: (Auth().getUser() == null)
-          ? WelcomeScreen.id
-          : UserDashboardScreen.id,
+      initialRoute: RecordVerificationScreen.id,
+      // initialRoute: (Auth().getUser() == null)
+      //     ? WelcomeScreen.id
+      //     : UserDashboardScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         UserLoginScreen.id: (context) => UserLoginScreen(),
@@ -61,6 +64,8 @@ class LifeLine extends StatelessWidget {
         MedicalHistoryScreen.id: (context) => MedicalHistoryScreen(),
         TermsAndConditionsScreen.id: (context) => TermsAndConditionsScreen(),
         DoctorDashboardScreen.id: (context) => DoctorDashboardScreen(),
+        RecordVerificationScreen.id: (context) => RecordVerificationScreen(),
+        QrCodeScannerScreen.id: (context) => QrCodeScannerScreen(),
       },
     );
   }

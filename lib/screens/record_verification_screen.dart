@@ -1,3 +1,4 @@
+import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/rounded_button.dart';
@@ -17,7 +18,7 @@ class RecordVerificationScreen extends StatefulWidget {
 
 class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   bool loadingIndicator = false;
-
+  String qrCodeResult = 'No information';
   // TODO: Fetch Diagnosis using diagnosis ID and donor from Donor ID
   Diagnosis qrDiagnosis = Diagnosis(
     type: 'Disease',
@@ -69,35 +70,51 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
         opacity: 0.9,
         progressIndicator: kWaveLoadingIndicator,
         inAsyncCall: loadingIndicator,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: UserDiagnosisCard(
-                  targetDiagnosis: qrDiagnosis,
-                  targetUser: qrDonor,
+        child: SingleChildScrollView(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      qrCodeResult,
+                      style: kTextStyle,
+                    ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: RoundedButton(
-                  text: 'Verify',
-                  color: Colors.green[900],
-                  onPressed: () {
-                    setState(() {
-                      loadingIndicator = true;
-                    });
-                    // TODO: Database update the verified value and approvedBy value of DiagnosisID
-                    // TODO: Go Back to Doctor Dashboard screen.
-                    setState(() {
-                      loadingIndicator = false;
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: UserDiagnosisCard(
+                    targetDiagnosis: qrDiagnosis,
+                    targetUser: qrDonor,
+                  ),
                 ),
-              ),
-            ]),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: RoundedButton(
+                    text: 'Open Camera',
+                    color: Colors.green[900],
+                    onPressed: () async {
+                      String codeScanner = await BarcodeScanner.scan();
+                      setState(() {
+                        qrCodeResult = codeScanner;
+                      });
+                      setState(() {
+                        loadingIndicator = true;
+                      });
+                      // TODO: Database update the verified value and approvedBy value of DiagnosisID
+                      // TODO: Go Back to Doctor Dashboard screen.
+                      setState(() {
+                        loadingIndicator = false;
+                      });
+                    },
+                  ),
+                ),
+              ]),
+        ),
       ),
     );
   }
