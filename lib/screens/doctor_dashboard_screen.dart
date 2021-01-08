@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeline/components/grid_card.dart';
+import 'package:lifeline/screens/check_record_screen.dart';
 import 'package:lifeline/screens/record_verification_screen.dart';
 import 'package:lifeline/services/authenticate.dart';
 import 'package:lifeline/services/database.dart';
@@ -16,7 +17,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
   String name;
   Future<void> getName() async {
     final _name = await Database(uid: Auth().getUID()).getName();
-    setState((){
+    setState(() {
       name = _name;
     });
   }
@@ -103,7 +104,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
                   ),
                   label: 'Check Record',
                   onTap: () {
-                    // TODO: Go to QR Scanner
+                    Navigator.pushNamed(context, CheckRecordScreen.id);
                   },
                 ),
                 GridCard(
@@ -113,14 +114,7 @@ class _DoctorDashboardScreenState extends State<DoctorDashboardScreen> {
                   ),
                   label: 'Verify Record',
                   onTap: () {
-                    // TODO: Go to QR Scanner
-                    // TESTING
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecordVerificationScreen(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, RecordVerificationScreen.id);
                   },
                 ),
               ],
