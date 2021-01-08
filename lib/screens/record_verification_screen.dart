@@ -21,6 +21,10 @@ class RecordVerificationScreen extends StatefulWidget {
 class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   bool loadingIndicator = false;
   String qrCodeResult;
+  List<String> qrData;
+  String qrCodeType;
+  String diagnosisID; // contained fetched diagnosis ID after scanning
+  String uID; // contained fetched UID after scanning
 
   Diagnosis qrDiagnosis = Diagnosis(
     type: 'Disease',
@@ -36,9 +40,9 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
   );
 
   final database = Database(uid: Auth().getUID());
-  Future<void> cardData(String uid,String recordID) async {
+  Future<void> cardData(String uid, String recordID) async {
     final _profile = await database.getData(Auth().getUID());
-    final _diagnosis 
+    final _diagnosis;
   }
 
   Widget getUserDiagnosisCard() {
@@ -162,14 +166,28 @@ class _RecordVerificationScreenState extends State<RecordVerificationScreen> {
                     String codeScanner = await BarcodeScanner.scan();
                     setState(() {
                       qrCodeResult = codeScanner;
+                      qrData = qrCodeResult.split(':');
+                      if (qrData.length == 3) {
+                        qrCodeType = qrData[0];
+                        diagnosisID = qrData[1];
+                        uID = qrData[2];
+                      }
+
+                      print(qrCodeType);
+                      print(diagnosisID);
+                      print(uID);
                     });
-                    setState(() {
-                      loadingIndicator = true;
-                    });
-                    // TODO: fetch diagnosis id and uid and pass the data to qrDonor and qrDiagnosis
-                    setState(() {
-                      loadingIndicator = false;
-                    });
+                    if (qrCodeType != null) {
+                      if (qrCodeType == 'LIFELINE_DIAGNOSIS') {
+                        setState(() {
+                          loadingIndicator = true;
+                        });
+                        // TODO: fetch diagnosis id and uid and pass the data to qrDonor and qrDiagnosis
+                        setState(() {
+                          loadingIndicator = false;
+                        });
+                      }
+                    }
                   },
                 ),
               ),

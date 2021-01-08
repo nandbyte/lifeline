@@ -19,7 +19,8 @@ class VerifiableDiagnosisCard extends StatelessWidget {
               builder: (context) => QrCodeScreen(
                   // TODO: Replace qrCodeData with real data (UID + DiagnosisID) => this will provide a screen to the doctor with the corresponding diagnosis data
                   appBarTitle: 'Verify Report',
-                  qrCodeData: '${diagnosis.id} ${Auth().getUID()}'),
+                  qrCodeData:
+                      'LIFELINE_DIAGNOSIS${diagnosis.id}${Auth().getUID()}'),
             ),
           );
           print('${diagnosis.id} ${Auth().getUID()}');
