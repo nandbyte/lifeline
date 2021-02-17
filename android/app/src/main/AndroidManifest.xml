@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher">
         
        <meta-data android:name="com.google.android.geo.API_KEY"
-              android:value="OH LORD FORGIVE ME FOR WHAT IM BOUT TO COMMIT"/>
+              android:value="OH LORD FORGIVE ME FOR WHAT IM BOUT TO COMMIT!!!"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
